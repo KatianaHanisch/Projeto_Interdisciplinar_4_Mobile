@@ -1,4 +1,3 @@
-import { theme } from "@/constants";
 import { Link } from "expo-router";
 import {
   Text,
@@ -9,7 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function login() {
+import { theme } from "@/constants";
+
+export default function Login() {
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/images/imagem-login.png")} />
