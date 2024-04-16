@@ -2,17 +2,21 @@ import { Slot } from "expo-router";
 
 import * as SplashScreen from "expo-splash-screen";
 
+import { StatusBar } from "expo-status-bar";
+
 import {
   useFonts,
   Montserrat_400Regular,
   Montserrat_500Medium,
   Montserrat_700Bold,
+  Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
 
 import {
   Raleway_300Light,
   Raleway_400Regular,
   Raleway_500Medium,
+  Raleway_600SemiBold,
   Raleway_700Bold,
 } from "@expo-google-fonts/raleway";
 
@@ -24,10 +28,12 @@ export default function Layout() {
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_500Medium,
+    Montserrat_600SemiBold,
     Montserrat_700Bold,
     Raleway_300Light,
     Raleway_400Regular,
     Raleway_500Medium,
+    Raleway_600SemiBold,
     Raleway_700Bold,
   });
 
@@ -36,6 +42,11 @@ export default function Layout() {
       <Text>Carregando....</Text>
     </View>;
   } else {
-    return <Slot />;
+    return (
+      <>
+        <StatusBar style="dark" />
+        <Slot />
+      </>
+    );
   }
 }

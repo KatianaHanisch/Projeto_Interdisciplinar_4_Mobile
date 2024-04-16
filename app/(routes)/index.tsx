@@ -5,6 +5,7 @@ export default function Root() {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="login/index" options={{ headerShown: false }} />
+      <Stack.Screen name="cadastro/index" options={{ headerShown: false }} />
     </Stack>
   );
 }

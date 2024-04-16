@@ -1,6 +1,5 @@
 import { Link } from "expo-router";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { StatusBar } from "expo-status-bar";
 
 import { theme } from "../constants";
 
@@ -9,7 +8,6 @@ import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial
 export default function PaginaInicial() {
   return (
     <>
-      <StatusBar style="dark" />
       <View style={styles.container}>
         <Image
           source={require("../assets/images/circulo-pagina-inicial.png")}
