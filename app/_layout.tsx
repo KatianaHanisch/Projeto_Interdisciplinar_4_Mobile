@@ -16,7 +16,9 @@ import {
   Raleway_700Bold,
 } from "@expo-google-fonts/raleway";
 
-SplashScreen.preventAutoHideAsync();
+import { View, Text } from "react-native";
+
+// SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -30,7 +32,10 @@ export default function Layout() {
   });
 
   if (!fontsLoaded) {
-    SplashScreen.hideAsync();
+    <View style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
+      <Text>Carregando....</Text>
+    </View>;
+  } else {
+    return <Slot />;
   }
-  return <Slot />;
 }
