@@ -10,10 +10,12 @@ import {
 
 import { theme } from "@/constants";
 
+import { ImagemTelaLogin } from "@/assets/images/imagem-tela-login";
+
 export default function Login() {
   return (
     <View style={styles.container}>
-      <Image source={require("../../assets/images/imagem-login.png")} />
+      <ImagemTelaLogin />
       <View style={styles.containerLogin}>
         <Text>logo</Text>
         <TextInput style={styles.input} placeholder="Digite seu email" />

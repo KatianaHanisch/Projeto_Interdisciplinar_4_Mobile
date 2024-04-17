@@ -4,14 +4,14 @@ import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { theme } from "../constants";
 
 import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial";
+import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagina-inicial";
 
 export default function PaginaInicial() {
   return (
     <>
       <View style={styles.container}>
-        <Image
-          source={require("../assets/images/circulo-pagina-inicial.png")}
-        />
+        <ImagemCirculoPaginaInicial />
+
         <Text style={styles.tituloInicio}>
           Adote seu <Text style={styles.tituloInicioDestaque}>pet</Text>
         </Text>
