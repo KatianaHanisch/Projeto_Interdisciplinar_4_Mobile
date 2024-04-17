@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 import { router } from "expo-router";
 
 import { StatusBar } from "expo-status-bar";
+
+import { Button } from "./button";
 
 import { theme } from "@/constants";
 import { ImagemVerificarEmail } from "@/assets/images/ImageVerificarEmail";
@@ -27,9 +29,7 @@ export function ModalVerificarEmail() {
               endereço de email.
             </Text>
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleNavigation}>
-            <Text style={styles.textButton}>Enviar email</Text>
-          </TouchableOpacity>
+          <Button titulo="Enviar email" handleNavigation={handleNavigation} />
         </View>
       </View>
     </>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
   containerModal: {
-    width: "90%",
+    width: "95%",
     height: "65%",
     backgroundColor: theme.colors.white,
     borderRadius: 30,
@@ -57,30 +57,17 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   textoTitulo: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     width: "100%",
-    textAlign: "center",
+    textAlign: "left",
     lineHeight: 22,
   },
   textoSubtitulo: {
-    fontSize: 15,
-    fontFamily: theme.fontFamily.raleway.regular,
-    color: theme.colors.grayLight,
-    textAlign: "left",
-  },
-  button: {
-    backgroundColor: theme.colors.orangePrimaryDark,
-    height: 50,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 30,
-  },
-  textButton: {
-    color: theme.colors.white,
-    fontFamily: theme.fontFamily.montserrat.semiBold,
     fontSize: 16,
+    fontFamily: theme.fontFamily.raleway.regular,
+    color: theme.colors.grayMedium,
+    textAlign: "left",
   },
 });
