@@ -7,7 +7,7 @@ export default function Root() {
       <Stack.Screen name="login/index" options={{ headerShown: false }} />
       <Stack.Screen name="cadastro/index" options={{ headerShown: false }} />
       <Stack.Screen
-        name="verificar-email/index"
+        name="verificar-codigo/index"
         options={{ headerShown: false }}
       />
       <Stack.Screen name="home/index" options={{ headerShown: false }} />

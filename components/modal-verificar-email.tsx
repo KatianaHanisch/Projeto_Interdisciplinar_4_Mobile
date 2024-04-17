@@ -11,7 +11,7 @@ import { ImagemVerificarEmail } from "@/assets/images/ImageVerificarEmail";
 
 export function ModalVerificarEmail() {
   function handleNavigation() {
-    router.navigate("verificar-email");
+    router.navigate("verificar-codigo");
   }
 
   return (
