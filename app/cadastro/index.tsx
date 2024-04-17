@@ -15,6 +15,7 @@ import { theme } from "@/constants";
 
 import { ModalVerificarEmail } from "@/components/modal-verificar-email";
 import { ImagemPaginaCadastro } from "@/assets/images/imagem-pagina-cadastro";
+import { Button } from "@/components/button";
 
 export default function Cadastro() {
   const [open, setOpen] = useState<boolean>(false);
@@ -47,12 +48,10 @@ export default function Cadastro() {
               secureTextEntry={true}
             />
             <View style={styles.containerButton}>
-              <TouchableOpacity
-                onPress={() => setOpen(true)}
-                style={styles.button}
-              >
-                <Text style={styles.textButton}>Cadastrar</Text>
-              </TouchableOpacity>
+              <Button
+                titulo="Cadastrar"
+                handleNavigation={() => setOpen(true)}
+              />
               <Text style={styles.textoCadastro}>
                 <Link href={"/login/"}>
                   Já tem conta?{" "}
@@ -95,19 +94,6 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  button: {
-    backgroundColor: theme.colors.orangePrimaryDark,
-    height: 50,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 30,
-  },
-  textButton: {
-    color: theme.colors.white,
-    fontFamily: theme.fontFamily.montserrat.semiBold,
-    fontSize: 16,
   },
   textoCadastro: {
     fontSize: 15,

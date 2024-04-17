@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { Button } from "@/components/button";
+
 import { theme } from "@/constants";
 
 import { ImagemTelaLogin } from "@/assets/images/imagem-tela-login";
@@ -25,9 +27,7 @@ export default function Login() {
           secureTextEntry={true}
         />
         <View style={styles.containerButton}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.textButton}>Entrar</Text>
-          </TouchableOpacity>
+          <Button titulo="Entrar" />
           <Text style={styles.textoCadastro}>
             <Link href={"/cadastro/"}>
               Não tem conta?{" "}
@@ -68,19 +68,6 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  button: {
-    backgroundColor: theme.colors.orangePrimaryDark,
-    height: 50,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 30,
-  },
-  textButton: {
-    color: theme.colors.white,
-    fontFamily: theme.fontFamily.montserrat.semiBold,
-    fontSize: 16,
   },
   textoCadastro: {
     fontSize: 15,

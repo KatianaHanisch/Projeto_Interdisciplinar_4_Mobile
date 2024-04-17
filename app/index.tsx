@@ -1,4 +1,5 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
+
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import { theme } from "../constants";
@@ -7,6 +8,10 @@ import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial
 import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagina-inicial";
 
 export default function PaginaInicial() {
+  function handleNavigation() {
+    router.navigate("login");
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -16,10 +21,8 @@ export default function PaginaInicial() {
           Adote seu <Text style={styles.tituloInicioDestaque}>pet</Text>
         </Text>
         <View style={styles.containerButton}>
-          <TouchableOpacity style={styles.Button}>
-            <Link href={"/login/"}>
-              <IconArrowPaginaInicial />
-            </Link>
+          <TouchableOpacity onPress={handleNavigation} style={styles.Button}>
+            <IconArrowPaginaInicial />
           </TouchableOpacity>
         </View>
         <View style={styles.containerImage}>
