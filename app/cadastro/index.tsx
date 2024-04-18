@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   textoCadastroSublinhado: {
     fontSize: 15,
     fontFamily: theme.fontFamily.raleway.semiBold,
-    color: theme.colors.grayPrimary,
+    color: theme.colors.grayMedium,
     textDecorationLine: "underline",
   },
   imagem: {

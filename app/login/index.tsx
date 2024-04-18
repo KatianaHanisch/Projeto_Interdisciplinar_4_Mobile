@@ -1,12 +1,5 @@
-import { Link } from "expo-router";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Link, router } from "expo-router";
+import { Text, View, StyleSheet, TextInput } from "react-native";
 
 import { Button } from "@/components/button";
 
@@ -15,6 +8,10 @@ import { theme } from "@/constants";
 import { ImagemTelaLogin } from "@/assets/images/imagem-tela-login";
 
 export default function Login() {
+  const handleNavigation = () => {
+    router.navigate("home");
+  };
+
   return (
     <View style={styles.container}>
       <ImagemTelaLogin />
@@ -27,7 +24,7 @@ export default function Login() {
           secureTextEntry={true}
         />
         <View style={styles.containerButton}>
-          <Button titulo="Entrar" />
+          <Button titulo="Entrar" handleNavigation={handleNavigation} />
           <Text style={styles.textoCadastro}>
             <Link href={"/cadastro/"}>
               Não tem conta?{" "}
@@ -78,7 +75,7 @@ const styles = StyleSheet.create({
   textoCadastroSublinhado: {
     fontSize: 15,
     fontFamily: theme.fontFamily.raleway.semiBold,
-    color: theme.colors.grayPrimary,
+    color: theme.colors.grayMedium,
     textDecorationLine: "underline",
   },
 });

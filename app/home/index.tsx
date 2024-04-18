@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 import {
-  Text,
   View,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
+  SafeAreaView,
+  FlatList,
 } from "react-native";
 
 import { Header } from "@/components/header";
@@ -14,6 +14,50 @@ import { theme } from "@/constants";
 import { Filtro } from "@/components/filtro";
 
 import { IconBusca } from "@/assets/icons/icon-busca";
+import { Post } from "@/components/post";
+
+const data = [
+  {
+    id: "1",
+    nome: "Thor",
+    idade: 5,
+    cidade: "Sinop",
+    uf: "MT",
+    genero: "masculino",
+    imagem:
+      "https://images.unsplash.com/photo-1560525821-d5615ef80c69?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: "2",
+    nome: "Atena",
+    idade: 3,
+    cidade: "Sinop",
+    uf: "MT",
+    genero: "feminino",
+    imagem:
+      "https://images.unsplash.com/photo-1612940960267-4549a58fb257?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: "3",
+    nome: "Jade",
+    idade: 2,
+    cidade: "Sinop",
+    uf: "MT",
+    genero: "feminino",
+    imagem:
+      "https://images.unsplash.com/photo-1560807707-8cc77767d783?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: "4",
+    nome: "Rayla",
+    idade: 2,
+    cidade: "Sinop",
+    uf: "MT",
+    genero: "feminino",
+    imagem:
+      "https://images.unsplash.com/photo-1593270379182-fe1b1f6d67e5?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+];
 
 export default function Home() {
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
@@ -37,6 +81,14 @@ export default function Home() {
           filtroSelecionado={filtroSelecionado}
           handleSelecionarFiltro={handleSelecionarFiltro}
         />
+        <SafeAreaView style={styles.containerLista}>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => <Post {...item} />}
+            keyExtractor={(post) => post.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </SafeAreaView>
       </View>
     </View>
   );
@@ -50,7 +102,7 @@ const styles = StyleSheet.create({
   containerItens: {
     backgroundColor: theme.colors.orangeLight,
     width: "100%",
-    height: "100%",
+    flex: 1,
     alignItems: "center",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -73,5 +125,10 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.raleway.regular,
     color: theme.colors.grayMedium,
     marginLeft: 8,
+  },
+  containerLista: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 20,
   },
 });
