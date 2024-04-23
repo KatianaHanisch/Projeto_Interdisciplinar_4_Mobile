@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { useRouter } from "expo-router";
+
 import {
   View,
   StyleSheet,
@@ -14,7 +16,8 @@ import { theme } from "@/constants";
 import { Filtro } from "@/components/filtro";
 
 import { IconBusca } from "@/assets/icons/icon-busca";
-import { Post } from "@/components/post";
+import { CardPost } from "@/components/card-post";
+import { ModalDetalhesAnimal } from "@/components/modal-detalhes-animal";
 
 const data = [
   {
@@ -61,36 +64,58 @@ const data = [
 
 export default function Home() {
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
+  const [abrirModal, setAbrirModal] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
   };
 
+  const handleDetalhes = () => {
+    // router.navigate({
+    //   pathname: "/post/123",
+    //   params: {
+    //     _id: "123",
+    //   },
+    // });
+    setAbrirModal(true);
+  };
+
   return (
-    <View style={styles.container}>
-      <Header />
-      <View style={styles.containerItens}>
-        <View style={styles.containerInput}>
-          <IconBusca />
-          <TextInput
-            style={styles.input}
-            placeholder="Procure por palavras-chaves"
-          />
+    <>
+      {abrirModal ? (
+        <ModalDetalhesAnimal />
+      ) : (
+        <View style={styles.container}>
+          <Header />
+          <View style={styles.containerItens}>
+            <View style={styles.containerInput}>
+              <IconBusca />
+              <TextInput
+                style={styles.input}
+                placeholder="Procure por palavras-chaves"
+              />
+            </View>
+            <Filtro
+              filtroSelecionado={filtroSelecionado}
+              handleSelecionarFiltro={handleSelecionarFiltro}
+            />
+
+            <SafeAreaView style={styles.containerLista}>
+              <FlatList
+                data={data}
+                renderItem={({ item }) => (
+                  <CardPost {...item} onPress={handleDetalhes} />
+                )}
+                keyExtractor={(post) => post.id}
+                showsVerticalScrollIndicator={false}
+              />
+            </SafeAreaView>
+          </View>
         </View>
-        <Filtro
-          filtroSelecionado={filtroSelecionado}
-          handleSelecionarFiltro={handleSelecionarFiltro}
-        />
-        <SafeAreaView style={styles.containerLista}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => <Post {...item} />}
-            keyExtractor={(post) => post.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </SafeAreaView>
-      </View>
-    </View>
+      )}
+    </>
   );
 }
 

@@ -13,26 +13,24 @@ export default function PaginaInicial() {
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        <ImagemCirculoPaginaInicial />
+    <View style={styles.container}>
+      <ImagemCirculoPaginaInicial />
 
-        <Text style={styles.tituloInicio}>
-          Adote seu <Text style={styles.tituloInicioDestaque}>pet</Text>
-        </Text>
-        <View style={styles.containerButton}>
-          <TouchableOpacity onPress={handleNavigation} style={styles.Button}>
-            <IconArrowPaginaInicial />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerImage}>
-          <Image
-            style={styles.imagem}
-            source={require("../assets/images/imagem-pagina-inicial.png")}
-          />
-        </View>
+      <Text style={styles.tituloInicio}>
+        Adote seu <Text style={styles.tituloInicioDestaque}>pet</Text>
+      </Text>
+      <View style={styles.containerButton}>
+        <TouchableOpacity onPress={handleNavigation} style={styles.Button}>
+          <IconArrowPaginaInicial />
+        </TouchableOpacity>
       </View>
-    </>
+      <View style={styles.containerImage}>
+        <Image
+          style={styles.imagem}
+          source={require("../assets/images/imagem-pagina-inicial.png")}
+        />
+      </View>
+    </View>
   );
 }
 
