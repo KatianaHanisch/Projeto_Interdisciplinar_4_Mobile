@@ -2,6 +2,8 @@ import { Slot } from "expo-router";
 
 import * as SplashScreen from "expo-splash-screen";
 
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 import { StatusBar } from "expo-status-bar";
 
 import {
@@ -44,8 +46,10 @@ export default function Layout() {
   } else {
     return (
       <>
-        <StatusBar style="dark" />
-        <Slot />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar style="dark" />
+          <Slot />
+        </GestureHandlerRootView>
       </>
     );
   }

@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform,
   Keyboard,
 } from "react-native";
 import { styles } from "./styles";
@@ -17,7 +16,10 @@ import { Comentario } from "../comentario";
 import { IconEnviar } from "@/assets/icons/icon-enviar";
 
 export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
-  ({ onClose, onPress, inputRef, data }, ref) => {
+  (
+    { onClose, onPress, inputRef, data, abrirRespontas, handleButtonRespostas },
+    ref
+  ) => {
     const [keyboardSpace, setKeyboardSpace] = useState(0);
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -49,7 +51,7 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
         backgroundStyle={styles.background}
         ref={ref}
         index={0}
-        snapPoints={[0.01, "90%"]}
+        snapPoints={[0.01, "95%"]}
       >
         <KeyboardAvoidingView
           behavior={"height"}
@@ -62,7 +64,12 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
                 <BottomSheetFlatList
                   data={data}
                   renderItem={({ item }) => (
-                    <Comentario {...item} onPress={onPress} />
+                    <Comentario
+                      {...item}
+                      onPress={onPress}
+                      abrirRespontas={abrirRespontas}
+                      handleButtonRespostas={handleButtonRespostas}
+                    />
                   )}
                   keyExtractor={(item) => item.id}
                 />

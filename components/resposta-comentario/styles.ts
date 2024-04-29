@@ -1,19 +1,16 @@
+import { theme } from "@/constants";
 import { StyleSheet } from "react-native";
 
-import { theme } from "@/constants";
-
 export const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    alignItems: "center",
-    flexDirection: "column",
-  },
-  containerComentarioItem: {
+  containerRespontasComentarios: {
     flexDirection: "row",
-    backgroundColor: theme.colors.white,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    paddingLeft: 40,
     width: "100%",
-    // marginBottom: 10,
     padding: 10,
+    // marginBottom: 15,
+    backgroundColor: theme.colors.white,
   },
   containerImagem: {
     width: 30,
@@ -52,26 +49,5 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: theme.fontFamily.raleway.regular,
     color: theme.colors.grayMedium,
-  },
-  buttonVerMais: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  containerIconeVerMais: {
-    width: 20,
-    height: 18,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  textoVerMais: {
-    fontSize: 12,
-    fontFamily: theme.fontFamily.raleway.light,
-    color: theme.colors.grayMedium,
-  },
-  containerLista: {
-    width: "100%",
-    backgroundColor: theme.colors.white,
-    // marginBottom: 15,
   },
 });

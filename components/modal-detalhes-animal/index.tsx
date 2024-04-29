@@ -18,6 +18,32 @@ const data = [
     description: "Comentário",
     imagem: "icon-user-comentar.png",
     quantidadeDeRespostas: 10,
+    comentarios: [
+      {
+        id: "1",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+      {
+        id: "2",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+      {
+        id: "3",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+    ],
   },
   {
     id: "2",
@@ -26,6 +52,32 @@ const data = [
     description: "Comentário",
     imagem: "icon-user-comentar.png",
     quantidadeDeRespostas: 6,
+    comentarios: [
+      {
+        id: "1",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+      {
+        id: "2",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+      {
+        id: "3",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+    ],
   },
   {
     id: "3",
@@ -33,7 +85,7 @@ const data = [
     nome_usuario: "lucas_oliveira",
     description: "Comentário",
     imagem: "icon-user-comentar.png",
-    quantidadeDeRespostas: 4,
+    quantidadeDeRespostas: 0,
   },
   {
     id: "4",
@@ -50,6 +102,32 @@ const data = [
     description: "Comentário",
     imagem: "icon-user-comentar.png",
     quantidadeDeRespostas: 10,
+    comentarios: [
+      {
+        id: "1",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+      {
+        id: "2",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+      {
+        id: "3",
+        id_comentario: "1",
+        publicacao: "7d",
+        nome_usuario: "lucas_oliveira",
+        description: "Novo comentário",
+        imagem: "icon-user-comentar.png",
+      },
+    ],
   },
   {
     id: "6",
@@ -65,12 +143,38 @@ const data = [
     nome_usuario: "lucas_oliveira",
     description: "Comentário",
     imagem: "icon-user-comentar.png",
-    quantidadeDeRespostas: 10,
+    quantidadeDeRespostas: 0,
+  },
+];
+
+const comentariosDosComentarios = [
+  {
+    id: "1",
+    id_comentario: "1",
+    publicacao: "7d",
+    nome_usuario: "lucas_oliveira",
+    description: "Comentário",
+    imagem: "icon-user-comentar.png",
+  },
+  {
+    id: "2",
+    id_comentario: "1",
+    publicacao: "7d",
+    nome_usuario: "lucas_oliveira",
+    description: "Comentário",
+    imagem: "icon-user-comentar.png",
+  },
+  {
+    id: "3",
+    id_comentario: "1",
+    publicacao: "7d",
+    nome_usuario: "lucas_oliveira",
+    description: "Comentário",
+    imagem: "icon-user-comentar.png",
   },
 ];
 
 export const ModalDetalhesAnimal = () => {
-  const [abrirRespontas, setAbrirRespostas] = useState<boolean>(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const inputResponderRef = useRef<TextInput | null>(null);
@@ -84,10 +188,6 @@ export const ModalDetalhesAnimal = () => {
     if (inputResponderRef.current) {
       inputResponderRef.current.focus();
     }
-  };
-
-  const handleButtonRespostas = () => {
-    setAbrirRespostas(!abrirRespontas);
   };
 
   return (
@@ -133,8 +233,6 @@ export const ModalDetalhesAnimal = () => {
               <Comentario
                 {...data[data.length - 1]}
                 onPress={handleButtonResponder}
-                handleButtonRespostas={handleButtonRespostas}
-                abrirRespontas={abrirRespontas}
               />
             )}
             <TouchableOpacity onPress={handleButtonSheetOpen}>

@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 10,
   },
   containerComentarios: {
     height: "90%",

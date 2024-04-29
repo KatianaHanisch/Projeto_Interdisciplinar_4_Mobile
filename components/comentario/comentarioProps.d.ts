@@ -1,4 +1,4 @@
-interface ComentarioProps {
+interface ExibirComentariosProps {
   onPress: () => void;
   handleButtonRespostas?: () => void;
   id: string;
@@ -8,4 +8,5 @@ interface ComentarioProps {
   imagem: string;
   quantidadeDeRespostas: number;
   abrirRespontas?: boolean;
+  comentarios?: Comentario[];
 }
