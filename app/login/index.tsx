@@ -1,11 +1,11 @@
 import { Link, router } from "expo-router";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Text, View, TextInput } from "react-native";
 
 import { Button } from "@/components/button";
 
-import { theme } from "@/constants";
-
 import { ImagemTelaLogin } from "@/assets/images/imagem-tela-login";
+
+import { styles } from "./styles";
 
 export default function Login() {
   const handleNavigation = () => {
@@ -36,46 +36,3 @@ export default function Login() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  containerLogin: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    width: "100%",
-    paddingTop: 40,
-    gap: 15,
-  },
-  input: {
-    width: "90%",
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#E3E5E5",
-    borderRadius: 10,
-    paddingLeft: 10,
-    color: theme.colors.grayMedium,
-    fontFamily: theme.fontFamily.montserrat.regular,
-    fontSize: 16,
-  },
-  containerButton: {
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textoCadastro: {
-    fontSize: 15,
-    fontFamily: theme.fontFamily.raleway.regular,
-    color: theme.colors.grayMedium,
-    marginTop: 10,
-  },
-  textoCadastroSublinhado: {
-    fontSize: 15,
-    fontFamily: theme.fontFamily.raleway.semiBold,
-    color: theme.colors.grayMedium,
-    textDecorationLine: "underline",
-  },
-});

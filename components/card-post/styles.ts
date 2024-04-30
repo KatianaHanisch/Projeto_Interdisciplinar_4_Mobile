@@ -1,55 +1,8 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { theme } from "@/constants";
 
-import { IconLocalidade } from "@/assets/icons/icon-localidade";
-import { IconGeneroMasculino } from "@/assets/icons/icon-genero-masculino";
-import { IconGeneroFeminino } from "@/assets/icons/icon-genero-feminino";
-
-interface CardPostProps {
-  nome: string;
-  idade: number;
-  cidade: string;
-  uf: string;
-  genero: string;
-  imagem: string;
-  onPress?: () => void;
-}
-
-export function CardPost({
-  nome,
-  idade,
-  cidade,
-  uf,
-  genero,
-  imagem,
-  onPress,
-}: CardPostProps) {
-  return (
-    <TouchableOpacity style={styles.containerPost} onPress={onPress}>
-      <View style={styles.containerImage}>
-        <Image source={{ uri: imagem }} style={styles.image} />
-      </View>
-      <View style={styles.containerTextos}>
-        <View style={styles.containerTitulo}>
-          <Text style={styles.tituloNome}>{nome}</Text>
-          {genero === "masculino" ? (
-            <IconGeneroMasculino />
-          ) : (
-            <IconGeneroFeminino />
-          )}
-        </View>
-        <Text style={styles.textoIdade}>{idade} anos</Text>
-        <View style={styles.containerLocalidade}>
-          <IconLocalidade />
-          <Text style={styles.textoCidade}>{`${cidade} - ${uf}`}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-}
-
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   containerPost: {
     alignItems: "center",
     flexDirection: "row",

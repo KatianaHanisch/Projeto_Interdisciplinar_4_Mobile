@@ -9,11 +9,14 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
-import { styles } from "./styles";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { ButtomSheetProps } from "./buttonSheet";
-import { Comentario } from "../comentario";
+
 import { IconEnviar } from "@/assets/icons/icon-enviar";
+
+import { Comentario } from "../comentario";
+
+import { styles } from "./styles";
 
 export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
   (

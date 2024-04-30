@@ -1,16 +1,11 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+
+import { IconVerMais } from "@/assets/icons/icon-ver-mais";
+
+import { RespostaComentario } from "../resposta-comentario";
 
 import { styles } from "./styles";
-import { IconVerMais } from "@/assets/icons/icon-ver-mais";
-import { RespostaComentario } from "../resposta-comentario";
 
 export const Comentario = ({
   id,

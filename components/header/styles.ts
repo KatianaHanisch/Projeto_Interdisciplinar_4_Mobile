@@ -1,30 +1,8 @@
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { theme } from "@/constants";
-import { IconChat } from "@/assets/icons/icon-chat";
-import { IconCriarPost } from "@/assets/icons/icon-criar-post";
-import { IconUser } from "@/assets/icons/icon-user";
 
-export function Header() {
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.containerIcone}>
-        <IconChat />
-        <View style={styles.containerMensagens}>
-          <Text style={styles.quantidadeMensagens}>5</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.containerIcone}>
-        <IconCriarPost />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.containerIcone}>
-        <IconUser />
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 100,

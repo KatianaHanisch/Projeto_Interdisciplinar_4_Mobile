@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     width: "100%",
-    height: "66%",
+    height: "75%",
     alignItems: "flex-start",
     justifyContent: "flex-start",
   },
