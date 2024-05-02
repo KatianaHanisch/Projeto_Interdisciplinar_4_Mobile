@@ -7,16 +7,20 @@ import { IconGeneroFeminino } from "@/assets/icons/icon-genero-feminino";
 import { styles } from "./styles";
 
 export function CardPost({
+  id,
   nome,
   idade,
   cidade,
   uf,
   genero,
   imagem,
-  onPress,
+  handleNavigate,
 }: CardPostProps) {
   return (
-    <TouchableOpacity style={styles.containerPost} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.containerPost}
+      onPress={() => handleNavigate(id)}
+    >
       <View style={styles.containerImage}>
         <Image source={{ uri: imagem }} style={styles.image} />
       </View>

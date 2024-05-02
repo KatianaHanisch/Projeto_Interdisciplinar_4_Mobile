@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   containerImagem: {
     width: "100%",
-    height: 260,
+    height: 280,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -17,6 +17,13 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 20,
+  },
+  buttonVoltar: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    zIndex: 1,
+    padding: 5,
   },
   containerItens: {
     width: "100%",
@@ -27,7 +34,7 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-end",
     flexDirection: "column",
-    marginTop: 5,
+    marginTop: 10,
     marginBottom: 25,
   },
   dataPublicacao: {
@@ -121,16 +128,22 @@ export const styles = StyleSheet.create({
     height: 270,
     borderRadius: 20,
   },
+  listaComentarios: {
+    width: "100%",
+    backgroundColor: theme.colors.white,
+    borderRadius: 20,
+  },
   tituloComentarios: {
     fontSize: 18,
     fontFamily: theme.fontFamily.montserrat.bold,
     color: theme.colors.grayDark,
-    marginBottom: 10,
+    marginBottom: 12,
   },
   buttonComentarios: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     padding: 5,
+    marginTop: 5,
   },
 });

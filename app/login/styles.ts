@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    gap: 15,
   },
   input: {
     width: "90%",

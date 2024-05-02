@@ -11,7 +11,6 @@ export default function Root() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="home/index" options={{ headerShown: false }} />
-      <Stack.Screen name="post/[id]" options={{ headerShown: false }} />
     </Stack>
   );
 }

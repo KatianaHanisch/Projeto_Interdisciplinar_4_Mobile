@@ -7,13 +7,19 @@ export const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     flexDirection: "column",
+    backgroundColor: theme.colors.orangeLight,
   },
   containerComentarioItem: {
-    flexDirection: "row",
-    backgroundColor: theme.colors.white,
+    flexDirection: "column",
     width: "100%",
-    // marginBottom: 10,
+    marginBottom: 10,
+    borderRadius: 10,
     padding: 10,
+    backgroundColor: theme.colors.white,
+  },
+  containerInterno: {
+    flexDirection: "row",
+    width: "100%",
   },
   containerImagem: {
     width: 30,

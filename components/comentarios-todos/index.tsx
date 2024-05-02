@@ -31,6 +31,8 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
         "keyboardDidShow",
         (frames) => {
           if (!frames.endCoordinates) return;
+          console.log("Teclado aberto");
+          console.log(frames.endCoordinates.height);
           setKeyboardSpace(frames.endCoordinates.height);
           setIsKeyboardOpen(true);
         }
@@ -58,7 +60,7 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
       >
         <KeyboardAvoidingView
           behavior={"height"}
-          style={isKeyboardOpen ? { height: "90%" } : { height: "99%" }}
+          style={isKeyboardOpen ? { height: "99%" } : { height: "99%" }}
         >
           <View style={styles.container}>
             <View style={styles.containerInterno}>

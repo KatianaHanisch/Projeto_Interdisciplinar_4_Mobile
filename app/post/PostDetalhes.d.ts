@@ -6,10 +6,7 @@ interface ComentarioProps {
   imagem: string;
 }
 
-interface ExibirComentariosProps {
-  onPress: () => void;
-  handleButtonRespostas?: () => void;
-  abrirRespontas?: boolean;
+interface PostDetalhesProps {
   id: string;
   nome: string;
   idade: number;
