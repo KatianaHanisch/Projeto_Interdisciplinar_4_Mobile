@@ -151,5 +151,25 @@
         ]
       }
     }
+  ],
+  "mensagens": [
+    {
+      "id": "1",
+      "nome": "Lucas Oliveira",
+      "imagem": "",
+      "mensagem": "Olá, gostaria de conversar com você sobre sua última postagem."
+    },
+    {
+      "id": "2",
+      "nome": "Ana Laura",
+      "imagem": "",
+      "mensagem": "Olá, gostaria de conversar com você sobre sua última postagem."
+    },
+    {
+      "id": "3",
+      "nome": "Caio Fernandes",
+      "imagem": "",
+      "mensagem": "Olá, gostaria de conversar com você sobre sua última postagem."
+    }
   ]
 }

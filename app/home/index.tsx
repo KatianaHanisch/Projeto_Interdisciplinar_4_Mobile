@@ -1,28 +1,22 @@
 import React, { useState } from "react";
-
 import { useRouter } from "expo-router";
-
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  SafeAreaView,
-  FlatList,
-} from "react-native";
+import { View, TextInput, SafeAreaView, FlatList } from "react-native";
 
 import { Header } from "@/components/header";
-import { theme } from "@/constants";
-
 import { Filtro } from "@/components/filtro";
 
-import { IconBusca } from "@/assets/icons/icon-busca";
 import { CardPost } from "@/components/card-post";
+import { ModalChat } from "@/components/modal-chat";
+
+import { IconBusca } from "@/assets/icons/icon-busca";
+
 import { styles } from "./styles";
 
 import { data } from "../../data.json";
 
 export default function Home() {
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
+  const [tipoModal, setTipoModal] = useState<string>("");
   const [abrirModal, setAbrirModal] = useState<boolean>(false);
 
   const router = useRouter();
@@ -35,33 +29,42 @@ export default function Home() {
     router.navigate(`/post/${id}`);
   };
 
+  const handleAbrirModal = (value: string) => {
+    setTipoModal(value);
+    setAbrirModal(true);
+  };
+
   return (
     <View style={styles.container}>
-      <Header />
-      <View style={styles.containerItens}>
-        <View style={styles.containerInput}>
-          <IconBusca />
-          <TextInput
-            style={styles.input}
-            placeholder="Procure por palavras-chaves"
+      <Header handleAbrirModal={handleAbrirModal} />
+      {abrirModal ? (
+        <ModalChat />
+      ) : (
+        <View style={styles.containerItens}>
+          <View style={styles.containerInput}>
+            <IconBusca />
+            <TextInput
+              style={styles.input}
+              placeholder="Procure por palavras-chaves"
+            />
+          </View>
+          <Filtro
+            filtroSelecionado={filtroSelecionado}
+            handleSelecionarFiltro={handleSelecionarFiltro}
           />
-        </View>
-        <Filtro
-          filtroSelecionado={filtroSelecionado}
-          handleSelecionarFiltro={handleSelecionarFiltro}
-        />
 
-        <SafeAreaView style={styles.containerLista}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => (
-              <CardPost {...item} handleNavigate={handleDetalhes} />
-            )}
-            keyExtractor={(post) => post.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </SafeAreaView>
-      </View>
+          <SafeAreaView style={styles.containerLista}>
+            <FlatList
+              data={data}
+              renderItem={({ item }) => (
+                <CardPost {...item} handleNavigate={handleDetalhes} />
+              )}
+              keyExtractor={(post) => post.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </SafeAreaView>
+        </View>
+      )}
     </View>
   );
 }
