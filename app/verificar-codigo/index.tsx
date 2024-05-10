@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useRef, useState } from "react";
 
 import { Text, View, TextInput, Image } from "react-native";

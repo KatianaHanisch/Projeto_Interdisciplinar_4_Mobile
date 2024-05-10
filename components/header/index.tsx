@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View, TouchableOpacity, Text } from "react-native";
 
 import { IconChat } from "@/assets/icons/icon-chat";

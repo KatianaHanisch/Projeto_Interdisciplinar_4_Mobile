@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View, Text, SafeAreaView } from "react-native";
 import { styles } from "./styles";
 import { IconBusca } from "@/assets/icons/icon-busca";

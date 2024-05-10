@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Stack } from "expo-router";
 
 export default function Root() {
@@ -11,6 +13,10 @@ export default function Root() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="home/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="chat-coversas/[id]"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

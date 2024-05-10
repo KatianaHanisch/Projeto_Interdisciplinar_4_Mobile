@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Link, router } from "expo-router";
 import { Text, View, TextInput } from "react-native";
 

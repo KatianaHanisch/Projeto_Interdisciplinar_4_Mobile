@@ -1,3 +1,5 @@
+import React from "react";
+
 import { router } from "expo-router";
 
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
@@ -11,6 +13,9 @@ export default function PaginaInicial() {
   function handleNavigation() {
     router.navigate("login");
   }
+  // const handleNavigation = () => {
+  //   router.navigate(`/chat-conversa/1`);
+  // };
 
   return (
     <View style={styles.container}>

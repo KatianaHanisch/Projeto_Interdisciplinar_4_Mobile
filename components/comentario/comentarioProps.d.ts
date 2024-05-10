@@ -4,10 +4,11 @@ interface ComentarioProps {
   nome_usuario: string;
   description: string;
   imagem: string;
+  onPress?: () => void;
 }
 
 interface ExibirComentariosProps {
-  onPress: () => void;
+  onPress?: () => void;
   handleButtonRespostas?: () => void;
   abrirRespontas?: boolean;
   id: string;

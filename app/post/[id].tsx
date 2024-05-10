@@ -1,7 +1,16 @@
+import React from "react";
+
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { useEffect, useRef, useState } from "react";
-import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  SafeAreaView,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
 
@@ -95,13 +104,21 @@ export default function ModalDetalhesAnimal() {
           </View>
           <View style={styles.containerComentarios}>
             <Text style={styles.tituloComentarios}>Comentários</Text>
-            <FlatList
-              style={styles.listaComentarios}
+            <SafeAreaView style={styles.listaComentarios}>
+              <FlatList
+                data={data}
+                renderItem={({ item }: any) => (
+                  <Comentario {...item} onPress={handleButtonSheetOpen} />
+                )}
+              />
+            </SafeAreaView>
+            {/* <FlatList
               renderItem={({ item }) => (
                 <Comentario {...item} onPress={handleButtonSheetOpen} />
               )}
               data={data}
-            />
+              keyExtractor={(item) => item.id}
+            /> */}
             <TouchableOpacity onPress={handleButtonSheetOpen}>
               <Text style={styles.buttonComentarios}>
                 Ver todos os comentários

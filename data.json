@@ -171,5 +171,37 @@
       "imagem": "",
       "mensagem": "Olá, gostaria de conversar com você sobre sua última postagem."
     }
+  ],
+  "conversas": [
+    {
+      "id": "1",
+      "nome": "Lucas Oliveira",
+      "imagem": "",
+      "data": "12/02",
+      "mensagemRecebida": "Olá, gostaria de conversar com você sobre sua posição.",
+      "mensagemEnviadaHorario": "09:50 AM",
+      "mensagemEnviada": "Olá, vamos conversar",
+      "mensagemRecebidaHorario": "09:55 AM"
+    },
+    {
+      "id": "2",
+      "nome": "Ana Laura",
+      "imagem": "",
+      "data": "12/02",
+      "mensagemRecebida": "Olá, gostaria de conversar com você sobre sua posição.",
+      "mensagemEnviadaHorario": "09:50 AM",
+      "mensagemEnviada": "Olá, vamos conversar",
+      "mensagemRecebidaHorario": "09:55 AM"
+    },
+    {
+      "id": "3",
+      "nome": "Caio Fernandes",
+      "imagem": "",
+      "data": "12/02",
+      "mensagemRecebida": "Olá, gostaria de conversar com você sobre sua posição.",
+      "mensagemEnviadaHorario": "09:50 AM",
+      "mensagemEnviada": "Olá, vamos conversar",
+      "mensagemRecebidaHorario": "09:55 AM"
+    }
   ]
 }

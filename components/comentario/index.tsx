@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 
 import { IconVerMais } from "@/assets/icons/icon-ver-mais";
