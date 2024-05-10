@@ -10,11 +10,12 @@ import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial
 import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagina-inicial";
 
 export default function PaginaInicial() {
-  function handleNavigation() {
+  const handleNavigation = () => {
     router.navigate("login");
-  }
+  };
+
   // const handleNavigation = () => {
-  //   router.navigate(`/chat-conversa/1`);
+  //   router.navigate(`/meus-dados`);
   // };
 
   return (

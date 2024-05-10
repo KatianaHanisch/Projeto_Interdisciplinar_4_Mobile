@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Link } from "expo-router";
 
 import { useState } from "react";

@@ -13,6 +13,8 @@ import { IconBusca } from "@/assets/icons/icon-busca";
 import { styles } from "./styles";
 
 import { data } from "../../data.json";
+import { ModalCriarPost } from "@/components/modal-criar-post";
+import { ModalPerfilUsuario } from "@/components/modal-perfil-usuario";
 
 export default function Home() {
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
@@ -34,11 +36,24 @@ export default function Home() {
     setAbrirModal(true);
   };
 
+  const renderModalContent = () => {
+    switch (tipoModal) {
+      case "chat":
+        return <ModalChat />;
+      case "post":
+        return <ModalCriarPost />;
+      case "perfil-usuario":
+        return <ModalPerfilUsuario />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Header handleAbrirModal={handleAbrirModal} />
       {abrirModal ? (
-        <ModalChat />
+        renderModalContent()
       ) : (
         <View style={styles.containerItens}>
           <View style={styles.containerInput}>

@@ -29,7 +29,7 @@ export function Header({ handleAbrirModal }: HeaderProps) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.containerIcone}
-          onPress={() => handleAbrirModal("usuario")}
+          onPress={() => handleAbrirModal("perfil-usuario")}
         >
           <IconUser />
         </TouchableOpacity>
