@@ -1,3 +1,5 @@
+import React from "react";
+
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
 import { IconLocalidade } from "@/assets/icons/icon-localidade";
@@ -13,7 +15,7 @@ export function CardPost({
   cidade,
   uf,
   genero,
-  imagem,
+  imagens,
   handleNavigate,
 }: CardPostProps) {
   return (
@@ -22,7 +24,7 @@ export function CardPost({
       onPress={() => handleNavigate(id)}
     >
       <View style={styles.containerImage}>
-        <Image source={{ uri: imagem }} style={styles.image} />
+        <Image source={{ uri: imagens[0] }} style={styles.image} />
       </View>
       <View style={styles.containerTextos}>
         <View style={styles.containerTitulo}>

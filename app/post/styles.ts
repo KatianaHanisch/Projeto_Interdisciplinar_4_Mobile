@@ -1,5 +1,8 @@
 import { theme } from "@/constants";
-import { StyleSheet } from "react-native";
+
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width, height } = Dimensions.get("screen");
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,16 +10,10 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: theme.colors.white,
   },
-  containerImagem: {
-    width: "100%",
+  containerSlide: {
+    width: width,
     height: 280,
     alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 20,
   },
   buttonVoltar: {
     position: "absolute",
@@ -130,6 +127,7 @@ export const styles = StyleSheet.create({
   },
   listaComentarios: {
     width: "100%",
+    height: 160,
     backgroundColor: theme.colors.white,
     borderRadius: 20,
   },

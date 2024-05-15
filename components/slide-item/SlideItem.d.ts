@@ -1,0 +1,3 @@
+interface SlideItemProps {
+  item: string;
+}

@@ -1,33 +1,38 @@
 import React from "react";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 import { useEffect, useRef, useState } from "react";
 import {
+  Animated,
   View,
   Text,
   Image,
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  FlatList,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import BottomSheet from "@gorhom/bottom-sheet";
 
-import { IconLocalidade } from "@/assets/icons/icon-localidade";
-
-import { styles } from "./styles";
 import { ComentariosTodos } from "@/components/comentarios-todos";
 import { Comentario } from "@/components/comentario";
+import { SlideItem } from "@/components/slide-item";
+
+import { IconVoltar } from "@/assets/icons/icon-voltar";
+import { IconLocalidade } from "@/assets/icons/icon-localidade";
 
 import { data } from "../../data.json";
-import { FlatList } from "react-native-gesture-handler";
-import { IconVoltar } from "@/assets/icons/icon-voltar";
+import { styles } from "./styles";
+import Pagination from "@/components/pagination";
 
 export default function ModalDetalhesAnimal() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const router = useRouter();
   const [dadosPost, setDadosPost] = useState<PostDetalhesProps>();
+  const [index, setIndex] = useState<number>(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const { id } = useLocalSearchParams();
 
@@ -51,6 +56,32 @@ export default function ModalDetalhesAnimal() {
     }
   };
 
+  const handleOnScroll = (event: any) => {
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {
+              x: scrollX,
+            },
+          },
+        },
+      ],
+      {
+        useNativeDriver: false,
+      }
+    )(event);
+  };
+
+  const handleOnViewableItemsChanged = useRef(({ viewableItems }: any) => {
+    // console.log('viewableItems', viewableItems);
+    setIndex(viewableItems[0].index);
+  }).current;
+
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+  }).current;
+
   const handleButtonBack = () => {
     router.back();
   };
@@ -59,20 +90,33 @@ export default function ModalDetalhesAnimal() {
     <>
       <StatusBar style="light" />
       <View style={styles.container}>
-        <View style={styles.containerImagem}>
-          <Image
-            source={{
-              uri: dadosPost?.imagem,
-            }}
-            style={styles.image}
+        <SafeAreaView style={styles.containerSlide}>
+          <FlatList
+            data={dadosPost?.imagens}
+            renderItem={({ item }) => <SlideItem item={item} />}
+            horizontal
+            pagingEnabled
+            snapToAlignment="center"
+            showsHorizontalScrollIndicator={false}
+            key={dadosPost?.id}
+            onScroll={handleOnScroll}
+            onViewableItemsChanged={handleOnViewableItemsChanged}
+            viewabilityConfig={viewabilityConfig}
           />
-          <TouchableOpacity
-            style={styles.buttonVoltar}
-            onPress={handleButtonBack}
-          >
-            <IconVoltar />
-          </TouchableOpacity>
-        </View>
+          {dadosPost?.imagens && dadosPost?.imagens.length > 1 && (
+            <Pagination
+              data={dadosPost.imagens}
+              scrollX={scrollX}
+              index={index}
+            />
+          )}
+        </SafeAreaView>
+        <TouchableOpacity
+          style={styles.buttonVoltar}
+          onPress={handleButtonBack}
+        >
+          <IconVoltar />
+        </TouchableOpacity>
         <View style={styles.containerItens}>
           <View style={styles.containerPublicacao}>
             <Text style={styles.dataPublicacao}>18/04/2024</Text>
@@ -107,18 +151,18 @@ export default function ModalDetalhesAnimal() {
             <SafeAreaView style={styles.listaComentarios}>
               <FlatList
                 data={data}
-                renderItem={({ item }: any) => (
+                renderItem={({ item }) => (
                   <Comentario {...item} onPress={handleButtonSheetOpen} />
                 )}
               />
             </SafeAreaView>
-            {/* <FlatList
+            <FlatList
               renderItem={({ item }) => (
                 <Comentario {...item} onPress={handleButtonSheetOpen} />
               )}
               data={data}
               keyExtractor={(item) => item.id}
-            /> */}
+            />
             <TouchableOpacity onPress={handleButtonSheetOpen}>
               <Text style={styles.buttonComentarios}>
                 Ver todos os comentários

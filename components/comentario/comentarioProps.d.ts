@@ -20,7 +20,7 @@ interface ExibirComentariosProps {
   responsavelPublicacao: string;
   dataPublicacao: string;
   descricao: string;
-  imagem: string;
+  imagens: string[];
   comentariosDoPost?: {
     publicacao: string;
     nome_usuario: string;
