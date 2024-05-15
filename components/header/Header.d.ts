@@ -1,3 +1,5 @@
 interface HeaderProps {
-  handleAbrirModal: (value: string) => void;
+  handleNavigate?: (value: string) => void;
+  pagina?: string | string[] | undefined;
+  handleFecharModal?: () => void;
 }

@@ -1,0 +1,3 @@
+interface ModalEditarProps {
+  handleFecharModal: () => void;
+}

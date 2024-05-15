@@ -1,6 +1,6 @@
-import { Slot } from "expo-router";
+import React from "react";
 
-import * as SplashScreen from "expo-splash-screen";
+import { Slot } from "expo-router";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 

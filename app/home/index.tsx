@@ -18,8 +18,6 @@ import { ModalPerfilUsuario } from "@/components/modal-perfil-usuario";
 
 export default function Home() {
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
-  const [tipoModal, setTipoModal] = useState<string>("");
-  const [abrirModal, setAbrirModal] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -31,55 +29,37 @@ export default function Home() {
     router.navigate(`/post/${id}`);
   };
 
-  const handleAbrirModal = (value: string) => {
-    setTipoModal(value);
-    setAbrirModal(true);
-  };
-
-  const renderModalContent = () => {
-    switch (tipoModal) {
-      case "chat":
-        return <ModalChat />;
-      case "post":
-        return <ModalCriarPost />;
-      case "perfil-usuario":
-        return <ModalPerfilUsuario />;
-      default:
-        return null;
-    }
+  const handleNavigate = (value: string) => {
+    router.navigate(`/about/${value}`);
   };
 
   return (
     <View style={styles.container}>
-      <Header handleAbrirModal={handleAbrirModal} />
-      {abrirModal ? (
-        renderModalContent()
-      ) : (
-        <View style={styles.containerItens}>
-          <View style={styles.containerInput}>
-            <IconBusca />
-            <TextInput
-              style={styles.input}
-              placeholder="Procure por palavras-chaves"
-            />
-          </View>
-          <Filtro
-            filtroSelecionado={filtroSelecionado}
-            handleSelecionarFiltro={handleSelecionarFiltro}
+      <Header handleNavigate={handleNavigate} />
+      <View style={styles.containerItens}>
+        <View style={styles.containerInput}>
+          <IconBusca />
+          <TextInput
+            style={styles.input}
+            placeholder="Procure por palavras-chaves"
           />
-
-          <SafeAreaView style={styles.containerLista}>
-            <FlatList
-              data={data}
-              renderItem={({ item }) => (
-                <CardPost {...item} handleNavigate={handleDetalhes} />
-              )}
-              keyExtractor={(post) => post.id}
-              showsVerticalScrollIndicator={false}
-            />
-          </SafeAreaView>
         </View>
-      )}
+        <Filtro
+          filtroSelecionado={filtroSelecionado}
+          handleSelecionarFiltro={handleSelecionarFiltro}
+        />
+
+        <SafeAreaView style={styles.containerLista}>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => (
+              <CardPost {...item} handleNavigate={handleDetalhes} />
+            )}
+            keyExtractor={(post) => post.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </SafeAreaView>
+      </View>
     </View>
   );
 }

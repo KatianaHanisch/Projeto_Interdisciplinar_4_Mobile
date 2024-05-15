@@ -14,9 +14,9 @@ export const styles = StyleSheet.create({
     top: 40,
     position: "absolute",
   },
-
   containerHeader: {
     height: 150,
+    paddingTop: 20,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",

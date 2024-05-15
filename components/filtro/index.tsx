@@ -1,3 +1,5 @@
+import React from "react";
+
 import { TouchableOpacity, View } from "react-native";
 
 import { IconCachorro } from "@/assets/icons/icon-cachorro";

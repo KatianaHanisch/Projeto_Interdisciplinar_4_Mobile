@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 40,
     padding: 20,
     paddingTop: 30,
+    marginTop: 12,
   },
   containerInput: {
     width: "100%",

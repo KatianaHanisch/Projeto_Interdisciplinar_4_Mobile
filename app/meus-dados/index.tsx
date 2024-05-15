@@ -1,22 +1,35 @@
 import React, { useState } from "react";
 
 import { View, Text, Image, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 import { ImagemDadosUsuario } from "@/assets/images/imagem-dados-usuario";
 
 import { styles } from "./styles";
 import { IconEdit } from "@/assets/icons/icon-edit";
 import { ModalEditar } from "@/components/modal-editar";
+import { IconVoltar } from "@/assets/icons/icon-voltar";
 
 export default function MeusDados() {
+  const router = useRouter();
   const [abrirModal, setAbrirModal] = useState(false);
 
   const handleFecharModal = () => {
     setAbrirModal(false);
   };
 
+  const handleButtonBack = () => {
+    router.back();
+  };
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.containerVoltar}
+        onPress={handleButtonBack}
+      >
+        <IconVoltar />
+      </TouchableOpacity>
       {abrirModal && <ModalEditar handleFecharModal={handleFecharModal} />}
       <ImagemDadosUsuario />
       <View style={styles.containerImagem}>

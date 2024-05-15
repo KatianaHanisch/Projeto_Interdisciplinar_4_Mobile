@@ -9,10 +9,19 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     flexDirection: "row",
     alignItems: "flex-end",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     gap: 15,
-    padding: 15,
-    marginBottom: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  containerPerfilUsuario: {
+    backgroundColor: theme.colors.orangeLight,
+  },
+  containerIcones: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    gap: 15,
   },
   containerIcone: {
     width: 55,
@@ -20,6 +29,16 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(184, 184, 184, 0.1)",
+    borderRadius: 100,
+  },
+  paginaSelecionada: {
+    backgroundColor: theme.colors.orangePrimaryDark,
+  },
+  containerIconeClose: {
+    width: 55,
+    height: 55,
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 100,
   },
   containerMensagens: {
@@ -32,6 +51,9 @@ export const styles = StyleSheet.create({
     position: "absolute",
     bottom: -2,
     right: -2,
+  },
+  containerMensagensSelecionado: {
+    backgroundColor: "#EBEBEB",
   },
   quantidadeMensagens: {
     fontSize: 12,

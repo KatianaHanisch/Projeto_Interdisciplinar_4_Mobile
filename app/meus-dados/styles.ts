@@ -12,6 +12,12 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: -45,
   },
+  containerVoltar: {
+    zIndex: 5,
+    left: 20,
+    top: 40,
+    position: "absolute",
+  },
   imagem: {
     width: 80,
     height: 75,

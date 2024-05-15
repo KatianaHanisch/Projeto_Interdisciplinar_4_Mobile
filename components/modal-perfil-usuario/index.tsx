@@ -13,6 +13,7 @@ export function ModalPerfilUsuario() {
   const handleNavigation = (value: string) => {
     router.navigate(value);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
