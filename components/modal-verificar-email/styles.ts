@@ -20,15 +20,15 @@ export const styles = StyleSheet.create({
   },
   containerTextos: {
     width: "100%",
-    gap: 5,
+    gap: 10,
+    marginBottom: 5,
   },
   textoTitulo: {
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     width: "100%",
     textAlign: "left",
-    lineHeight: 22,
   },
   textoSubtitulo: {
     fontSize: 16,

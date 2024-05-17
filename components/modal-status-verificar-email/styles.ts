@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   textoTitulo: {
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     width: "100%",

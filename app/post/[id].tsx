@@ -25,7 +25,7 @@ import { IconLocalidade } from "@/assets/icons/icon-localidade";
 
 import { data } from "../../data.json";
 import { styles } from "./styles";
-import Pagination from "@/components/pagination";
+import { Pagination } from "@/components/pagination";
 
 export default function ModalDetalhesAnimal() {
   const bottomSheetRef = useRef<BottomSheet>(null);

@@ -11,12 +11,8 @@ import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagin
 
 export default function PaginaInicial() {
   const handleNavigation = () => {
-    router.navigate("login");
+    router.navigate("verificar-codigo");
   };
-
-  // const handleNavigation = () => {
-  //   router.navigate(`/meus-dados`);
-  // };
 
   return (
     <View style={styles.container}>
