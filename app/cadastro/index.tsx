@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AxiosError } from "axios";
 import { Link } from "expo-router";
 import { Text, View, Image, TextInput } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalVerificarEmail } from "@/components/modal-verificar-email";
 import { ImagemPaginaCadastro } from "@/assets/images/imagem-pagina-cadastro";
@@ -67,6 +68,8 @@ export default function Cadastro() {
         setTipoAlerta("sucesso");
         setMensagemAlerta("Cadastro realizado com sucesso");
         setAbrirAlerta(true);
+
+        AsyncStorage.setItem("email", formData.email);
 
         setTimeout(() => setAbrirAlerta(false), 4000);
 

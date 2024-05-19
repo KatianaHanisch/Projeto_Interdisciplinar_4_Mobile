@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     width: "95%",
     height: "60%",
+    minHeight: 350,
     borderRadius: 30,
     marginTop: -60,
     alignItems: "center",
@@ -46,7 +47,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    gap: 10,
+    gap: 8,
     marginBottom: 5,
   },
   input: {

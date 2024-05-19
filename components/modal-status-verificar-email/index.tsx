@@ -18,6 +18,8 @@ export function ModalStatusVerificarEmail({
   subTitulo,
   tituloButton,
   rota,
+  tipoButton,
+  handleButton,
 }: ModalStatusVerificarEmailProps) {
   const navigate = useNavigate();
 
@@ -33,7 +35,11 @@ export function ModalStatusVerificarEmail({
           </View>
           <Button
             titulo={tituloButton}
-            onPress={() => navigate(rota || "login")}
+            onPress={
+              tipoButton === "button"
+                ? () => handleButton!()
+                : () => navigate(rota || "login")
+            }
           />
         </View>
       </View>

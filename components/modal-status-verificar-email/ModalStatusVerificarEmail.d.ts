@@ -4,4 +4,6 @@ interface ModalStatusVerificarEmailProps {
   subTitulo: string;
   tituloButton: string;
   rota?: string;
+  tipoButton?: string;
+  handleButton?: () => void;
 }
