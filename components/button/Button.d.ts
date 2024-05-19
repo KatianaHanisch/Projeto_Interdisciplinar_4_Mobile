@@ -1,4 +1,5 @@
 interface ButtonProps {
   titulo: string;
-  handleNavigation?: () => void;
+  carregando?: boolean;
+  onPress: () => void;
 }

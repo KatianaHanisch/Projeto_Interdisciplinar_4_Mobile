@@ -10,12 +10,12 @@ export const styles = StyleSheet.create({
     height: "60%",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
+    width: "90%",
     paddingTop: 20,
     gap: 15,
   },
   input: {
-    width: "90%",
+    width: "100%",
     height: 50,
     borderWidth: 1,
     borderColor: "#E3E5E5",
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   containerButton: {
-    width: "90%",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },

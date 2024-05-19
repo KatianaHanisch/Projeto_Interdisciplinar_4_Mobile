@@ -1,11 +1,12 @@
 import React from "react";
 
 import { View, Text } from "react-native";
-import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import { IconDone } from "@/assets/icons/icon-done";
 import { IconError } from "@/assets/icons/icon-error";
+
+import { useNavigate } from "@/hooks/useNavigate";
 
 import { Button } from "../button";
 
@@ -18,9 +19,7 @@ export function ModalStatusVerificarEmail({
   tituloButton,
   rota,
 }: ModalStatusVerificarEmailProps) {
-  function handleNavigation() {
-    router.navigate(rota || "login");
-  }
+  const navigate = useNavigate();
 
   return (
     <>
@@ -32,7 +31,10 @@ export function ModalStatusVerificarEmail({
             <Text style={styles.textoTitulo}>{titulo}</Text>
             <Text style={styles.textoSubtitulo}>{subTitulo}</Text>
           </View>
-          <Button titulo={tituloButton} handleNavigation={handleNavigation} />
+          <Button
+            titulo={tituloButton}
+            onPress={() => navigate(rota || "login")}
+          />
         </View>
       </View>
     </>

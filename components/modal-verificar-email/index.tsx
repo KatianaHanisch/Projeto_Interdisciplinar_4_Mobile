@@ -1,18 +1,17 @@
 import React from "react";
-
 import { View, Text } from "react-native";
-import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import { Button } from "../button";
+
 import { ImagemVerificarEmail } from "@/assets/images/ImageVerificarEmail";
+
+import { useNavigate } from "@/hooks/useNavigate";
 
 import { styles } from "./styles";
 
 export function ModalVerificarEmail() {
-  function handleNavigation() {
-    router.navigate("verificar-codigo");
-  }
+  const navigate = useNavigate();
 
   return (
     <>
@@ -29,7 +28,10 @@ export function ModalVerificarEmail() {
               endereço de email.
             </Text>
           </View>
-          <Button titulo="Enviar email" handleNavigation={handleNavigation} />
+          <Button
+            titulo="Confirmar email"
+            onPress={() => navigate("verificar-codigo")}
+          />
         </View>
       </View>
     </>

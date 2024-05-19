@@ -1,7 +1,5 @@
 import React from "react";
 
-import { router } from "expo-router";
-
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import { theme } from "../constants";
@@ -9,10 +7,10 @@ import { theme } from "../constants";
 import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial";
 import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagina-inicial";
 
+import { useNavigate } from "@/hooks/useNavigate";
+
 export default function PaginaInicial() {
-  const handleNavigation = () => {
-    router.navigate("verificar-codigo");
-  };
+  const navigate = useNavigate();
 
   return (
     <View style={styles.container}>
@@ -22,7 +20,10 @@ export default function PaginaInicial() {
         Adote seu <Text style={styles.tituloInicioDestaque}>pet</Text>
       </Text>
       <View style={styles.containerButton}>
-        <TouchableOpacity onPress={handleNavigation} style={styles.Button}>
+        <TouchableOpacity
+          onPress={() => navigate("login")}
+          style={styles.Button}
+        >
           <IconArrowPaginaInicial />
         </TouchableOpacity>
       </View>
