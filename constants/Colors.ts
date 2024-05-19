@@ -9,4 +9,7 @@ export const colors = {
   grayPrimary: "#333333",
   grayMedium: "#555555",
   grayLight: "#D9D9D9",
+  redPrimary: "#C10000",
+  greenPrimary: "#004F0D",
+  yellowPrimary: "#D2B104",
 };
