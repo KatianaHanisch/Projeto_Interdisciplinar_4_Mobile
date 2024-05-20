@@ -1,8 +1,10 @@
+import React from "react";
+
 import { Ellipse, Svg } from "react-native-svg";
 
 export function ImagemTelaLogin() {
   return (
-    <Svg width={393} height={199} viewBox="0 0 393 199" fill="none">
+    <Svg width={500} height={199} viewBox="0 0 393 199" fill="none">
       <Ellipse
         cx={188}
         cy={-15.5}

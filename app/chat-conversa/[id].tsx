@@ -8,7 +8,6 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { conversas } from "../../data.json";
 import { IconVoltar } from "@/assets/icons/icon-voltar";
-import { ProtectedRoute } from "../(routes)/protected-route";
 
 export default function ChatConversa() {
   const { id } = useLocalSearchParams();
@@ -28,7 +27,7 @@ export default function ChatConversa() {
   };
 
   return (
-    <ProtectedRoute>
+    <>
       <StatusBar style="light" />
       <View style={styles.container}>
         <TouchableOpacity
@@ -69,6 +68,6 @@ export default function ChatConversa() {
           </View>
         </View>
       </View>
-    </ProtectedRoute>
+    </>
   );
 }

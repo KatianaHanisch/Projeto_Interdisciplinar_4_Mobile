@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.raleway.semiBold,
     color: theme.colors.grayMedium,
     textDecorationLine: "underline",
+    marginTop: 5,
   },
   imagem: {
     position: "absolute",

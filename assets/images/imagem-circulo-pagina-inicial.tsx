@@ -1,8 +1,10 @@
+import React from "react";
+
 import Svg, { Ellipse } from "react-native-svg";
 
 export function ImagemCirculoPaginaInicial() {
   return (
-    <Svg width={393} height={89} viewBox="0 0 393 89" fill="none">
+    <Svg width={420} height={89} viewBox="0 0 393 89" fill="none">
       <Ellipse
         cx={195.508}
         cy={-9.43036}

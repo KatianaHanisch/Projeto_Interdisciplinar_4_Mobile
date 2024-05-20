@@ -11,12 +11,12 @@ export const styles = StyleSheet.create({
   },
   containerModal: {
     width: "95%",
-    height: "65%",
+    height: "75%",
     backgroundColor: theme.colors.white,
     borderRadius: 30,
     alignItems: "center",
     padding: 25,
-    gap: 20,
+    gap: 10,
   },
   containerTextos: {
     width: "100%",
@@ -35,5 +35,17 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.raleway.regular,
     color: theme.colors.grayMedium,
     textAlign: "left",
+  },
+  input: {
+    width: "100%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#E3E5E5",
+    borderRadius: 10,
+    paddingLeft: 10,
+    color: theme.colors.grayMedium,
+    fontFamily: theme.fontFamily.montserrat.regular,
+    fontSize: 16,
+    marginTop: 10,
   },
 });

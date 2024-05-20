@@ -1,0 +1,3 @@
+interface ModalVerificarEmailProps {
+  tipoModal: string;
+}

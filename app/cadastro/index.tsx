@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AxiosError } from "axios";
 import { Link } from "expo-router";
-import { Text, View, Image, TextInput } from "react-native";
+import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalVerificarEmail } from "@/components/modal-verificar-email";
@@ -19,13 +19,14 @@ import { styles } from "./styles";
 export default function Cadastro() {
   const [carregando, setCarregando] = useState<boolean>(false);
 
+  const [tipoModal, setTipoModal] = useState<string>("");
   const [abrirAlerta, setAbrirAlerta] = useState<boolean>(false);
   const [tipoAlerta, setTipoAlerta] = useState<string>("");
   const [mensagemAlerta, setMensagemAlerta] = useState<
     string | string[] | undefined
   >("");
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [abrirModal, setAbrirModal] = useState<boolean>(false);
 
   const { formData, setFormData, handleInputChange } = useForm<UserProps>({
     initialValues: {
@@ -35,6 +36,11 @@ export default function Cadastro() {
       confirmPassword: "",
     },
   });
+
+  const handleAbrirModalReenviarEmail = () => {
+    setTipoModal("reenviarEmail");
+    setAbrirModal(true);
+  };
 
   const handleSubmit = async () => {
     if (
@@ -53,6 +59,8 @@ export default function Cadastro() {
       setTimeout(() => {
         setAbrirAlerta(false);
       }, 4000);
+
+      return;
     }
 
     setCarregando(true);
@@ -81,7 +89,7 @@ export default function Cadastro() {
         });
 
         setCarregando(false);
-        setOpen(true);
+        setAbrirModal(true);
       }
     } catch (err) {
       const error = err as AxiosError<Error>;
@@ -100,13 +108,13 @@ export default function Cadastro() {
 
   return (
     <>
-      {open ? (
+      {abrirModal ? (
         <>
           <Image
             style={styles.imagem}
             source={require("../../assets/images/imagem-cadastro.png")}
           />
-          <ModalVerificarEmail />
+          <ModalVerificarEmail tipoModal={tipoModal} />
         </>
       ) : (
         <View style={styles.container}>
@@ -154,6 +162,11 @@ export default function Cadastro() {
                   <Text style={styles.textoCadastroSublinhado}>Login</Text>
                 </Link>
               </Text>
+              <TouchableOpacity onPress={handleAbrirModalReenviarEmail}>
+                <Text style={styles.textoCadastroSublinhado}>
+                  Reenviar email
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
