@@ -10,12 +10,12 @@ import { styles } from "./styles";
 
 export function CardPost({
   id,
-  nome,
-  idade,
-  cidade,
-  uf,
-  genero,
-  imagens,
+  name,
+  age,
+  city,
+  UF,
+  sex,
+  images,
   handleNavigate,
 }: CardPostProps) {
   return (
@@ -24,21 +24,17 @@ export function CardPost({
       onPress={() => handleNavigate(id)}
     >
       <View style={styles.containerImage}>
-        <Image source={{ uri: imagens[0] }} style={styles.image} />
+        <Image source={{ uri: images[0].url }} style={styles.image} />
       </View>
       <View style={styles.containerTextos}>
         <View style={styles.containerTitulo}>
-          <Text style={styles.tituloNome}>{nome}</Text>
-          {genero === "masculino" ? (
-            <IconGeneroMasculino />
-          ) : (
-            <IconGeneroFeminino />
-          )}
+          <Text style={styles.tituloNome}>{name}</Text>
+          {sex === "Macho" ? <IconGeneroMasculino /> : <IconGeneroFeminino />}
         </View>
-        <Text style={styles.textoIdade}>{idade} anos</Text>
+        <Text style={styles.textoIdade}>{age} anos</Text>
         <View style={styles.containerLocalidade}>
           <IconLocalidade />
-          <Text style={styles.textoCidade}>{`${cidade} - ${uf}`}</Text>
+          <Text style={styles.textoCidade}>{`${city} - ${UF}`}</Text>
         </View>
       </View>
     </TouchableOpacity>

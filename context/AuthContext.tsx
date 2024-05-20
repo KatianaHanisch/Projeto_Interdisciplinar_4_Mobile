@@ -22,6 +22,7 @@ interface AuthContextProps {
   tipoAlerta: string;
   mensagemAlerta: string;
   isLoggedIn: boolean;
+  token: string;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -32,6 +33,7 @@ export const AuthContext = createContext<AuthContextProps>({
   tipoAlerta: "",
   mensagemAlerta: "",
   isLoggedIn: false,
+  token: "",
 });
 
 interface AuthProviderProps {
@@ -48,6 +50,7 @@ export const AuthProvider = ({
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -73,6 +76,8 @@ export const AuthProvider = ({
       const response = await api.post("/auth/login", { email, password });
       const { token } = response.data.body;
       await AsyncStorage.setItem("token", token);
+
+      setToken(token);
 
       setIsLoggedIn(true);
       setCarregando(false);
@@ -103,6 +108,7 @@ export const AuthProvider = ({
         tipoAlerta,
         mensagemAlerta,
         isLoggedIn,
+        token,
       }}
     >
       {children}
