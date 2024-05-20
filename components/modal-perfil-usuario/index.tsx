@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useRouter } from "expo-router";
 
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
 import { IconArrowRigth } from "@/assets/icons/icon-arrow-rigth";
+import { AuthContext } from "@/context/AuthContext";
 
 import { styles } from "./styles";
 
 export function ModalPerfilUsuario() {
   const router = useRouter();
+
+  const { signOut } = useContext(AuthContext);
 
   const handleNavigation = (value: string) => {
     router.navigate(value);
@@ -35,6 +38,10 @@ export function ModalPerfilUsuario() {
           onPress={() => handleNavigation("meus-posts")}
         >
           <Text style={styles.textButton}>Meus Posts</Text>
+          <IconArrowRigth />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => signOut()}>
+          <Text style={styles.textButton}>Sair</Text>
           <IconArrowRigth />
         </TouchableOpacity>
       </View>

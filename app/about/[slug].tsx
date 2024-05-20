@@ -8,6 +8,7 @@ import { Header } from "@/components/header";
 import { ModalChat } from "@/components/modal-chat";
 import { ModalCriarPost } from "@/components/modal-criar-post";
 import { ModalPerfilUsuario } from "@/components/modal-perfil-usuario";
+import { ProtectedRoute } from "../(routes)/protected-route";
 
 export default function About() {
   const { slug } = useLocalSearchParams();
@@ -36,13 +37,15 @@ export default function About() {
   };
 
   return (
-    <View style={styles.container}>
-      <Header
-        handleNavigate={handleNavigate}
-        handleFecharModal={handleFecharModal}
-        pagina={slug}
-      />
-      {renderModalContent()}
-    </View>
+    <ProtectedRoute>
+      <View style={styles.container}>
+        <Header
+          handleNavigate={handleNavigate}
+          handleFecharModal={handleFecharModal}
+          pagina={slug}
+        />
+        {renderModalContent()}
+      </View>
+    </ProtectedRoute>
   );
 }

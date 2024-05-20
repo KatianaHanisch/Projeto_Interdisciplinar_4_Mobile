@@ -26,6 +26,7 @@ import { IconLocalidade } from "@/assets/icons/icon-localidade";
 import { data } from "../../data.json";
 import { styles } from "./styles";
 import { Pagination } from "@/components/pagination";
+import { ProtectedRoute } from "../(routes)/protected-route";
 
 export default function ModalDetalhesAnimal() {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -87,7 +88,7 @@ export default function ModalDetalhesAnimal() {
   };
 
   return (
-    <>
+    <ProtectedRoute>
       <StatusBar style="light" />
       <View style={styles.container}>
         <SafeAreaView style={styles.containerSlide}>
@@ -178,6 +179,6 @@ export default function ModalDetalhesAnimal() {
           data={data}
         />
       </View>
-    </>
+    </ProtectedRoute>
   );
 }

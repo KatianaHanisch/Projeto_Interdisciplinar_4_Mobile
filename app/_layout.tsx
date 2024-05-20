@@ -24,6 +24,8 @@ import {
 
 import { View, Text } from "react-native";
 
+import { AuthProvider } from "@/context/AuthContext";
+
 // SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
@@ -46,10 +48,12 @@ export default function Layout() {
   } else {
     return (
       <>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <StatusBar style="dark" />
-          <Slot />
-        </GestureHandlerRootView>
+        <AuthProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <StatusBar style="dark" />
+            <Slot />
+          </GestureHandlerRootView>
+        </AuthProvider>
       </>
     );
   }
