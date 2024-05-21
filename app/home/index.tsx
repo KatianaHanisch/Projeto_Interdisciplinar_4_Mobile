@@ -7,20 +7,20 @@ import { CardPost } from "@/components/card-post";
 
 import { IconBusca } from "@/assets/icons/icon-busca";
 
-import { data } from "../../data.json";
 import { useNavigate } from "@/hooks/useNavigate";
-import { ProtectedRoute } from "../(routes)/protected-route";
 
 import { styles } from "./styles";
 import { api } from "@/services/api";
-import { AuthContext } from "@/context/AuthContext";
+import { useLocalSearchParams } from "expo-router";
+import { AxiosError } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
   const navigate = useNavigate();
+  const { refresh } = useLocalSearchParams();
+
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
   const [posts, setPosts] = useState<PostProps[]>([]);
-
-  const { token } = useContext(AuthContext);
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
@@ -34,56 +34,71 @@ export default function Home() {
     navigate(`/about/${value}`);
   };
 
-  const fetcherPost = async () => {
+  const fetcherPosts = async () => {
     try {
-      const response = await api.get("/posts?page=0", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const token = await AsyncStorage.getItem("token");
 
-      setPosts(response.data.posts);
-    } catch (error) {
-      console.log(error);
+      if (token) {
+        const response = await api.get("/posts?page=0", {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        setPosts(response.data.posts);
+      } else {
+        console.error("Token não encontrado");
+      }
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+      console.error(error.response?.data.message);
     }
   };
 
   useEffect(() => {
-    fetcherPost();
+    const fetchData = async () => {
+      if (refresh === "true") {
+        await fetcherPosts();
+      }
+    };
+
+    fetchData();
+  }, [refresh]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetcherPosts();
+    };
+
+    fetchData();
   }, []);
 
-  if (posts?.length !== 0) {
-    console.log(posts![0]);
-  }
-
   return (
-    <ProtectedRoute>
-      <View style={styles.container}>
-        <Header handleNavigate={handleNavigate} />
-        <View style={styles.containerItens}>
-          <View style={styles.containerInput}>
-            <IconBusca />
-            <TextInput
-              style={styles.input}
-              placeholder="Procure por palavras-chaves"
-            />
-          </View>
-          <Filtro
-            filtroSelecionado={filtroSelecionado}
-            handleSelecionarFiltro={handleSelecionarFiltro}
+    <View style={styles.container}>
+      <Header handleNavigate={handleNavigate} />
+      <View style={styles.containerItens}>
+        <View style={styles.containerInput}>
+          <IconBusca />
+          <TextInput
+            style={styles.input}
+            placeholder="Procure por palavras-chaves"
           />
-          <SafeAreaView style={styles.containerLista}>
-            <FlatList
-              data={posts}
-              renderItem={({ item }) => (
-                <CardPost {...item} handleNavigate={handleDetalhes} />
-              )}
-              keyExtractor={(post) => post.id}
-              showsVerticalScrollIndicator={false}
-            />
-          </SafeAreaView>
         </View>
+        <Filtro
+          filtroSelecionado={filtroSelecionado}
+          handleSelecionarFiltro={handleSelecionarFiltro}
+        />
+        <SafeAreaView style={styles.containerLista}>
+          <FlatList
+            data={posts}
+            renderItem={({ item }) => (
+              <CardPost {...item} handleNavigate={handleDetalhes} />
+            )}
+            keyExtractor={(post) => post.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </SafeAreaView>
       </View>
-    </ProtectedRoute>
+    </View>
   );
 }

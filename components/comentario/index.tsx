@@ -6,9 +6,14 @@ import { IconVerMais } from "@/assets/icons/icon-ver-mais";
 import { RespostaComentario } from "../resposta-comentario";
 
 import { styles } from "./styles";
+import { formatarData } from "@/utils/formatarData";
 
 export const Comentario = ({
-  comentariosDoPost,
+  id,
+  description,
+  created_at,
+  user,
+  sub_comments,
   onPress,
 }: ExibirComentariosProps) => {
   const [abrirRespontas, setAbrirRespostas] = useState<boolean>(false);
@@ -30,19 +35,17 @@ export const Comentario = ({
           <View style={styles.containerComentario}>
             <View style={styles.containerHeaderComentario}>
               <Text style={styles.informacoesComentario}>
-                {comentariosDoPost?.nome_usuario}
+                {user.name.toLowerCase()}
               </Text>
               <Text style={styles.informacoesComentario}>
-                {comentariosDoPost?.publicacao}
+                {formatarData(created_at)}
               </Text>
             </View>
-            <Text style={styles.textoComentario}>
-              {comentariosDoPost?.description}
-            </Text>
+            <Text style={styles.textoComentario}>{description}</Text>
             <TouchableOpacity style={styles.buttonResponder} onPress={onPress}>
               <Text style={styles.textoResponder}>Responder</Text>
             </TouchableOpacity>
-            {comentariosDoPost?.quantidadeDeRespostas! > 0 && (
+            {sub_comments.length > 0 && (
               <TouchableOpacity
                 style={styles.buttonVerMais}
                 onPress={handleButtonRespostas}
@@ -50,10 +53,7 @@ export const Comentario = ({
                 {abrirRespontas ? (
                   <Text style={styles.textoVerMais}>Ver menos</Text>
                 ) : (
-                  <Text style={styles.textoVerMais}>
-                    Ver mais {comentariosDoPost?.quantidadeDeRespostas}{" "}
-                    respostas
-                  </Text>
+                  <Text style={styles.textoVerMais}>Ver mais 4 respostas</Text>
                 )}
 
                 <View style={styles.containerIconeVerMais}>
@@ -66,7 +66,7 @@ export const Comentario = ({
         {abrirRespontas && (
           <View style={styles.containerLista}>
             <FlatList
-              data={comentariosDoPost?.comentarios}
+              data={sub_comments}
               renderItem={({ item }) => (
                 <RespostaComentario {...item} onPress={onPress} />
               )}

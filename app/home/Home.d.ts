@@ -23,3 +23,8 @@ interface PostProps {
   };
   images: ImagesProps[];
 }
+
+interface Error {
+  message: string[];
+  statusCode: number;
+}

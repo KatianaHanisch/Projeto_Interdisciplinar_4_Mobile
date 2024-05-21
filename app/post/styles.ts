@@ -2,7 +2,7 @@ import { theme } from "@/constants";
 
 import { Dimensions, StyleSheet } from "react-native";
 
-const { width, height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
 export const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
     position: "absolute",
     top: 40,
     left: 20,
-    zIndex: 1,
     padding: 5,
   },
   containerItens: {
@@ -122,13 +121,16 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
     backgroundColor: theme.colors.orangeLight,
-    height: 270,
+    height: 320,
     borderRadius: 20,
+  },
+  containerComentariosSemComentarios: {
+    backgroundColor: theme.colors.white,
   },
   listaComentarios: {
     width: "100%",
-    height: 160,
-    backgroundColor: theme.colors.white,
+    height: 200,
+    backgroundColor: theme.colors.orangeLight,
     borderRadius: 20,
   },
   tituloComentarios: {
