@@ -78,26 +78,22 @@ export default function VerificarEmail() {
 
     const email = await AsyncStorage.getItem("email");
 
-    console.log(email);
-
     if (!email) return;
 
     setCarregando(true);
 
     try {
-      console.log(email);
-      const response = await api.post(
-        `/auth/confirm?email=${email}&code=${code}`
+      console.log(`/users/user/confirm_email?email=${email}&code=${code}`);
+      const response = await api.get(
+        `/users/user/confirm_email?email=${email}&code=${code}`
       );
 
       if (response.status === 200) {
         setStatus("sucesso");
-        setTitulo("Cadastro criado com sucesso");
-        setSubtitulo(
-          "Seu cadastro foi concluído com sucesso. Realize seu login"
-        );
-        setTituloButton("Realizar login");
-        setRota("login");
+        setTitulo("Email confirmado!");
+        setSubtitulo("Seu email foi confirmado com sucesso.");
+        setTituloButton("Trocar senha");
+        setRota("trocar-senha");
         setTipoButton("navegacao");
 
         setCarregando(false);
@@ -117,9 +113,9 @@ export default function VerificarEmail() {
       console.log(error);
 
       setStatus("erro");
-      setTitulo("Erro ao criar cadastro");
+      setTitulo("Erro ao verificar código");
       setSubtitulo(
-        "Não foi possível criar seu cadastro. Tente novamente mais tarde"
+        "Verifique se o código está correto ou tente novamente mais tarde"
       );
       setTituloButton("Tentar novamente");
       setTipoButton("button");

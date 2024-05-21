@@ -34,11 +34,18 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.raleway.regular,
     color: theme.colors.grayMedium,
     marginTop: 10,
+    marginBottom: 5,
   },
   textoCadastroSublinhado: {
     fontSize: 15,
     fontFamily: theme.fontFamily.raleway.semiBold,
     color: theme.colors.grayMedium,
     textDecorationLine: "underline",
+  },
+  imagem: {
+    position: "absolute",
+    top: 0,
+    zIndex: -99,
+    marginBottom: 100,
   },
 });
