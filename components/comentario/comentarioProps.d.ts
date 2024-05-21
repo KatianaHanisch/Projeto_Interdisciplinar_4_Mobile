@@ -1,10 +1,13 @@
-interface ComentarioProps {
+interface SubCommentsProps {
   id: string;
-  publicacao: string;
-  nome_usuario: string;
   description: string;
-  imagem: string;
-  onPress?: () => void;
+  created_at: string;
+  user: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    username: string;
+  };
 }
 
 interface ExibirComentariosProps {
@@ -12,21 +15,13 @@ interface ExibirComentariosProps {
   handleButtonRespostas?: () => void;
   abrirRespontas?: boolean;
   id: string;
-  nome: string;
-  idade: number;
-  cidade: string;
-  uf: string;
-  genero: string;
-  responsavelPublicacao: string;
-  dataPublicacao: string;
-  descricao: string;
-  imagens: string[];
-  comentariosDoPost?: {
-    publicacao: string;
-    nome_usuario: string;
-    description: string;
-    imagem: string;
-    quantidadeDeRespostas: number;
-    comentarios: ComentarioProps[];
+  description: string;
+  created_at: string;
+  user: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    username: string;
   };
+  sub_comments: SubCommentsProps[];
 }

@@ -20,7 +20,7 @@ import { styles } from "./styles";
 
 export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
   (
-    { onClose, onPress, inputRef, data, abrirRespontas, handleButtonRespostas },
+    { data, onClose, onPress, inputRef, abrirRespontas, handleButtonRespostas },
     ref
   ) => {
     const [keyboardSpace, setKeyboardSpace] = useState(0);

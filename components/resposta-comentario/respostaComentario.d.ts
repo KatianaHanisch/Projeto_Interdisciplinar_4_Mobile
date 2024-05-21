@@ -1,8 +1,12 @@
 interface RespostaComentarioProps {
   id: string;
-  publicacao: string;
-  nome_usuario: string;
   description: string;
-  imagem: string;
+  created_at: string;
+  user: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    username: string;
+  };
   onPress?: () => void;
 }

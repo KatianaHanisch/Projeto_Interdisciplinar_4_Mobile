@@ -1,3 +1,8 @@
+interface ImagesProps {
+  id: string;
+  url: string;
+}
+
 interface SlideItemProps {
-  item: string;
+  item: ImagesProps;
 }

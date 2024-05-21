@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link } from "expo-router";
+import React, { useContext, useEffect } from "react";
+import { Link, useRouter } from "expo-router";
 import { Text, View, TextInput } from "react-native";
 
 import { Button } from "@/components/button";
@@ -17,6 +17,8 @@ interface LoginProps {
 }
 
 export default function Login() {
+  const router = useRouter();
+
   const {
     signIn,
     carregando,
@@ -39,13 +41,15 @@ export default function Login() {
     signIn({ email: formData.email, password: formData.password });
   };
 
-  if (isLoggedIn) {
-    return (
-      <View style={styles.container}>
-        <Text>Você já está logado!</Text>
-      </View>
-    );
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log(isLoggedIn);
+      router.replace({
+        pathname: "Home",
+        params: { refresh: "true" }, // Corrigido para 'refresh' ao invés de 'refesh'
+      });
+    }
+  }, [isLoggedIn]);
 
   return (
     <View style={styles.container}>

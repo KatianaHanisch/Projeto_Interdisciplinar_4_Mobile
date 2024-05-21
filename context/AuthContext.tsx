@@ -22,7 +22,6 @@ interface AuthContextProps {
   tipoAlerta: string;
   mensagemAlerta: string;
   isLoggedIn: boolean;
-  token: string;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -33,7 +32,6 @@ export const AuthContext = createContext<AuthContextProps>({
   tipoAlerta: "",
   mensagemAlerta: "",
   isLoggedIn: false,
-  token: "",
 });
 
 interface AuthProviderProps {
@@ -50,15 +48,26 @@ export const AuthProvider = ({
   const [mensagemAlerta, setMensagemAlerta] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       setCarregando(true);
       const token = await AsyncStorage.getItem("token");
-      if (token) {
-        setIsLoggedIn(true);
-        navigate("home");
+      const loginTime = await AsyncStorage.getItem("loginTime");
+
+      if (token && loginTime) {
+        const sessionDuration = 3600 * 1000; // 1 hour in milliseconds
+        const currentTime = new Date().getTime();
+        const loginTimeMs = new Date(loginTime).getTime();
+
+        if (currentTime - loginTimeMs < sessionDuration) {
+          setIsLoggedIn(true);
+          navigate("home");
+        } else {
+          await AsyncStorage.removeItem("token");
+          await AsyncStorage.removeItem("loginTime");
+          setIsLoggedIn(false);
+        }
       } else {
         setIsLoggedIn(false);
       }
@@ -75,9 +84,10 @@ export const AuthProvider = ({
     try {
       const response = await api.post("/auth/login", { email, password });
       const { token } = response.data.body;
-      await AsyncStorage.setItem("token", token);
 
-      setToken(token);
+      const loginTime = new Date().toISOString();
+      await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("loginTime", loginTime);
 
       setIsLoggedIn(true);
       setCarregando(false);
@@ -94,6 +104,7 @@ export const AuthProvider = ({
 
   const signOut = async () => {
     await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("loginTime");
     setIsLoggedIn(false);
     navigate("login");
   };
@@ -108,7 +119,6 @@ export const AuthProvider = ({
         tipoAlerta,
         mensagemAlerta,
         isLoggedIn,
-        token,
       }}
     >
       {children}

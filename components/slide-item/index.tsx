@@ -7,7 +7,7 @@ import { styles } from "./styles";
 export function SlideItem({ item }: SlideItemProps) {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: item }} style={styles.image} />
+      <Image source={{ uri: item.url }} style={styles.image} />
     </View>
   );
 }

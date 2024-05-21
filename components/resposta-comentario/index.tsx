@@ -1,12 +1,14 @@
+import React from "react";
+
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
 import { styles } from "./styles";
 
 export function RespostaComentario({
   id,
-  nome_usuario,
   description,
-  publicacao,
+  user,
+  created_at,
   onPress,
 }: RespostaComentarioProps) {
   return (
@@ -19,8 +21,8 @@ export function RespostaComentario({
       </View>
       <View style={styles.containerComentario}>
         <View style={styles.containerHeaderComentario}>
-          <Text style={styles.informacoesComentario}>{nome_usuario}</Text>
-          <Text style={styles.informacoesComentario}>{publicacao}</Text>
+          <Text style={styles.informacoesComentario}>{user.username}</Text>
+          <Text style={styles.informacoesComentario}>{created_at}</Text>
         </View>
         <Text style={styles.textoComentario}>{description}</Text>
         <TouchableOpacity style={styles.buttonResponder} onPress={onPress}>
