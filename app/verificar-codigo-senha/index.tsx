@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useState } from "react";
-import { Text, View, TextInput, Image } from "react-native";
+import { Text, View, TextInput, Image, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalStatusVerificarEmail } from "@/components/modal-status-verificar-email";
@@ -56,6 +56,28 @@ export default function VerificarEmail() {
     setAbrirModal(false);
   };
 
+  const handleAbrirModalReenviarEmail = async () => {
+    const email = await AsyncStorage.getItem("email");
+
+    if (email === "") return;
+
+    setCarregando(true);
+    try {
+      const response = await api.patch(
+        `/users/user/send_code?email=${email!.toLowerCase()}`
+      );
+
+      if (response.status == 200) {
+        setCarregando(false);
+      }
+
+      setCarregando(false);
+    } catch (error) {
+      setCarregando(false);
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (
       formData.input1 == "" ||
@@ -83,7 +105,6 @@ export default function VerificarEmail() {
     setCarregando(true);
 
     try {
-      console.log(`/users/user/confirm_email?email=${email}&code=${code}`);
       const response = await api.get(
         `/users/user/confirm_email?email=${email}&code=${code}`
       );
@@ -95,6 +116,8 @@ export default function VerificarEmail() {
         setTituloButton("Trocar senha");
         setRota("trocar-senha");
         setTipoButton("navegacao");
+
+        await AsyncStorage.setItem("code", code);
 
         setCarregando(false);
 
@@ -302,6 +325,9 @@ export default function VerificarEmail() {
               onPress={handleSubmit}
               carregando={carregando}
             />
+            <TouchableOpacity onPress={handleAbrirModalReenviarEmail}>
+              <Text style={styles.textoCadastroSublinhado}>Reenviar email</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}

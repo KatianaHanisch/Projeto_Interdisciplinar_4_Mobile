@@ -125,7 +125,7 @@ export function ModalVerificarEmail({ tipoModal }: ModalVerificarEmailProps) {
               </Text>
             ) : tipoModal === "esqueciSenha" ? (
               <Text style={styles.textoSubtitulo}>
-                Informe seu email para recuperação de senha:
+                Informe seu email para recuperação de senha
               </Text>
             ) : (
               <Text style={styles.textoSubtitulo}>

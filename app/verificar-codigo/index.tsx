@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useState } from "react";
-import { Text, View, TextInput, Image } from "react-native";
+import { Text, View, TextInput, Image, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalStatusVerificarEmail } from "@/components/modal-status-verificar-email";
@@ -78,14 +78,11 @@ export default function VerificarEmail() {
 
     const email = await AsyncStorage.getItem("email");
 
-    console.log(email);
-
     if (!email) return;
 
     setCarregando(true);
 
     try {
-      console.log(email);
       const response = await api.post(
         `/auth/confirm?email=${email}&code=${code}`
       );
@@ -136,6 +133,28 @@ export default function VerificarEmail() {
       });
 
       setAbrirModal(true);
+    }
+  };
+
+  const handleAbrirModalReenviarEmail = async () => {
+    const email = await AsyncStorage.getItem("email");
+
+    if (email === "") return;
+
+    setCarregando(true);
+    try {
+      const response = await api.get(
+        `/auth/confirm/resend?email=${email!.toLowerCase()}`
+      );
+
+      if (response.status == 200) {
+        setCarregando(false);
+      }
+
+      setCarregando(false);
+    } catch (error) {
+      setCarregando(false);
+      console.log(error);
     }
   };
 
@@ -306,6 +325,9 @@ export default function VerificarEmail() {
               onPress={handleSubmit}
               carregando={carregando}
             />
+            <TouchableOpacity onPress={handleAbrirModalReenviarEmail}>
+              <Text style={styles.textoCadastroSublinhado}>Reenviar email</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
