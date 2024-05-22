@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, TextInput, SafeAreaView, FlatList } from "react-native";
 
+import { Client } from "@stomp/stompjs";
+
 import { Header } from "@/components/header";
 import { Filtro } from "@/components/filtro";
 import { CardPost } from "@/components/card-post";
@@ -16,11 +18,15 @@ import { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
+  const client = new Client();
   const navigate = useNavigate();
   const { refresh } = useLocalSearchParams();
 
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
   const [posts, setPosts] = useState<PostProps[]>([]);
+
+  const [mensagensRecebidas, setMensagensRecebidas] = useState<any>([]);
+  const [novaMensagem, setNovaMensagem] = useState<String>();
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
@@ -55,6 +61,48 @@ export default function Home() {
     }
   };
 
+  console.log(mensagensRecebidas);
+
+  const connect = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    if (token) {
+      client.configure({
+        brokerURL: `ws://10.0.0.103:8081/api/wss?id=${token}`,
+        onConnect: () => {
+          client.subscribe(`/user/${token}/queue/messages`, (menssagem) => {
+            const mensagemRecebida = JSON.parse(menssagem.body);
+            setMensagensRecebidas((prev: any) => [...prev, mensagemRecebida]);
+          });
+          console.log("Conectado");
+        },
+        onStompError: (frame) => {
+          console.log("Broker reported error: " + frame.headers["message"]);
+          console.log("Additional details: " + frame.body);
+        },
+        onWebSocketError: (error) => {
+          console.log(error);
+        },
+        forceBinaryWSFrames: true,
+        appendMissingNULLonIncoming: true,
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+        beforeConnect: () => {},
+      });
+      client.activate();
+    }
+  };
+
+  // const fetchMessages = async () => {
+  //   if (id && userRecebe) {
+  //     const response = await api.get(
+  //       `http://10.0.0.103:8081/api/messages/${id}/${userRecebe}`
+  //     );
+  //     setMensagensRecebidas(response.data);
+  //   }
+  // };
+
   useEffect(() => {
     const fetchData = async () => {
       if (refresh === "true") {
@@ -71,6 +119,7 @@ export default function Home() {
     };
 
     fetchData();
+    connect();
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet from "@gorhom/bottom-sheet";
 
@@ -152,9 +152,9 @@ export default function ModalDetalhesAnimal() {
                 <Text style={styles.dataPublicacao}>
                   {formatarData(dadosPost?.createdAt)}
                 </Text>
-                <Text style={styles.informacoesPublicacao}>
+                <Link href={""} style={styles.informacoesPublicacao}>
                   publicado por {dadosPost?.user?.name.toLowerCase()}
-                </Text>
+                </Link>
               </View>
               <View style={styles.containerInformacoes}>
                 <View style={styles.containerTextos}>
