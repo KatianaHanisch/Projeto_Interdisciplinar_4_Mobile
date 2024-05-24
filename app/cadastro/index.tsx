@@ -19,7 +19,6 @@ import { styles } from "./styles";
 export default function Cadastro() {
   const [carregando, setCarregando] = useState<boolean>(false);
 
-  const [tipoModal, setTipoModal] = useState<string>("");
   const [abrirAlerta, setAbrirAlerta] = useState<boolean>(false);
   const [tipoAlerta, setTipoAlerta] = useState<string>("");
   const [mensagemAlerta, setMensagemAlerta] = useState<
@@ -36,11 +35,6 @@ export default function Cadastro() {
       confirmPassword: "",
     },
   });
-
-  const handleAbrirModalReenviarEmail = () => {
-    setTipoModal("reenviarEmail");
-    setAbrirModal(true);
-  };
 
   const handleSubmit = async () => {
     if (
@@ -114,7 +108,7 @@ export default function Cadastro() {
             style={styles.imagem}
             source={require("../../assets/images/imagem-cadastro.png")}
           />
-          <ModalVerificarEmail tipoModal={tipoModal} />
+          <ModalVerificarEmail tipoModal="" />
         </>
       ) : (
         <View style={styles.container}>
@@ -162,11 +156,6 @@ export default function Cadastro() {
                   <Text style={styles.textoCadastroSublinhado}>Login</Text>
                 </Link>
               </Text>
-              <TouchableOpacity onPress={handleAbrirModalReenviarEmail}>
-                <Text style={styles.textoCadastroSublinhado}>
-                  Reenviar email
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
         </View>

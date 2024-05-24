@@ -1,0 +1,3 @@
+interface TrocarSenhaProps {
+  password: string;
+}

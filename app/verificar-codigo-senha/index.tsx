@@ -56,6 +56,28 @@ export default function VerificarEmail() {
     setAbrirModal(false);
   };
 
+  const handleAbrirModalReenviarEmail = async () => {
+    const email = await AsyncStorage.getItem("email");
+
+    if (email === "") return;
+
+    setCarregando(true);
+    try {
+      const response = await api.patch(
+        `/users/user/send_code?email=${email!.toLowerCase()}`
+      );
+
+      if (response.status == 200) {
+        setCarregando(false);
+      }
+
+      setCarregando(false);
+    } catch (error) {
+      setCarregando(false);
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (
       formData.input1 == "" ||
@@ -83,19 +105,19 @@ export default function VerificarEmail() {
     setCarregando(true);
 
     try {
-      const response = await api.post(
-        `/auth/confirm?email=${email}&code=${code}`
+      const response = await api.get(
+        `/users/user/confirm_email?email=${email}&code=${code}`
       );
 
       if (response.status === 200) {
         setStatus("sucesso");
-        setTitulo("Cadastro criado com sucesso");
-        setSubtitulo(
-          "Seu cadastro foi concluído com sucesso. Realize seu login"
-        );
-        setTituloButton("Realizar login");
-        setRota("login");
+        setTitulo("Email confirmado!");
+        setSubtitulo("Seu email foi confirmado com sucesso.");
+        setTituloButton("Trocar senha");
+        setRota("trocar-senha");
         setTipoButton("navegacao");
+
+        await AsyncStorage.setItem("code", code);
 
         setCarregando(false);
 
@@ -114,9 +136,9 @@ export default function VerificarEmail() {
       console.log(error);
 
       setStatus("erro");
-      setTitulo("Erro ao criar cadastro");
+      setTitulo("Erro ao verificar código");
       setSubtitulo(
-        "Não foi possível criar seu cadastro. Tente novamente mais tarde"
+        "Verifique se o código está correto ou tente novamente mais tarde"
       );
       setTituloButton("Tentar novamente");
       setTipoButton("button");
@@ -133,28 +155,6 @@ export default function VerificarEmail() {
       });
 
       setAbrirModal(true);
-    }
-  };
-
-  const handleAbrirModalReenviarEmail = async () => {
-    const email = await AsyncStorage.getItem("email");
-
-    if (email === "") return;
-
-    setCarregando(true);
-    try {
-      const response = await api.get(
-        `/auth/confirm/resend?email=${email!.toLowerCase()}`
-      );
-
-      if (response.status == 200) {
-        setCarregando(false);
-      }
-
-      setCarregando(false);
-    } catch (error) {
-      setCarregando(false);
-      console.log(error);
     }
   };
 

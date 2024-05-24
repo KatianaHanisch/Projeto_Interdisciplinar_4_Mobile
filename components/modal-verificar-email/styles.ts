@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     padding: 25,
     gap: 10,
   },
+
   containerTextos: {
     width: "100%",
     gap: 10,

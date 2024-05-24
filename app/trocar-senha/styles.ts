@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textoCadastro: {
-    fontSize: 15,
+    fontSize: 20,
     fontFamily: theme.fontFamily.raleway.regular,
     color: theme.colors.grayMedium,
     marginTop: 10,

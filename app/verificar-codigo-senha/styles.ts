@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.grayLight,
     borderRadius: 10,
     textAlign: "center",
-    fontSize: 32,
+    fontSize: 30,
     color: theme.colors.grayDark,
   },
   imagem: {
