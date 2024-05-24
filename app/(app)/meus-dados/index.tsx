@@ -35,7 +35,7 @@ export default function MeusDados() {
       <View style={styles.containerImagem}>
         <Image
           style={styles.imagem}
-          source={require("../../assets/images/imagem-perfil-usuario.png")}
+          source={require("../../../assets/images/imagem-perfil-usuario.png")}
         />
         <Text style={styles.nome}>Mateus Oliveira</Text>
       </View>

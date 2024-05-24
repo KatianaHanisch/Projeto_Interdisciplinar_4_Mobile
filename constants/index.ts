@@ -1,6 +1,6 @@
 import { fontFamily } from "./fontFamily";
 
-import { colors } from "./Colors";
+import { colors } from "./colors";
 
 export const theme = {
   colors,

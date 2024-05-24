@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
+import { useRouter } from "expo-router";
 import axios from "axios";
+
 import { api } from "@/services/api";
 
 interface AuthProps {
@@ -11,14 +13,16 @@ interface AuthProps {
   isLoanding?: boolean;
 }
 
-const TOKEN_KEY = "";
+const TOKEN_KEY = "token";
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export const AuthProvider = ({ children }: any) => {
+export const AuthProvider = ({ children }: React.PropsWithChildren) => {
+  const router = useRouter();
+
   const [isLoanding, setIsLoanding] = useState<boolean>(false);
 
   const [authState, setAuthState] = useState<{
@@ -30,17 +34,20 @@ export const AuthProvider = ({ children }: any) => {
   });
 
   useEffect(() => {
-    const loadTOken = async () => {
+    const loadToken = async () => {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       }
+
       setAuthState({
         token: token,
         authenticated: true,
       });
     };
+
+    loadToken();
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -52,28 +59,38 @@ export const AuthProvider = ({ children }: any) => {
         password,
       });
 
-      setAuthState({
-        token: response.data.body.token,
-        authenticated: true,
-      });
+      if (response && response.status === 200 && response.data) {
+        setAuthState({
+          token: response.data?.body?.token,
+          authenticated: true,
+        });
 
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${response.data.body.token}`;
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data?.body?.token}`;
 
-      await SecureStore.setItemAsync(TOKEN_KEY, response.data.body.token);
+        const token = response.data?.body?.token;
 
-      setIsLoanding(false);
+        if (token) {
+          await SecureStore.setItemAsync(TOKEN_KEY, token);
+        }
 
-      return response;
+        router.navigate("/home");
+
+        setIsLoanding(false);
+
+        return response;
+      }
     } catch (e) {
       setIsLoanding(false);
-      return { error: true, msg: (e as any).response.data.msg };
+      return { error: true, msg: (e as any).response.data?.message };
     }
   };
 
   const logout = async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
+
+    console.log("chamou");
 
     axios.defaults.headers.common["Authorization"] = "";
 
@@ -81,6 +98,8 @@ export const AuthProvider = ({ children }: any) => {
       token: null,
       authenticated: false,
     });
+
+    console.log(authState);
   };
   const value = {
     onLogin: login,

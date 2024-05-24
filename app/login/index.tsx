@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Link } from "expo-router";
 import { Text, View, TextInput, Image } from "react-native";
 
 import { Button } from "@/components/button";
 import { Alert } from "@/components/alert";
-import { AuthContext } from "@/context/AuthContext";
 
 import { ImagemTelaLogin } from "@/assets/images/imagem-tela-login";
 import { useForm } from "@/hooks/useForm";
 
 import { styles } from "./styles";
 import { ModalVerificarEmail } from "@/components/modal-verificar-email";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "@/context/AuthContext";
 
 interface LoginProps {
   email: string;
@@ -19,18 +18,13 @@ interface LoginProps {
 }
 
 export default function Login() {
-  const router = useRouter();
-  const [abrirModal, setAbrirModal] = useState<boolean>(false);
-  const [tipoModal, setTipoModal] = useState<string>("");
+  const { onLogin, isLoanding, authState } = useAuth();
 
-  const {
-    signIn,
-    carregando,
-    abrirAlerta,
-    mensagemAlerta,
-    tipoAlerta,
-    isLoggedIn,
-  } = useContext(AuthContext);
+  const [abrirModal, setAbrirModal] = useState<boolean>(false);
+  const [abrirAlerta, setAbrirAlerta] = useState<boolean>(false);
+  const [tipoAlerta, setTipoAlerta] = useState<string>("");
+  const [mensagemAlerta, setMensagemAlerta] = useState<string>("");
+  const [tipoModal, setTipoModal] = useState<string>("");
 
   const { formData, handleInputChange } = useForm<LoginProps>({
     initialValues: {
@@ -43,21 +37,22 @@ export default function Login() {
     setTipoModal("esqueciSenha");
     setAbrirModal(true);
   };
+
   const handleSubmit = async () => {
     if (formData.email === "" || formData.password === "") return;
 
-    signIn({ email: formData.email, password: formData.password });
-  };
+    const response = await onLogin!(formData.email, formData.password);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      console.log(isLoggedIn);
-      router.replace({
-        pathname: "Home",
-        params: { refresh: "true" }, // Corrigido para 'refresh' ao invés de 'refesh'
-      });
+    if (response && response.error) {
+      setTipoAlerta("erro");
+      setMensagemAlerta("Email ou senha inválidos");
+      setAbrirAlerta(true);
+
+      setTimeout(() => {
+        setAbrirAlerta(false);
+      }, 5000);
     }
-  }, [isLoggedIn]);
+  };
 
   return (
     <>
@@ -92,7 +87,7 @@ export default function Login() {
               <Button
                 titulo="Entrar"
                 onPress={handleSubmit}
-                carregando={carregando}
+                carregando={isLoanding}
               />
               <Text style={styles.textoCadastro}>
                 <Link href={"/cadastro/"}>

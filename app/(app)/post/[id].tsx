@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -9,7 +9,6 @@ import {
   Animated,
   View,
   Text,
-  Image,
   TouchableOpacity,
   TextInput,
   SafeAreaView,
@@ -30,11 +29,13 @@ import { Pagination } from "@/components/pagination";
 import { api } from "@/services/api";
 import { theme } from "@/constants";
 import { formatarData } from "@/utils/formatarData";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AxiosError } from "axios";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ModalDetalhesAnimal() {
   const router = useRouter();
+
+  const { authState } = useAuth();
 
   const [carregando, setCarregando] = useState<boolean>(false);
   const [carregandoPosts, setCarregandoPosts] = useState<boolean>(false);
@@ -136,25 +137,19 @@ export default function ModalDetalhesAnimal() {
 
   const fetcherPost = async (id: string | string[] | undefined) => {
     try {
-      const token = await AsyncStorage.getItem("token");
+      setCarregandoPosts(true);
 
-      if (token) {
-        setCarregandoPosts(true);
+      const response = await api.get(`/posts/post/${id}`, {
+        headers: {
+          Authorization: authState?.token,
+        },
+      });
 
-        const response = await api.get(`/posts/post/${id}`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-
-        if (response.status === 200) {
-          setDadosPost(response.data);
-
-          setCarregandoPosts(false);
-        }
-      } else {
-        console.error("Token não encontrado");
+      if (response.status === 200) {
+        setDadosPost(response.data);
       }
+
+      setCarregandoPosts(false);
     } catch (err) {
       setCarregandoPosts(false);
 
@@ -167,34 +162,27 @@ export default function ModalDetalhesAnimal() {
     if (inputValue === "") return;
 
     try {
-      const token = await AsyncStorage.getItem("token");
-
       setCarregando(true);
 
-      if (token) {
-        const response = await api.post(
-          `/comments/comment/${id}`,
-          {
-            description: inputValue,
+      const response = await api.post(
+        `/comments/comment/${id}`,
+        {
+          description: inputValue,
+        },
+        {
+          headers: {
+            Authorization: authState?.token,
           },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          adicionarComentarioNoEstado(response.data);
-
-          setInputValue("");
-          setCarregando(false);
-
-          flatListRef.current?.scrollToEnd({ animated: true });
         }
-      } else {
-        console.error("Token não encontrado");
+      );
+
+      if (response.status === 200) {
+        adicionarComentarioNoEstado(response.data);
+
+        setInputValue("");
         setCarregando(false);
+
+        flatListRef.current?.scrollToEnd({ animated: true });
       }
     } catch (err) {
       setCarregando(false);
@@ -220,30 +208,26 @@ export default function ModalDetalhesAnimal() {
     if (id === "" || inputValue === "") return;
 
     try {
-      const token = await AsyncStorage.getItem("token");
-
       setCarregando(true);
 
-      if (token) {
-        const response = await api.post(
-          `/comments/sub_comment/${id}`,
-          {
-            description: inputValue,
+      const response = await api.post(
+        `/comments/sub_comment/${id}`,
+        {
+          description: inputValue,
+        },
+        {
+          headers: {
+            Authorization: authState?.token,
           },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          adicionarComentarioNoEstado(response.data, id);
-
-          setInputValue("");
-
-          setCarregando(false);
         }
+      );
+
+      if (response.status === 200) {
+        adicionarComentarioNoEstado(response.data, id);
+
+        setInputValue("");
+
+        setCarregando(false);
       }
     } catch (err) {
       setCarregando(false);
