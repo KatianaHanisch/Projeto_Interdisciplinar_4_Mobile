@@ -11,13 +11,17 @@ import { useNavigate } from "@/hooks/useNavigate";
 
 import { styles } from "./styles";
 import { api } from "@/services/api";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { AxiosError } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function Home() {
   const navigate = useNavigate();
   const { refresh } = useLocalSearchParams();
+  const router = useRouter();
+
+  const { isLoggedIn } = useContext(AuthContext);
 
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -74,31 +78,37 @@ export default function Home() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Header handleNavigate={handleNavigate} />
-      <View style={styles.containerItens}>
-        <View style={styles.containerInput}>
-          <IconBusca />
-          <TextInput
-            style={styles.input}
-            placeholder="Procure por palavras-chaves"
-          />
+    <>
+      {isLoggedIn ? (
+        <View style={styles.container}>
+          <Header handleNavigate={handleNavigate} />
+          <View style={styles.containerItens}>
+            <View style={styles.containerInput}>
+              <IconBusca />
+              <TextInput
+                style={styles.input}
+                placeholder="Procure por palavras-chaves"
+              />
+            </View>
+            <Filtro
+              filtroSelecionado={filtroSelecionado}
+              handleSelecionarFiltro={handleSelecionarFiltro}
+            />
+            <SafeAreaView style={styles.containerLista}>
+              <FlatList
+                data={posts}
+                renderItem={({ item }) => (
+                  <CardPost {...item} handleNavigate={handleDetalhes} />
+                )}
+                keyExtractor={(post) => post.id}
+                showsVerticalScrollIndicator={false}
+              />
+            </SafeAreaView>
+          </View>
         </View>
-        <Filtro
-          filtroSelecionado={filtroSelecionado}
-          handleSelecionarFiltro={handleSelecionarFiltro}
-        />
-        <SafeAreaView style={styles.containerLista}>
-          <FlatList
-            data={posts}
-            renderItem={({ item }) => (
-              <CardPost {...item} handleNavigate={handleDetalhes} />
-            )}
-            keyExtractor={(post) => post.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </SafeAreaView>
-      </View>
-    </View>
+      ) : (
+        router.replace("/login")
+      )}
+    </>
   );
 }

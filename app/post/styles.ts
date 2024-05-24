@@ -10,9 +10,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: theme.colors.white,
   },
+  containerCarregamento: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.colors.white,
+  },
   containerSlide: {
     width: width,
-    height: 280,
+    height: 260,
     alignItems: "center",
   },
   buttonVoltar: {
@@ -121,7 +127,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
     backgroundColor: theme.colors.orangeLight,
-    height: 320,
+    height: 280,
     borderRadius: 20,
   },
   containerComentariosSemComentarios: {
@@ -129,7 +135,7 @@ export const styles = StyleSheet.create({
   },
   listaComentarios: {
     width: "100%",
-    height: 200,
+    height: 150,
     backgroundColor: theme.colors.orangeLight,
     borderRadius: 20,
   },
@@ -139,11 +145,17 @@ export const styles = StyleSheet.create({
     color: theme.colors.grayDark,
     marginBottom: 12,
   },
+  buttonComentariosTodos: {
+    fontSize: 15,
+    fontFamily: theme.fontFamily.montserrat.regular,
+    color: theme.colors.grayMedium,
+    marginTop: 5,
+    marginBottom: 5,
+  },
   buttonComentarios: {
     fontSize: 16,
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     padding: 5,
-    marginTop: 5,
   },
 });

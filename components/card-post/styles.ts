@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     width: "95%",
     height: 135,
-    marginBottom: 20,
+    marginBottom: 12,
     borderRadius: 20,
     elevation: 4,
     shadowColor: "#000",

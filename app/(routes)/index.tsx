@@ -12,11 +12,6 @@ export default function Root() {
         name="verificar-codigo/index"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="home/index" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="chat-coversas/[id]"
-        options={{ headerShown: false }}
-      />
     </Stack>
   );
 }

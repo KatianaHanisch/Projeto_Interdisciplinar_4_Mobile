@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFlatListMethods } from "@gorhom/bottom-sheet";
 
 import { useEffect, useRef, useState } from "react";
 import {
@@ -15,6 +15,7 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 
 import { ComentariosTodos } from "@/components/comentarios-todos";
@@ -27,7 +28,6 @@ import { IconLocalidade } from "@/assets/icons/icon-localidade";
 import { styles } from "./styles";
 import { Pagination } from "@/components/pagination";
 import { api } from "@/services/api";
-import { AuthContext } from "@/context/AuthContext";
 import { theme } from "@/constants";
 import { formatarData } from "@/utils/formatarData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -36,6 +36,13 @@ import { AxiosError } from "axios";
 export default function ModalDetalhesAnimal() {
   const router = useRouter();
 
+  const [carregando, setCarregando] = useState<boolean>(false);
+  const [carregandoPosts, setCarregandoPosts] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [idComentario, setIdComentario] = useState<string>("");
+  const [tipoRequisicao, setTipoRequisicao] =
+    useState<string>("novoComentario");
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [dadosPost, setDadosPost] = useState<PostDetalhesProps>();
   const [index, setIndex] = useState<number>(0);
@@ -43,46 +50,26 @@ export default function ModalDetalhesAnimal() {
 
   const { id } = useLocalSearchParams();
 
-  const fetcherPost = async (id: string | string[]) => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-
-      if (token) {
-        const response = await api.get(`/posts/post/${id}`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-
-        setDadosPost(response.data);
-      } else {
-        console.error("Token não encontrado");
-      }
-    } catch (err) {
-      const error = err as AxiosError<Error>;
-      console.error(error.response?.data.message);
-    }
-  };
-
-  useEffect(() => {
-    if (id !== undefined) {
-      fetcherPost(id);
-    }
-  }, []);
-
   const inputResponderRef = useRef<TextInput | null>(null);
+  const flatListRef = useRef<BottomSheetFlatListMethods>(null);
 
   const handleButtonSheetOpen = () => bottomSheetRef.current?.expand();
-  const handleButtonSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
 
-  const handleButtonResponder = () => {
+  const handleCloseButton = () => {
+    Keyboard.dismiss();
+
+    bottomSheetRef.current?.snapToIndex(0);
+  };
+
+  const handleButtonAdicionarComentario = () => {
     bottomSheetRef.current?.expand();
 
     if (inputResponderRef.current) {
       inputResponderRef.current.focus();
     }
-  };
 
+    setTipoRequisicao("novoComentario");
+  };
   const handleOnScroll = (event: any) => {
     Animated.event(
       [
@@ -101,7 +88,6 @@ export default function ModalDetalhesAnimal() {
   };
 
   const handleOnViewableItemsChanged = useRef(({ viewableItems }: any) => {
-    // console.log('viewableItems', viewableItems);
     setIndex(viewableItems[0].index);
   }).current;
 
@@ -113,11 +99,178 @@ export default function ModalDetalhesAnimal() {
     router.back();
   };
 
+  const handleInputValue = (value: string) => {
+    setInputValue(value);
+  };
+
+  const adicionarComentarioNoEstado = (
+    novoComentario: ComentarioProps,
+    id?: string
+  ) => {
+    if (dadosPost) {
+      setDadosPost((prevDadosPost) => {
+        if (!prevDadosPost) return prevDadosPost;
+
+        if (id) {
+          return {
+            ...prevDadosPost,
+            comments: prevDadosPost.comments.map((comentario) => {
+              if (comentario.id === id) {
+                return {
+                  ...comentario,
+                  sub_comments: [...comentario.sub_comments, novoComentario],
+                };
+              }
+              return comentario;
+            }),
+          };
+        } else {
+          return {
+            ...prevDadosPost,
+            comments: [...prevDadosPost.comments, novoComentario],
+          };
+        }
+      });
+    }
+  };
+
+  const fetcherPost = async (id: string | string[] | undefined) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      if (token) {
+        setCarregandoPosts(true);
+
+        const response = await api.get(`/posts/post/${id}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        if (response.status === 200) {
+          setDadosPost(response.data);
+
+          setCarregandoPosts(false);
+        }
+      } else {
+        console.error("Token não encontrado");
+      }
+    } catch (err) {
+      setCarregandoPosts(false);
+
+      const error = err as AxiosError<Error>;
+      console.error(error.response?.data.message);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (inputValue === "") return;
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      setCarregando(true);
+
+      if (token) {
+        const response = await api.post(
+          `/comments/comment/${id}`,
+          {
+            description: inputValue,
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          adicionarComentarioNoEstado(response.data);
+
+          setInputValue("");
+          setCarregando(false);
+
+          flatListRef.current?.scrollToEnd({ animated: true });
+        }
+      } else {
+        console.error("Token não encontrado");
+        setCarregando(false);
+      }
+    } catch (err) {
+      setCarregando(false);
+
+      const error = err as AxiosError<Error>;
+      console.error(error.response?.data.message);
+    }
+  };
+
+  const handleResposta = (id: string) => {
+    bottomSheetRef.current?.expand();
+
+    if (inputResponderRef.current) {
+      inputResponderRef.current.focus();
+    }
+
+    setIdComentario(id);
+
+    setTipoRequisicao("subComentario");
+  };
+
+  const handleSubmitResposta = async (id: string) => {
+    if (id === "" || inputValue === "") return;
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      setCarregando(true);
+
+      if (token) {
+        const response = await api.post(
+          `/comments/sub_comment/${id}`,
+          {
+            description: inputValue,
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          adicionarComentarioNoEstado(response.data, id);
+
+          setInputValue("");
+
+          setCarregando(false);
+        }
+      }
+    } catch (err) {
+      setCarregando(false);
+
+      const error = err as AxiosError<Error>;
+      console.error(error.response?.data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      fetcherPost(id);
+    }
+  }, []);
+
   return (
     <>
       <StatusBar style="light" />
       <View style={styles.container}>
-        {dadosPost ? (
+        {carregandoPosts ? (
+          <View style={styles.containerCarregamento}>
+            <ActivityIndicator
+              size={50}
+              color={theme.colors.orangePrimaryDark}
+            />
+          </View>
+        ) : (
           <>
             <SafeAreaView style={styles.containerSlide}>
               <FlatList
@@ -127,7 +280,7 @@ export default function ModalDetalhesAnimal() {
                 pagingEnabled
                 snapToAlignment="center"
                 showsHorizontalScrollIndicator={false}
-                key={dadosPost?.id}
+                keyExtractor={(item) => item.id}
                 onScroll={handleOnScroll}
                 onViewableItemsChanged={handleOnViewableItemsChanged}
                 viewabilityConfig={viewabilityConfig}
@@ -190,41 +343,58 @@ export default function ModalDetalhesAnimal() {
                   <>
                     <Text style={styles.tituloComentarios}>Comentários</Text>
                     <SafeAreaView style={styles.listaComentarios}>
-                      <FlatList
-                        renderItem={({ item }) => (
-                          <Comentario
-                            {...item}
-                            onPress={handleButtonSheetOpen}
-                          />
-                        )}
-                        data={dadosPost?.comments}
-                        keyExtractor={(item) => item.id}
-                      />
+                      {dadosPost.comments ? (
+                        <FlatList
+                          renderItem={({ item }) => (
+                            <Comentario
+                              {...item}
+                              handleResposta={handleResposta}
+                            />
+                          )}
+                          data={dadosPost?.comments}
+                          keyExtractor={(item) => item.id}
+                          initialNumToRender={5}
+                          maxToRenderPerBatch={10}
+                        />
+                      ) : (
+                        <ActivityIndicator
+                          size={"large"}
+                          color={theme.colors.orangePrimaryDark}
+                        />
+                      )}
                     </SafeAreaView>
                   </>
                 )}
-                <TouchableOpacity onPress={handleButtonSheetOpen}>
+                {dadosPost?.comments && dadosPost?.comments.length > 0 && (
+                  <TouchableOpacity onPress={handleButtonSheetOpen}>
+                    <Text style={styles.buttonComentariosTodos}>
+                      Ver todos os comentários
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity onPress={handleButtonAdicionarComentario}>
                   <Text style={styles.buttonComentarios}>
-                    {dadosPost?.comments && dadosPost?.comments.length > 0
-                      ? "Ver todos os comentários"
-                      : "Adicionar comentário"}
+                    Adicionar comentário
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
             <ComentariosTodos
               ref={bottomSheetRef}
-              onClose={handleButtonSheetClose}
+              onClose={handleCloseButton}
               inputRef={inputResponderRef}
-              onPress={handleButtonResponder}
+              handleResposta={handleButtonAdicionarComentario}
               data={dadosPost?.comments}
+              handleSubmit={handleSubmit}
+              handleSubmitResposta={handleSubmitResposta}
+              handleInputValue={handleInputValue}
+              inputValue={inputValue}
+              carregando={carregando}
+              flatListRef={flatListRef}
+              tipoRequisicao={tipoRequisicao}
+              idComentario={idComentario}
             />
           </>
-        ) : (
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.orangePrimaryDark}
-          />
         )}
       </View>
     </>

@@ -1,29 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { useNavigate } from "@/hooks/useNavigate";
-import { AuthContext } from "@/context/AuthContext";
-import { ActivityIndicator, View } from "react-native";
-import { theme } from "@/constants";
+import { Stack } from "expo-router";
 
-export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isLoggedIn, carregando } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  if (carregando) {
-    return (
-      <View>
-        <ActivityIndicator
-          size="large"
-          color={theme.colors.orangePrimaryDark}
-        />
-      </View>
-    );
-  }
-
-  if (!isLoggedIn) {
-    navigate("login");
-    return null;
-  }
-
-  return <>{children}</>;
-};
+export default function ProtectedRoute() {
+  return (
+    <Stack>
+      <Stack.Screen name="home/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="chat-coversas/[id]"
+        options={{ headerShown: false }}
+      />
+    </Stack>
+  );
+}

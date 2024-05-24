@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 20,
-    paddingTop: 30,
+    paddingTop: 20,
     marginTop: 12,
   },
   containerInput: {
@@ -38,6 +38,6 @@ export const styles = StyleSheet.create({
   containerLista: {
     flex: 1,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
 });

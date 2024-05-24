@@ -21,7 +21,7 @@ export default function PaginaInicial() {
       </Text>
       <View style={styles.containerButton}>
         <TouchableOpacity
-          onPress={() => navigate("login")}
+          onPress={() => navigate("/cadastro")}
           style={styles.Button}
         >
           <IconArrowPaginaInicial />

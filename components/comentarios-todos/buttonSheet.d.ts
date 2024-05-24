@@ -1,10 +1,18 @@
 export type ButtomSheetProps = {
   onClose: () => void;
-  onPress: () => void;
   inputRef: React.RefObject<TextInput>;
   handleButtonRespostas?: () => void;
   abrirRespontas?: boolean;
-  data: ComentariosProps[];
+  data: ComentariosProps[] | undefined;
+  handleResposta?: () => void;
+  handleInputValue: (value: string) => void;
+  handleSubmit: () => void;
+  handleSubmitResposta: (id: string) => void;
+  flatListRef: React.RefObject<BottomSheetFlatListMethods>;
+  inputValue: string;
+  carregando: boolean;
+  tipoRequisicao: string;
+  idComentario: string;
 };
 
 interface SubCommentsProps {
@@ -58,4 +66,9 @@ interface PostProps {
   };
   images: ImagesProps[];
   comments: ComentarioProps[];
+}
+
+interface Error {
+  message: string[];
+  statusCode: number;
 }
