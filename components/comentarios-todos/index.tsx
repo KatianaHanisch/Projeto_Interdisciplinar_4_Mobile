@@ -88,7 +88,12 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
           behavior={"height"}
           style={isKeyboardOpen ? { height: "95%" } : { height: "95%" }}
         >
-          <View style={[styles.container, { paddingBottom: 5 }]}>
+          <View
+            style={[
+              styles.container,
+              isKeyboardOpen ? { paddingBottom: 25 } : { height: 5 },
+            ]}
+          >
             <View style={styles.containerInterno}>
               <View style={styles.containerHeader}>
                 <Text style={styles.titulo}>Comentários</Text>

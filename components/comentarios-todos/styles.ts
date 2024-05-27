@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     height: "100%",
   },
   containerInterno: {
-    height: "90%",
+    height: "94%",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -24,10 +24,9 @@ export const styles = StyleSheet.create({
   },
   containerHeader: {
     width: "100%",
-    alignItems: "center",
+    alignItems: "flex-end",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
     paddingHorizontal: 30,
   },
   containerComentarios: {
