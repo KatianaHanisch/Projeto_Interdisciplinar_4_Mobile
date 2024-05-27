@@ -24,7 +24,7 @@ import {
 
 import { View, Text } from "react-native";
 
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 // SplashScreen.preventAutoHideAsync();
 

@@ -11,8 +11,7 @@ interface SubCommentsProps {
 }
 
 interface ExibirComentariosProps {
-  onPress?: () => void;
-  handleButtonRespostas?: () => void;
+  handleResposta: (id: string) => void;
   abrirRespontas?: boolean;
   id: string;
   description: string;

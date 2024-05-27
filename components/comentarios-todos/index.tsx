@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import {
   View,
   Text,
@@ -8,31 +8,51 @@ import {
   Image,
   KeyboardAvoidingView,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
-import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import { ButtomSheetProps } from "./buttonSheet";
 
 import { IconEnviar } from "@/assets/icons/icon-enviar";
-
 import { Comentario } from "../comentario";
+import { ButtomSheetProps } from "./buttonSheet";
 
 import { styles } from "./styles";
+import { IconClose } from "@/assets/icons/icon-close";
 
 export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
   (
-    { data, onClose, onPress, inputRef, abrirRespontas, handleButtonRespostas },
+    {
+      data,
+      onClose,
+      inputRef,
+      abrirRespontas,
+      handleResposta,
+      handleSubmit,
+      handleSubmitResposta,
+      handleInputValue,
+      inputValue,
+      carregando,
+      flatListRef,
+      tipoRequisicao,
+      idComentario,
+    },
     ref
   ) => {
     const [keyboardSpace, setKeyboardSpace] = useState(0);
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+    const handleRequisicao = async (tipoRequisicao: string) => {
+      if (tipoRequisicao === "novoComentario") {
+        handleSubmit();
+      } else {
+        handleSubmitResposta(idComentario);
+      }
+    };
 
     useEffect(() => {
       const keyboardDidShowListener = Keyboard.addListener(
         "keyboardDidShow",
         (frames) => {
           if (!frames.endCoordinates) return;
-          console.log("Teclado aberto");
-          console.log(frames.endCoordinates.height);
           setKeyboardSpace(frames.endCoordinates.height);
           setIsKeyboardOpen(true);
         }
@@ -51,6 +71,12 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
       };
     }, []);
 
+    useEffect(() => {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToEnd({ animated: true });
+      }
+    }, [data]);
+
     return (
       <BottomSheet
         backgroundStyle={styles.background}
@@ -60,20 +86,25 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
       >
         <KeyboardAvoidingView
           behavior={"height"}
-          style={isKeyboardOpen ? { height: "99%" } : { height: "99%" }}
+          style={isKeyboardOpen ? { height: "95%" } : { height: "95%" }}
         >
-          <View style={styles.container}>
+          <View style={[styles.container, { paddingBottom: 5 }]}>
             <View style={styles.containerInterno}>
-              <Text style={styles.titulo}>Comentários</Text>
+              <View style={styles.containerHeader}>
+                <Text style={styles.titulo}>Comentários</Text>
+                <TouchableOpacity style={styles.titulo} onPress={onClose}>
+                  <IconClose />
+                </TouchableOpacity>
+              </View>
               <View style={styles.containerComentarios}>
                 <BottomSheetFlatList
+                  ref={flatListRef}
                   data={data}
                   renderItem={({ item }) => (
                     <Comentario
                       {...item}
-                      onPress={onPress}
                       abrirRespontas={abrirRespontas}
-                      handleButtonRespostas={handleButtonRespostas}
+                      handleResposta={handleResposta}
                     />
                   )}
                   keyExtractor={(item) => item.id}
@@ -97,10 +128,19 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
                     style={styles.input}
                     ref={inputRef}
                     placeholder="Adicione um comentário"
+                    value={inputValue}
+                    onChange={(text) => handleInputValue(text.nativeEvent.text)}
                   />
                 </View>
-                <TouchableOpacity style={styles.button}>
-                  <IconEnviar />
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => handleRequisicao(tipoRequisicao)}
+                >
+                  {carregando ? (
+                    <ActivityIndicator color={"#fff"} size={25} />
+                  ) : (
+                    <IconEnviar />
+                  )}
                 </TouchableOpacity>
               </View>
             </View>

@@ -22,12 +22,20 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
   },
+  containerHeader: {
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    paddingHorizontal: 30,
+  },
   containerComentarios: {
     height: "90%",
     width: "95%",
   },
   titulo: {
-    fontSize: 18,
+    fontSize: 22,
     fontFamily: theme.fontFamily.montserrat.bold,
     color: theme.colors.grayDark,
     marginBottom: 15,

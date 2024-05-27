@@ -1,127 +1,112 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  ReactNode,
-  PropsWithChildren,
-} from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigate } from "@/hooks/useNavigate";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import { useRouter } from "expo-router";
+import axios from "axios";
+
 import { api } from "@/services/api";
 
-interface LoginProps {
-  email: string;
-  password: string;
+interface AuthProps {
+  authState?: { token: string | null; authenticated: boolean | null };
+  // onRegister?: (email: string, password: string) => Promise<any>;
+  onLogin?: (email: string, password: string) => Promise<any>;
+  onLogout?: () => Promise<any>;
+  isLoanding?: boolean;
 }
 
-interface AuthContextProps {
-  signIn: (props: LoginProps) => Promise<void>;
-  signOut: () => Promise<void>;
-  carregando: boolean;
-  abrirAlerta: boolean;
-  tipoAlerta: string;
-  mensagemAlerta: string;
-  isLoggedIn: boolean;
-}
+const TOKEN_KEY = "token";
+const AuthContext = createContext<AuthProps>({});
 
-export const AuthContext = createContext<AuthContextProps>({
-  signIn: async () => {},
-  signOut: async () => {},
-  carregando: false,
-  abrirAlerta: false,
-  tipoAlerta: "",
-  mensagemAlerta: "",
-  isLoggedIn: false,
-});
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
+export const AuthProvider = ({ children }: React.PropsWithChildren) => {
+  const router = useRouter();
 
-export const AuthProvider = ({
-  children,
-}: PropsWithChildren<AuthProviderProps>) => {
-  const navigate = useNavigate();
+  const [isLoanding, setIsLoanding] = useState<boolean>(false);
 
-  const [abrirAlerta, setAbrirAlerta] = useState(false);
-  const [tipoAlerta, setTipoAlerta] = useState("");
-  const [mensagemAlerta, setMensagemAlerta] = useState("");
-  const [carregando, setCarregando] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authState, setAuthState] = useState<{
+    token: string | null;
+    authenticated: boolean | null;
+  }>({
+    token: null,
+    authenticated: null,
+  });
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      setCarregando(true);
-      const token = await AsyncStorage.getItem("token");
-      const loginTime = await AsyncStorage.getItem("loginTime");
+    const loadToken = async () => {
+      const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
-      if (token && loginTime) {
-        const sessionDuration = 3600 * 1000; // 1 hour in milliseconds
-        const currentTime = new Date().getTime();
-        const loginTimeMs = new Date(loginTime).getTime();
-
-        if (currentTime - loginTimeMs < sessionDuration) {
-          setIsLoggedIn(true);
-          navigate("home");
-        } else {
-          await AsyncStorage.removeItem("token");
-          await AsyncStorage.removeItem("loginTime");
-          setIsLoggedIn(false);
-        }
-      } else {
-        setIsLoggedIn(false);
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       }
-      setCarregando(false);
+
+      setAuthState({
+        token: token,
+        authenticated: true,
+      });
     };
 
-    checkAuthStatus();
+    loadToken();
   }, []);
 
-  const signIn = async ({ email, password }: LoginProps) => {
-    setCarregando(true);
-    setAbrirAlerta(false);
+  const login = async (email: string, password: string) => {
+    setIsLoanding(true);
 
     try {
-      const response = await api.post("/auth/login", { email, password });
-      const { token } = response.data.body;
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
 
-      const loginTime = new Date().toISOString();
-      await AsyncStorage.setItem("token", token);
-      await AsyncStorage.setItem("loginTime", loginTime);
+      if (response && response.status === 200 && response.data) {
+        setAuthState({
+          token: response.data?.body?.token,
+          authenticated: true,
+        });
 
-      setIsLoggedIn(true);
-      setCarregando(false);
-      navigate("home");
-    } catch (error) {
-      setTipoAlerta("erro");
-      setMensagemAlerta("Email ou senha inválidos");
-      setAbrirAlerta(true);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data?.body?.token}`;
 
-      setCarregando(false);
-      console.log(error);
+        const token = response.data?.body?.token;
+
+        if (token) {
+          await SecureStore.setItemAsync(TOKEN_KEY, token);
+        }
+
+        router.navigate("/home");
+
+        setIsLoanding(false);
+
+        return response;
+      }
+    } catch (e) {
+      setIsLoanding(false);
+      return { error: true, msg: (e as any).response.data?.message };
     }
   };
 
-  const signOut = async () => {
-    await AsyncStorage.removeItem("token");
-    await AsyncStorage.removeItem("loginTime");
-    setIsLoggedIn(false);
-    navigate("login");
+  const logout = async () => {
+    await SecureStore.deleteItemAsync(TOKEN_KEY);
+
+    console.log("chamou");
+
+    axios.defaults.headers.common["Authorization"] = "";
+
+    setAuthState({
+      token: null,
+      authenticated: false,
+    });
+
+    console.log(authState);
+  };
+  const value = {
+    onLogin: login,
+    onLogout: logout,
+    authState,
+    isLoanding,
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        signIn,
-        signOut,
-        carregando,
-        abrirAlerta,
-        tipoAlerta,
-        mensagemAlerta,
-        isLoggedIn,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

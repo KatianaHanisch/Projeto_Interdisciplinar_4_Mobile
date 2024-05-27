@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
-    marginTop: 20,
+    marginTop: 10,
   },
   itemFiltro: {
     width: 60,
