@@ -8,14 +8,9 @@ import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial
 import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagina-inicial";
 
 import { useNavigate } from "@/hooks/useNavigate";
-import { useAuth } from "@/context/AuthContext";
 
 export default function PaginaInicial() {
   const navigate = useNavigate();
-
-  const { authState } = useAuth();
-
-  console.log(authState?.authenticated);
 
   return (
     <View style={styles.container}>

@@ -4,7 +4,7 @@ export type ButtomSheetProps = {
   handleButtonRespostas?: () => void;
   abrirRespontas?: boolean;
   data: ComentariosProps[] | undefined;
-  handleResposta?: () => void;
+  handleResposta?: (id: string) => void;
   handleInputValue: (value: string) => void;
   handleSubmit: () => void;
   handleSubmitResposta: (id: string) => void;
