@@ -71,12 +71,6 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
       };
     }, []);
 
-    useEffect(() => {
-      if (flatListRef.current) {
-        flatListRef.current.scrollToEnd({ animated: true });
-      }
-    }, [data]);
-
     return (
       <BottomSheet
         backgroundStyle={styles.background}

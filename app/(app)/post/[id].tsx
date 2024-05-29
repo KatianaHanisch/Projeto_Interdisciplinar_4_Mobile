@@ -200,6 +200,7 @@ export default function ModalDetalhesAnimal() {
     if (inputResponderRef.current) {
       inputResponderRef.current.focus();
     }
+    flatListRef.current?.scrollToEnd({ animated: true });
 
     setIdComentario(id);
 
@@ -237,6 +238,7 @@ export default function ModalDetalhesAnimal() {
 
         setInputValue("");
 
+        setTipoRequisicao("novoComentario");
         setCarregando(false);
       }
     } catch (err) {
@@ -380,7 +382,7 @@ export default function ModalDetalhesAnimal() {
               ref={bottomSheetRef}
               onClose={handleCloseButton}
               inputRef={inputResponderRef}
-              handleResposta={handleButtonAdicionarComentario}
+              handleResposta={handleResposta}
               data={dadosPost?.comments}
               handleSubmit={handleSubmit}
               handleSubmitResposta={handleSubmitResposta}

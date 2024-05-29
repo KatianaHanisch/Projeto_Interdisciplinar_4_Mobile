@@ -18,9 +18,23 @@ export const styles = StyleSheet.create({
     top: 40,
     position: "absolute",
   },
+  containerNome: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+  },
+  containerIcone: {
+    height: 30,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginLeft: 4,
+  },
   imagem: {
-    width: 80,
-    height: 75,
+    width: 90,
+    height: 85,
+    borderRadius: 100,
   },
   nome: {
     fontSize: 25,
@@ -30,7 +44,7 @@ export const styles = StyleSheet.create({
   },
   containerDadosUsuario: {
     width: "100%",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "center",
   },
   containerDados: {
@@ -58,5 +72,11 @@ export const styles = StyleSheet.create({
   },
   buttonEdit: {
     padding: 5,
+  },
+  containerButton: {
+    width: "95%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
   },
 });
