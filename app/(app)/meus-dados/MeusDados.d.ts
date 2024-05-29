@@ -1,7 +1,7 @@
 interface UserDataProps {
-  id: string | null;
+  id?: string | null;
   name: string | null;
-  email: string | null;
+  email?: string | null;
   image_url: string | null;
   password?: string;
 }

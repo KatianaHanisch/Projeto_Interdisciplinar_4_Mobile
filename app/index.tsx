@@ -2,8 +2,6 @@ import React from "react";
 
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-import "text-encoding-polyfill";
-
 import { theme } from "../constants";
 
 import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial";

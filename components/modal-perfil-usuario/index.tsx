@@ -59,7 +59,10 @@ export function ModalPerfilUsuario() {
     <View style={styles.container}>
       <View style={styles.containerHeader}>
         <Image
-          source={require("../../assets/images/imagem-perfil-usuario.png")}
+          style={styles.imagem}
+          source={{
+            uri: `${api.defaults.baseURL}/uploads/users/${dadosUsuario.image_url}`,
+          }}
         />
         <Text style={styles.nomeHeader}>{dadosUsuario.name}</Text>
       </View>

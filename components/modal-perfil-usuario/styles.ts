@@ -42,4 +42,9 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.montserrat.medium,
     color: theme.colors.grayMedium,
   },
+  imagem: {
+    width: 90,
+    height: 85,
+    borderRadius: 100,
+  },
 });

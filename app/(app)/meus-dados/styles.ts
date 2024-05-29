@@ -30,11 +30,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     marginLeft: 4,
-    // backgroundColor: "red",
   },
   imagem: {
-    width: 80,
-    height: 75,
+    width: 90,
+    height: 85,
+    borderRadius: 100,
   },
   nome: {
     fontSize: 25,
