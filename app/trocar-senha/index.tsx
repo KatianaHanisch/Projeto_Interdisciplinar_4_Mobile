@@ -4,7 +4,6 @@ import { Text, View, TextInput, Image } from "react-native";
 
 import { Button } from "@/components/button";
 import { Alert } from "@/components/alert";
-import { AuthContext } from "@/context/AuthContext";
 
 import { ImagemTelaLogin } from "@/assets/images/imagem-tela-login";
 import { useForm } from "@/hooks/useForm";

@@ -3892,7 +3892,7 @@ expo-router@3.5.14:
 
 expo-secure-store@~13.0.1:
   version "13.0.1"
-  resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-13.0.1.tgz#fc886d3e0ed12890c8dd74e7cc44e35b03f2d79b"
+  resolved "https://registry.npmjs.org/expo-secure-store/-/expo-secure-store-13.0.1.tgz"
   integrity sha512-5DTKjbv98X7yPbm+1jER/sOEIlt2Ih7qwabTvkWDXry5bPcQGoulxH5zIX9+JvVH7of8GI4t7NSEbpAO3P7FZA==
 
 expo-splash-screen@0.27.4:

@@ -1,6 +1,15 @@
 import React from "react";
 
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+
+import "text-encoding-polyfill";
 
 import { theme } from "../constants";
 
@@ -8,9 +17,15 @@ import { IconArrowPaginaInicial } from "@/assets/icons/icon-arrow-pagina-inicial
 import { ImagemCirculoPaginaInicial } from "@/assets/images/imagem-circulo-pagina-inicial";
 
 import { useNavigate } from "@/hooks/useNavigate";
+import { useAuth } from "@/context/AuthContext";
+import { IconEnviar } from "@/assets/icons/icon-enviar";
 
 export default function PaginaInicial() {
   const navigate = useNavigate();
+
+  const { authState } = useAuth();
+
+  // console.log(authState?.authenticated);
 
   return (
     <View style={styles.container}>
@@ -19,6 +34,7 @@ export default function PaginaInicial() {
       <Text style={styles.tituloInicio}>
         Adote seu <Text style={styles.tituloInicioDestaque}>pet</Text>
       </Text>
+
       <View style={styles.containerButton}>
         <TouchableOpacity
           onPress={() => navigate("/login")}
