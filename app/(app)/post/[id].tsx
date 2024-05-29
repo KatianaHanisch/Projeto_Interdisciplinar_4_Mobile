@@ -32,6 +32,7 @@ import { formatarData } from "@/utils/formatarData";
 import { AxiosError } from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "@/hooks/useNavigate";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ModalDetalhesAnimal() {
   const router = useRouter();
@@ -207,7 +208,11 @@ export default function ModalDetalhesAnimal() {
     setTipoRequisicao("subComentario");
   };
 
-  const handleAbrirChat = () => {
+  const handleAbrirChat = async () => {
+    const userId = await AsyncStorage.getItem("id");
+    if (dadosPost?.user.id === userId) {
+      return;
+    }
     if (dadosPost?.user.id) {
       navigate(`/chat-conversa/${dadosPost.user.id}`);
     } else {
