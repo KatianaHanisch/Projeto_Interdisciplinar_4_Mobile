@@ -26,7 +26,6 @@ export function ModalEditar({
   handleInputChange,
   formData,
   uploadImage,
-  buttonVisivel,
   carregando,
   imageUrl,
   input1,

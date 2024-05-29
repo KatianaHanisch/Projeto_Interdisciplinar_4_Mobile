@@ -90,8 +90,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const logout = async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
 
-    console.log("chamou");
-
     axios.defaults.headers.common["Authorization"] = "";
 
     setAuthState({

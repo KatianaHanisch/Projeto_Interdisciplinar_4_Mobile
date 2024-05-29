@@ -6,7 +6,6 @@ interface ModalEditarProps {
   handleSubmit: () => void;
   uploadImage: () => void;
   formData: UsuariosProps;
-  buttonVisivel: boolean;
   carregando: boolean;
   imageUrl: string | null;
   input1: React.RefObject<TextInput>;

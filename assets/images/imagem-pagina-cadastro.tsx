@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Svg, Ellipse } from "react-native-svg";
 
 export function ImagemPaginaCadastro() {
