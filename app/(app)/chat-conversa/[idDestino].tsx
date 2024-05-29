@@ -64,8 +64,6 @@ export default function ChatConversa() {
     }
   };
 
-  console.log(mensagem);
-
   const handleButtonBack = () => {
     router.back();
   };

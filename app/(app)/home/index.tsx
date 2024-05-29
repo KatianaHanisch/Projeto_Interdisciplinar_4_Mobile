@@ -65,7 +65,6 @@ export default function Home() {
   const client = new Client({
     brokerURL: `${api_chat}/wss?id=${id}`,
     onConnect: () => {
-      console.log("Conectado");
       setIsConnected(true);
       client.subscribe(`/user/${id}/queue/messages`, (message) => {
         const mensagemRecebida = JSON.parse(message.body);
@@ -84,9 +83,7 @@ export default function Home() {
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
-    beforeConnect: () => {
-      console.log("Before connect");
-    },
+    beforeConnect: () => {},
   });
 
   useEffect(() => {

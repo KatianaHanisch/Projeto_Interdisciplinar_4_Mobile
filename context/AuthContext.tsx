@@ -96,8 +96,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       token: null,
       authenticated: false,
     });
-
-    console.log(authState);
   };
   const value = {
     onLogin: login,
