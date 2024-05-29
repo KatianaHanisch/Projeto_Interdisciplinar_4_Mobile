@@ -17,6 +17,8 @@ import { api } from "@/services/api";
 
 import { styles } from "./styles";
 import { useForm } from "@/hooks/useForm";
+import { SnackBar } from "@/components/snack-bar";
+import { ImagemInformacoesUsuarios } from "@/assets/images/imagem-informacoes-usuarios";
 
 export default function MeusDados() {
   const { authState } = useAuth();
@@ -30,6 +32,10 @@ export default function MeusDados() {
   });
 
   const router = useRouter();
+
+  const [abrirSnackBar, setAbrirSnackBar] = useState<boolean>(false);
+  const [mensagemSnackBar, setMensagemSnackBar] = useState<string>("");
+  const [tipoSnackBar, setTipoSnackBar] = useState<string>("");
 
   const [carregando, setCarregando] = useState<boolean>(false);
   const [abrirModal, setAbrirModal] = useState<boolean>(false);
@@ -47,7 +53,7 @@ export default function MeusDados() {
     router.back();
   };
 
-  const handleFocusInput = (input: "input1" | "input2") => {
+  const handleFocusInput = (input: string) => {
     if (input == "input1") {
       input1.current?.focus();
     } else {
@@ -58,7 +64,6 @@ export default function MeusDados() {
   };
 
   const handleDados = async () => {
-    const id = await AsyncStorage.getItem("id");
     const name = await AsyncStorage.getItem("name");
     const image_url = await AsyncStorage.getItem("image_url");
 
@@ -69,6 +74,10 @@ export default function MeusDados() {
     if (formData.name === "" || formData.password === "") return;
 
     setCarregando(true);
+
+    if (image !== null) {
+      handleUploadImage();
+    }
 
     try {
       const response = await api.patch(
@@ -86,12 +95,21 @@ export default function MeusDados() {
 
       if (response.status === 200) {
         await AsyncStorage.setItem("name", formData.name!);
+        await AsyncStorage.setItem("image_url", response.data.imageUrl);
 
         setCarregando(false);
         setButtonVisivel(false);
         setAbrirModal(false);
 
+        setAbrirSnackBar(true);
+        setMensagemSnackBar("Dados atualizados com sucesso");
+        setTipoSnackBar("sucesso");
+
         await handleDados();
+
+        setTimeout(() => {
+          setAbrirSnackBar(false);
+        }, 4000);
       }
     } catch (error) {
       setCarregando(false);
@@ -100,25 +118,18 @@ export default function MeusDados() {
     }
   };
 
-  const uploadImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const handleUploadImage = async () => {
+    if (image === null) return;
 
-    if (!result.canceled) {
-      const { uri, fileName, type } = result.assets[0];
-      setImage(uri);
-
+    try {
       const formData: any = new FormData();
 
       formData.append("image", {
-        uri: result.assets[0].uri,
-        type: mime.getType(result.assets[0].uri),
-        name: result.assets[0].uri.split("/").pop(),
+        uri: image,
+        type: mime.getType(image),
+        name: image.split("/").pop(),
       });
+
       try {
         const response = await api.patch("/users/user/image", formData, {
           headers: {
@@ -128,11 +139,28 @@ export default function MeusDados() {
         });
 
         if (response.status === 200) {
-          console.log("Imagem enviada com sucesso");
+          setImage(null);
         }
       } catch (error) {
         console.log(error);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const selecionarImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const { uri } = result.assets[0];
+
+      setImage(uri);
     }
   };
 
@@ -140,18 +168,20 @@ export default function MeusDados() {
     setImage(null);
   };
 
+  const handleAbrirModal = (value: string) => {
+    setAbrirModal(true);
+
+    setTimeout(() => {
+      handleFocusInput(value);
+    }, 100);
+  };
+
   useEffect(() => {
     handleDados();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.containerVoltar}
-        onPress={handleButtonBack}
-      >
-        <IconVoltar />
-      </TouchableOpacity>
+    <>
       {abrirModal && (
         <ModalEditar
           handleFecharModal={handleFecharModal}
@@ -160,56 +190,72 @@ export default function MeusDados() {
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
           formData={formData}
-          uploadImage={uploadImage}
+          uploadImage={selecionarImage}
           carregando={carregando}
-          buttonVisivel={buttonVisivel}
           imageUrl={image}
           input1={input1}
           input2={input2}
         />
       )}
-      <ImagemDadosUsuario />
-      <TouchableOpacity
-        style={styles.containerImagem}
-        onPress={() => setAbrirModal(true)}
-      >
-        <Image
-          style={styles.imagem}
-          source={{
-            uri: `${api.defaults.baseURL}/uploads/users/${formData.image_url}`,
-          }}
-        />
-      </TouchableOpacity>
-      <View style={styles.containerDadosUsuario}>
-        <View style={styles.containerDados}>
-          <Text style={styles.tituloInformaçoes}>Nome</Text>
-          <View style={styles.containerInformacoes}>
-            <Text style={styles.informacoes}>{formData.name}</Text>
-            <TouchableOpacity
-              style={styles.buttonEdit}
-              onPress={() => {
-                setAbrirModal(true);
-              }}
-            >
-              <IconEdit />
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.containerVoltar}
+          onPress={handleButtonBack}
+        >
+          <IconVoltar />
+        </TouchableOpacity>
+
+        <ImagemDadosUsuario />
+        <TouchableOpacity
+          style={styles.containerImagem}
+          onPress={() => setAbrirModal(true)}
+        >
+          <Image
+            style={styles.imagem}
+            source={{
+              uri: `${api.defaults.baseURL}/uploads/users/${formData.image_url}`,
+            }}
+          />
+        </TouchableOpacity>
+        {abrirSnackBar && (
+          <SnackBar
+            mensagem={mensagemSnackBar}
+            tipo={tipoSnackBar}
+            onClose={() => setAbrirSnackBar(false)}
+          />
+        )}
+        <View style={styles.containerDadosUsuario}>
+          <View style={styles.containerDados}>
+            <Text style={styles.tituloInformaçoes}>Nome</Text>
+            <View style={styles.containerInformacoes}>
+              <Text style={styles.informacoes}>{formData.name}</Text>
+              <TouchableOpacity
+                style={styles.buttonEdit}
+                onPress={() => {
+                  handleAbrirModal("input1");
+                }}
+              >
+                <IconEdit />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={styles.containerDados}>
-          <Text style={styles.tituloInformaçoes}>Senha</Text>
-          <View style={styles.containerInformacoes}>
-            <Text style={styles.informacoes}>********</Text>
-            <TouchableOpacity
-              style={styles.buttonEdit}
-              onPress={() => {
-                setAbrirModal(true);
-              }}
-            >
-              <IconEdit />
-            </TouchableOpacity>
+          <View style={styles.containerDados}>
+            <Text style={styles.tituloInformaçoes}>Senha</Text>
+            <View style={styles.containerInformacoes}>
+              <Text style={styles.informacoes}>********</Text>
+              <TouchableOpacity
+                style={styles.buttonEdit}
+                onPress={() => {
+                  handleAbrirModal("input2");
+                }}
+              >
+                <IconEdit />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+      <ImagemInformacoesUsuarios />
+    </>
   );
 }

@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
+    backgroundColor: theme.colors.orangeLight,
   },
   imagemCarregada: {
     flexDirection: "row",
@@ -96,11 +97,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     paddingHorizontal: 20,
-    marginBottom: 20,
   },
   textoUpload: {
     fontSize: 14,
     fontFamily: theme.fontFamily.raleway.semiBold,
-    color: theme.colors.black,
+    color: theme.colors.grayPrimary,
   },
 });
