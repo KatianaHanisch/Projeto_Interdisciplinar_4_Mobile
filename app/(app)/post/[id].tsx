@@ -31,9 +31,11 @@ import { theme } from "@/constants";
 import { formatarData } from "@/utils/formatarData";
 import { AxiosError } from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "@/hooks/useNavigate";
 
 export default function ModalDetalhesAnimal() {
   const router = useRouter();
+  const navigate = useNavigate();
 
   const { authState } = useAuth();
 
@@ -204,6 +206,14 @@ export default function ModalDetalhesAnimal() {
     setTipoRequisicao("subComentario");
   };
 
+  const handleAbrirChat = () => {
+    if (dadosPost?.user.id) {
+      navigate(`/chat-conversa/${dadosPost.user.id}`);
+    } else {
+      console.error("ID do usuário está indefinido");
+    }
+  };
+
   const handleSubmitResposta = async (id: string) => {
     if (id === "" || inputValue === "") return;
 
@@ -289,9 +299,12 @@ export default function ModalDetalhesAnimal() {
                 <Text style={styles.dataPublicacao}>
                   {formatarData(dadosPost?.createdAt)}
                 </Text>
-                <Link href={""} style={styles.informacoesPublicacao}>
+                <Text
+                  onPress={handleAbrirChat}
+                  style={styles.informacoesPublicacao}
+                >
                   publicado por {dadosPost?.user?.name.toLowerCase()}
-                </Link>
+                </Text>
               </View>
               <View style={styles.containerInformacoes}>
                 <View style={styles.containerTextos}>

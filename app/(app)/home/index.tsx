@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { View, TextInput, SafeAreaView, FlatList } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  TextInput,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  Button,
+} from "react-native";
 import { useNavigate } from "@/hooks/useNavigate";
 import { AxiosError } from "axios";
+
+import { Client } from "@stomp/stompjs";
 
 import { Header } from "@/components/header";
 import { Filtro } from "@/components/filtro";
@@ -10,8 +19,10 @@ import { CardPost } from "@/components/card-post";
 import { IconBusca } from "@/assets/icons/icon-busca";
 
 import { styles } from "./styles";
-import { api } from "@/services/api";
+import { api, api_chat } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
+
+import * as encoding from "text-encoding";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -19,7 +30,9 @@ export default function Home() {
   const { authState } = useAuth();
 
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
+  const [mensagensRecebidas, setMensagensRecebidas] = useState<any>([]);
   const [posts, setPosts] = useState<PostProps[]>([]);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
@@ -48,9 +61,42 @@ export default function Home() {
     }
   };
 
+  const id = "3884289a-1116-4d41-a112-195ef081bab5";
+  const client = new Client({
+    brokerURL: `${api_chat}/wss?id=${id}`,
+    onConnect: () => {
+      console.log("Conectado");
+      setIsConnected(true);
+      client.subscribe(`/user/${id}/queue/messages`, (message) => {
+        const mensagemRecebida = JSON.parse(message.body);
+        setMensagensRecebidas((prev: any) => [...prev, mensagemRecebida]);
+      });
+    },
+    onStompError: (frame) => {
+      console.log("Broker reported error: " + frame.headers["message"]);
+      console.log("Additional details: " + frame.body);
+    },
+    onWebSocketError: (error) => {
+      console.log("WebSocket error: ", error);
+    },
+    forceBinaryWSFrames: true,
+    appendMissingNULLonIncoming: true,
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+    beforeConnect: () => {
+      console.log("Before connect");
+    },
+  });
+
   useEffect(() => {
+    client.activate();
     fetcherPosts();
   }, []);
+
+  useEffect(() => {
+    console.log("Client connected: " + isConnected);
+  }, [isConnected]);
 
   return (
     <>

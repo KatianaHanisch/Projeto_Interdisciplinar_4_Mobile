@@ -7,6 +7,7 @@ import { IconGeneroMasculino } from "@/assets/icons/icon-genero-masculino";
 import { IconGeneroFeminino } from "@/assets/icons/icon-genero-feminino";
 
 import { styles } from "./styles";
+import { api, api_url } from "@/services/api";
 
 export function CardPost({
   id,
@@ -24,7 +25,12 @@ export function CardPost({
       onPress={() => handleNavigate(id)}
     >
       <View style={styles.containerImage}>
-        <Image source={{ uri: images[0].url }} style={styles.image} />
+        <Image
+          source={{
+            uri: `${api_url}/uploads/posts/${images[0]?.url}`,
+          }}
+          style={styles.image}
+        />
       </View>
       <View style={styles.containerTextos}>
         <View style={styles.containerTitulo}>
