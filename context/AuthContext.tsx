@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 
 import { api } from "@/services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -89,6 +90,13 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const logout = async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
+
+    await AsyncStorage.removeItem("id");
+    await AsyncStorage.removeItem("name");
+    await AsyncStorage.removeItem("email");
+    await AsyncStorage.removeItem("image_url");
+
+    // console.log("chamou");
 
     axios.defaults.headers.common["Authorization"] = "";
 

@@ -1,7 +1,8 @@
 interface CardConversaProps {
   id: string;
-  nome: string;
-  mensagem: string;
-  imagem: string;
+  chatId: string;
+  senderId: string;
+  recipientId: string;
+  status: boolean;
   onPress: (id: string) => void;
 }

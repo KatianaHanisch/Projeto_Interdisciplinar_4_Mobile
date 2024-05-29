@@ -6,13 +6,17 @@ import { styles } from "./styles";
 
 export function CardConversa({
   id,
-  nome,
-  imagem,
-  mensagem,
+  chatId,
+  senderId,
+  recipientId,
+  status,
   onPress,
 }: CardConversaProps) {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress(id)}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onPress(recipientId)}
+    >
       <View style={styles.containerImage}>
         <Image
           source={require("../../assets/images/user-conversas-image.png")}
@@ -20,8 +24,8 @@ export function CardConversa({
       </View>
       <View style={styles.containerTextos}>
         <View style={styles.containerMensagem}>
-          <Text style={styles.nomeContato}>{nome}</Text>
-          <Text style={styles.mensagem}>{mensagem}</Text>
+          <Text style={styles.nomeContato}>Nome aqui</Text>
+          {/* <Text style={styles.mensagem}>{mensagem}</Text> */}
         </View>
         <View style={styles.containerQuantidadeMensagens}>
           <Text style={styles.quantidadeMensagens}>1</Text>
