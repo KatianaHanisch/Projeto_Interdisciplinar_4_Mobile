@@ -86,6 +86,7 @@ export const styles = StyleSheet.create({
   containerMensagemEnviadaBox: {
     flexDirection: "column",
     alignItems: "flex-start",
+    justifyContent: "center",
     marginBottom: 5,
     width: "80%",
     backgroundColor: theme.colors.orangeSecundary,
@@ -128,5 +129,9 @@ export const styles = StyleSheet.create({
     width: 50,
     backgroundColor: theme.colors.orangePrimaryDark,
     marginRight: 5,
+  },
+  iconLixeira: {
+    position: "absolute",
+    right: 10,
   },
 });

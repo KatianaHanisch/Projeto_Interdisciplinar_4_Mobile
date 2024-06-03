@@ -16,6 +16,8 @@ import { TextInput } from "react-native-gesture-handler";
 import { IconEnviar } from "@/assets/icons/icon-enviar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatarData, formatarDataEHora } from "@/utils/formatarData";
+import { IconLixeira } from "@/assets/icons/icon-lixeira";
+import { SnackBar } from "@/components/snack-bar";
 
 export default function ChatConversa() {
   const router = useRouter();
@@ -27,8 +29,47 @@ export default function ChatConversa() {
   const [mensagem, setMensagem] = useState<string>();
   const [idUser, setIdUser] = useState<string>();
 
+  const [selectedMessageId, setSelectedMessageId] = useState<string>("");
+  const [abrirSnackBar, setAbrirSnackBar] = useState<boolean>(false);
+
   const client = useRef<Client | null>(null);
   const flatListRef = useRef<FlatList>(null);
+
+  const handleLongPress = (messageId: string) => {
+    setSelectedMessageId(messageId);
+  };
+
+  const removerMensagem = async (idMensagem: string) => {
+    const idUser = await AsyncStorage.getItem("id");
+    setAbrirSnackBar(false);
+
+    if (idUser && idMensagem) {
+      try {
+        const response = await api.delete(`/messages/${idUser}/${idMensagem}`, {
+          headers: {
+            Authorization: authState?.token,
+          },
+        });
+
+        if (response.status === 200) {
+          getMensagens();
+          setAbrirSnackBar(false);
+        } else {
+          setAbrirSnackBar(true);
+          setTimeout(() => {
+            setAbrirSnackBar(false);
+          }, 5000);
+        }
+      } catch (err) {
+        const error = err as AxiosError<Error>;
+        setAbrirSnackBar(true);
+        setTimeout(() => {
+          setAbrirSnackBar(false);
+        }, 5000);
+        console.error(error.response?.data.message);
+      }
+    }
+  };
 
   const getMensagens = async () => {
     const id = await AsyncStorage.getItem("id");
@@ -128,6 +169,7 @@ export default function ChatConversa() {
   return (
     <>
       <StatusBar style="light" />
+
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.containerVoltar}
@@ -153,24 +195,49 @@ export default function ChatConversa() {
             <>
               {item.senderId === idUser ? (
                 <View style={styles.containerMensagemEnviada}>
-                  <View style={styles.containerMensagemEnviadaBox}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.containerMensagemEnviadaBox}
+                    onLongPress={() => handleLongPress(item.id)}
+                    onPress={() => setSelectedMessageId("")}
+                  >
                     <Text style={styles.mensagem}>{item?.content}</Text>
-                  </View>
+                    {selectedMessageId === item.id && (
+                      <TouchableOpacity
+                        onPress={() => removerMensagem(item.id)}
+                        style={styles.iconLixeira}
+                      >
+                        <IconLixeira />
+                      </TouchableOpacity>
+                    )}
+                  </TouchableOpacity>
+
                   <Text style={styles.horarioMensagem}>
                     {formatarDataEHora(item?.timestamp)}
                   </Text>
                 </View>
               ) : (
                 <View style={styles.containerMensagemRecebida}>
-                  <View style={styles.containerMensagemRecebidaBox}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.containerMensagemRecebidaBox}
+                  >
                     <Text style={styles.mensagem}>{item?.content}</Text>
-                  </View>
+                  </TouchableOpacity>
                   <Text style={styles.horarioMensagem}>{item?.timestamp}</Text>
                 </View>
               )}
             </>
           )}
         />
+
+        {abrirSnackBar && (
+          <SnackBar
+            mensagem="Erro ao apagar mensagem"
+            tipo="erro"
+            onClose={() => setAbrirSnackBar(false)}
+          />
+        )}
         <View style={styles.containerInput}>
           <TextInput
             style={styles.input}
