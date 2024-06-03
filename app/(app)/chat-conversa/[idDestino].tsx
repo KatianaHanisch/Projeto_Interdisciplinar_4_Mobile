@@ -15,7 +15,7 @@ import { AxiosError } from "axios";
 import { TextInput } from "react-native-gesture-handler";
 import { IconEnviar } from "@/assets/icons/icon-enviar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { formatarData, formatarDataEHora } from "@/utils/formatarData";
+import { formatarDataEHora } from "@/utils/formatarData";
 import { IconLixeira } from "@/assets/icons/icon-lixeira";
 import { SnackBar } from "@/components/snack-bar";
 
@@ -23,7 +23,7 @@ export default function ChatConversa() {
   const router = useRouter();
   const { authState } = useAuth();
 
-  const { idDestino } = useLocalSearchParams();
+  const { idDestino, nome } = useLocalSearchParams();
 
   const [dadosConversa, setDadosConversa] = useState<ConversasProps[]>([]);
   const [mensagem, setMensagem] = useState<string>();
@@ -36,20 +36,30 @@ export default function ChatConversa() {
   const flatListRef = useRef<FlatList>(null);
 
   const handleLongPress = (messageId: string) => {
-    setSelectedMessageId(messageId);
+    if (messageId === undefined) {
+      getMensagens();
+      setTimeout(() => {
+        setSelectedMessageId(messageId);
+      }, 50);
+    } else {
+      setSelectedMessageId(messageId);
+    }
   };
 
-  const removerMensagem = async (idMensagem: string) => {
+  const removerMensagem = async () => {
     const idUser = await AsyncStorage.getItem("id");
+    console.log(selectedMessageId);
     setAbrirSnackBar(false);
-
-    if (idUser && idMensagem) {
+    if (idUser && selectedMessageId) {
       try {
-        const response = await api.delete(`/messages/${idUser}/${idMensagem}`, {
-          headers: {
-            Authorization: authState?.token,
-          },
-        });
+        const response = await api.delete(
+          `/messages/${idUser}/${selectedMessageId}`,
+          {
+            headers: {
+              Authorization: authState?.token,
+            },
+          }
+        );
 
         if (response.status === 200) {
           getMensagens();
@@ -181,7 +191,7 @@ export default function ChatConversa() {
           <Image
             source={require("../../../assets/images/user-conversas-image.png")}
           />
-          <Text style={styles.textoHeader}>Nome aqui</Text>
+          <Text style={styles.textoHeader}>{nome}</Text>
         </View>
         <FlatList
           ref={flatListRef}
@@ -204,7 +214,7 @@ export default function ChatConversa() {
                     <Text style={styles.mensagem}>{item?.content}</Text>
                     {selectedMessageId === item.id && (
                       <TouchableOpacity
-                        onPress={() => removerMensagem(item.id)}
+                        onPress={() => removerMensagem()}
                         style={styles.iconLixeira}
                       >
                         <IconLixeira />
@@ -224,7 +234,10 @@ export default function ChatConversa() {
                   >
                     <Text style={styles.mensagem}>{item?.content}</Text>
                   </TouchableOpacity>
-                  <Text style={styles.horarioMensagem}>{item?.timestamp}</Text>
+                  <Text style={styles.horarioMensagem}>
+                    {" "}
+                    {formatarDataEHora(item?.timestamp)}
+                  </Text>
                 </View>
               )}
             </>

@@ -41,14 +41,14 @@ export function Header({
             onPress={() => handleNavigate!("chat")}
           >
             {pagina === "chat" ? <IconChatSelecionado /> : <IconChat />}
-            <View
+            {/* <View
               style={[
                 styles.containerMensagens,
                 pagina === "chat" && styles.containerMensagensSelecionado,
               ]}
             >
               <Text style={styles.quantidadeMensagens}>5</Text>
-            </View>
+            </View> */}
           </TouchableOpacity>
           <TouchableOpacity
             style={[

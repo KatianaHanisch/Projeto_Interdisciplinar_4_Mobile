@@ -51,4 +51,8 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.white,
   },
+  containerIconLixeira: {
+    position: "absolute",
+    right: 10,
+  },
 });
