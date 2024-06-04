@@ -7,17 +7,19 @@ import { IconGeneroMasculino } from "@/assets/icons/icon-genero-masculino";
 import { IconGeneroFeminino } from "@/assets/icons/icon-genero-feminino";
 
 import { styles } from "./styles";
-import { api, api_url } from "@/services/api";
+import { api_url } from "@/services/api";
 
 export function CardPost({
   id,
   name,
   age,
   city,
-  UF,
+  uf,
   sex,
   images,
+  tipoPost,
   handleNavigate,
+  handleDelete,
 }: CardPostProps) {
   return (
     <TouchableOpacity
@@ -40,8 +42,16 @@ export function CardPost({
         <Text style={styles.textoIdade}>{age} anos</Text>
         <View style={styles.containerLocalidade}>
           <IconLocalidade />
-          <Text style={styles.textoCidade}>{`${city} - ${UF}`}</Text>
+          <Text style={styles.textoCidade}>{`${city} - ${uf}`}</Text>
         </View>
+        {tipoPost === "meusPosts" && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleDelete!(id)}
+          >
+            <Text style={styles.buttonText}>Remover post</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );

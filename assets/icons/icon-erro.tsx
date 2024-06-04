@@ -2,7 +2,7 @@ import React from "react";
 
 import { Path, Svg } from "react-native-svg";
 
-export function IconAlertErro() {
+export function IconErro() {
   return (
     <Svg width="22" height="24" viewBox="0 0 20 20" fill="none">
       <Path

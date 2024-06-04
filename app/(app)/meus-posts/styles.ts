@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: theme.colors.orangeLight,
   },
   containerVoltar: {
     zIndex: 5,
@@ -17,5 +18,11 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     marginTop: 20,
+    marginBottom: 20,
+  },
+  containerImagem: {
+    position: "absolute",
+    bottom: 0,
+    zIndex: -1,
   },
 });
