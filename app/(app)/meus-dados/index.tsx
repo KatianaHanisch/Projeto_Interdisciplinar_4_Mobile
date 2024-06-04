@@ -181,7 +181,6 @@ export default function MeusDados() {
     handleDados();
   }, []);
 
-  console.log(abrirSnackBar);
   return (
     <>
       {abrirModal && (

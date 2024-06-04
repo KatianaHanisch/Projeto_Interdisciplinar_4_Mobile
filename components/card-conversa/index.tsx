@@ -9,6 +9,7 @@ import { api, api_url } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 import { AxiosError } from "axios";
 import { SnackBar } from "../snack-bar";
+import { IconBlock } from "@/assets/icons/icon-block";
 
 export function CardConversa({
   recipientId,
@@ -18,6 +19,9 @@ export function CardConversa({
   imagem,
   setIdConversa,
   idConversa,
+  ultimaMensagem,
+  abrirModal,
+  idBloquear,
   fetch,
   onPress,
 }: CardConversaProps) {
@@ -69,6 +73,13 @@ export function CardConversa({
     }
   };
 
+  const bloquearUsuario = () => {
+    abrirModal(true);
+    idBloquear(id);
+  };
+
+  console.log(status);
+
   return (
     <>
       <TouchableOpacity
@@ -89,20 +100,31 @@ export function CardConversa({
         </View>
         <View style={styles.containerTextos}>
           <View style={styles.containerMensagem}>
+            <Text style={styles.status}>Usuário Bloqueado</Text>
             <Text style={styles.nomeContato}>{nome}</Text>
-            <Text style={styles.mensagem}>Ultima mensagem do user aqui</Text>
+            <Text style={styles.mensagem}>{ultimaMensagem}</Text>
           </View>
           {/* <View style={styles.containerQuantidadeMensagens}>
           <Text style={styles.quantidadeMensagens}>1</Text>
         </View> */}
         </View>
+
         {idConversa === id && (
-          <TouchableOpacity
-            onPress={() => removerConversa()}
-            style={styles.containerIconLixeira}
-          >
-            <IconLixeiraConversa />
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              onPress={() => removerConversa()}
+              style={styles.containerIconLixeira}
+            >
+              <IconLixeiraConversa />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={bloquearUsuario}
+              style={styles.containerIconBlock}
+            >
+              <IconBlock />
+            </TouchableOpacity>
+          </>
         )}
       </TouchableOpacity>
       {abrirSnackBar && (

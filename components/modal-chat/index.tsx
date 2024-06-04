@@ -20,6 +20,9 @@ import { api, api_chat } from "@/services/api";
 import { theme } from "@/constants";
 
 import { Client } from "@stomp/stompjs";
+import { Button } from "../button";
+import { IconClose } from "@/assets/icons/icon-close";
+import { SnackBar } from "../snack-bar";
 
 interface Props {
   id: string;
@@ -31,13 +34,7 @@ interface Props {
     name: string;
     imageUrl: string;
   };
-  mensagem: string;
-}
-
-interface Mensagem {
-  content: string;
-  senderId: string;
-  recipientId: string;
+  lastMessage: string;
 }
 
 export function ModalChat() {
@@ -46,9 +43,14 @@ export function ModalChat() {
 
   const [carregando, setCarregando] = useState<boolean>();
   const [conversas, setConversas] = useState<Props[]>([]);
-  // const [mensagem, setMensagem] = useState<Mensagem>();
 
   const [idConversa, setIdConversa] = useState<string>("");
+  const [abrirModal, setAbrirModal] = useState<boolean>(false);
+
+  const [abrirSnack, setAbrirSnack] = useState<boolean>(false);
+  const [tipoSnack, setTipoSnack] = useState<string>("");
+  const [mensagemSnack, setMensagemSnack] = useState<string>("");
+  const [idBloquear, setIdBloquear] = useState<string>("");
 
   const client = useRef<Client | null>(null);
 
@@ -70,6 +72,40 @@ export function ModalChat() {
       }
     } catch (error) {
       setCarregando(false);
+
+      console.log(error);
+    }
+  };
+
+  const bloquearUsuario = async () => {
+    setCarregando(true);
+    try {
+      const response = await api.get(`/messages/${idBloquear}`, {
+        headers: {
+          Authorization: `Bearer ${authState?.token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setCarregando(false);
+        setAbrirModal(false);
+        setAbrirSnack(true);
+
+        setMensagemSnack("Usuário bloqueado com sucesso!");
+        setTipoSnack("sucesso");
+        setTimeout(() => {
+          setAbrirSnack(false);
+        }, 4000);
+      }
+    } catch (error) {
+      setCarregando(false);
+      setAbrirModal(false);
+      setAbrirSnack(true);
+      setMensagemSnack("Erro ao bloqueado usuário! Tente nvamente.");
+      setTipoSnack("falha");
+      setTimeout(() => {
+        setAbrirSnack(false);
+      }, 4000);
 
       console.log(error);
     }
@@ -124,6 +160,38 @@ export function ModalChat() {
 
   return (
     <View style={styles.container}>
+      {abrirSnack && (
+        <View style={{ width: "100%", top: 10, zIndex: 5 }}>
+          <SnackBar
+            mensagem={mensagemSnack}
+            tipo={tipoSnack}
+            onClose={() => setAbrirSnack(false)}
+          />
+        </View>
+      )}
+      {abrirModal && (
+        <View style={styles.container2}>
+          <View style={[styles.containerModal]}>
+            <View style={styles.containerHeader}>
+              <Text style={styles.textoHeader}>
+                Deseja bloquear esse usuário?
+              </Text>
+              <TouchableOpacity onPress={() => setAbrirModal(false)}>
+                <IconClose />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.containerDados}>
+              <View style={styles.containerInformaçoes}></View>
+              <Button
+                titulo="Confirmar"
+                carregando={carregando}
+                disabled={carregando}
+                onPress={() => bloquearUsuario()}
+              />
+            </View>
+          </View>
+        </View>
+      )}
       <TouchableOpacity onPress={() => setIdConversa("")} activeOpacity={1}>
         <View style={styles.containerHeaderModal}>
           <Text style={styles.tituloHeader}>Conversas</Text>
@@ -145,6 +213,10 @@ export function ModalChat() {
               data={conversas}
               renderItem={({ item }) => (
                 <CardConversa
+                  idBloquear={setIdBloquear}
+                  bloquearUsuario={bloquearUsuario}
+                  abrirModal={setAbrirModal}
+                  ultimaMensagem={item.lastMessage}
                   imagem={item.sender.imageUrl}
                   idConversa={idConversa}
                   setIdConversa={setIdConversa}

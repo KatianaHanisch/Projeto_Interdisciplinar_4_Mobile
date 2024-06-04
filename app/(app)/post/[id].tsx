@@ -214,7 +214,11 @@ export default function ModalDetalhesAnimal() {
       return;
     }
     if (dadosPost?.user.id) {
-      navigate(`/chat-conversa/${dadosPost.user.id}`);
+      navigate(
+        `/chat-conversa/${dadosPost.user.id}?nome=${encodeURIComponent(
+          dadosPost.user.name
+        )}&imagem=${encodeURIComponent(dadosPost.user.imageUrl)}`
+      );
     } else {
       console.error("ID do usuário está indefinido");
     }
