@@ -22,7 +22,6 @@ import { styles } from "./styles";
 import { api, api_chat } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 
-import * as encoding from "text-encoding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
@@ -139,7 +138,11 @@ export default function Home() {
             <FlatList
               data={posts}
               renderItem={({ item }) => (
-                <CardPost {...item} handleNavigate={handleDetalhes} />
+                <CardPost
+                  {...item}
+                  handleNavigate={handleDetalhes}
+                  tipoPost="home"
+                />
               )}
               keyExtractor={(post) => post.id}
               showsVerticalScrollIndicator={false}

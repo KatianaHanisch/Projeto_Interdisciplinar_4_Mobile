@@ -68,4 +68,18 @@ export const styles = StyleSheet.create({
     color: theme.colors.grayMedium,
     fontSize: 12,
   },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    backgroundColor: theme.colors.redPrimary,
+    paddingHorizontal: 20,
+    height: 35,
+    marginTop: 7,
+  },
+  buttonText: {
+    color: theme.colors.white,
+    fontFamily: theme.fontFamily.raleway.bold,
+    fontSize: 12,
+  },
 });

@@ -20,6 +20,9 @@ export const styles = StyleSheet.create({
     width: "90%",
     borderRadius: 10,
   },
+  containerIcone: {
+    flexDirection: "row",
+  },
   snackBarSucesso: {
     backgroundColor: theme.colors.greenPrimary,
   },
@@ -30,6 +33,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.colors.white,
     fontFamily: theme.fontFamily.raleway.semiBold,
-    marginLeft: 5,
+    marginLeft: 8,
   },
 });

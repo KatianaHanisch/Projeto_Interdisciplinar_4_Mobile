@@ -9,7 +9,7 @@ interface CardPostProps {
   name: string;
   age: string;
   description: string;
-  UF: string;
+  uf: string;
   city: string;
   sex: string;
   race: string;
@@ -23,6 +23,8 @@ interface CardPostProps {
   };
   images: ImagesProps[];
   handleNavigate: (id: string) => void;
+  handleDelete?: (id: string) => void;
+  tipoPost: string;
 }
 
 interface PostProps {

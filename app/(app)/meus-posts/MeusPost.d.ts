@@ -9,7 +9,7 @@ interface PostProps {
   name: string;
   age: string;
   description: string;
-  uf: string;
+  UF: string;
   city: string;
   sex: string;
   race: string;
@@ -22,9 +22,4 @@ interface PostProps {
     username: string;
   };
   images: ImagesProps[];
-}
-
-interface Error {
-  message: string[];
-  statusCode: number;
 }
