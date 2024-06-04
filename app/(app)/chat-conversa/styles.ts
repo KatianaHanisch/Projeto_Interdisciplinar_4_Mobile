@@ -134,4 +134,9 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
   },
+  imagem: {
+    width: 50,
+    height: 50,
+    borderRadius: 99999,
+  },
 });

@@ -5,7 +5,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { IconLixeiraConversa } from "@/assets/icons/icon-lixeira-conversa";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { api } from "@/services/api";
+import { api, api_url } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 import { AxiosError } from "axios";
 import { SnackBar } from "../snack-bar";
@@ -13,8 +13,9 @@ import { SnackBar } from "../snack-bar";
 export function CardConversa({
   recipientId,
   status,
-  name,
+  nome,
   id,
+  imagem,
   setIdConversa,
   idConversa,
   fetch,
@@ -29,7 +30,7 @@ export function CardConversa({
   };
 
   const handleSubmit = () => {
-    onPress(recipientId, name);
+    onPress(recipientId, nome, imagem);
   };
 
   const removerConversa = async () => {
@@ -78,13 +79,18 @@ export function CardConversa({
       >
         <View style={styles.containerImage}>
           <Image
-            source={require("../../assets/images/user-conversas-image.png")}
+            style={styles.imagem}
+            source={
+              imagem
+                ? { uri: `${api_url}/uploads/users/${imagem}` }
+                : require("../../assets/images/user-conversas-image.png")
+            }
           />
         </View>
         <View style={styles.containerTextos}>
           <View style={styles.containerMensagem}>
-            <Text style={styles.nomeContato}>{name}</Text>
-            <Text style={styles.mensagem}>Ultima mensagem do use aqui</Text>
+            <Text style={styles.nomeContato}>{nome}</Text>
+            <Text style={styles.mensagem}>Ultima mensagem do user aqui</Text>
           </View>
           {/* <View style={styles.containerQuantidadeMensagens}>
           <Text style={styles.quantidadeMensagens}>1</Text>

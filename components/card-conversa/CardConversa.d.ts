@@ -4,10 +4,11 @@ interface CardConversaProps {
   senderId: string;
   recipientId: string;
   status: boolean;
-  name: string;
+  nome: string;
+  imagem: string;
 
   idConversa: string;
   setIdConversa: State;
-  onPress: (id: string, nome: string) => void;
+  onPress: (id: string, nome: string, imagem: string) => void;
   fetch: () => void;
 }

@@ -94,25 +94,26 @@ export default function MeusDados() {
       );
 
       if (response.status === 200) {
-        await AsyncStorage.setItem("name", formData.name!);
-        await AsyncStorage.setItem("image_url", response.data.imageUrl);
-
+        setAbrirSnackBar(true);
         setCarregando(false);
         setButtonVisivel(false);
         setAbrirModal(false);
 
-        setAbrirSnackBar(true);
         setMensagemSnackBar("Dados atualizados com sucesso");
         setTipoSnackBar("sucesso");
-
-        await handleDados();
 
         setTimeout(() => {
           setAbrirSnackBar(false);
         }, 4000);
+
+        await AsyncStorage.setItem("name", formData.name!);
+        await AsyncStorage.setItem("image_url", response.data.imageUrl);
+
+        await handleDados();
       }
     } catch (error) {
       setCarregando(false);
+      setAbrirSnackBar(true);
 
       console.log(error);
     }
@@ -180,6 +181,7 @@ export default function MeusDados() {
     handleDados();
   }, []);
 
+  console.log(abrirSnackBar);
   return (
     <>
       {abrirModal && (
@@ -212,10 +214,15 @@ export default function MeusDados() {
         >
           <Image
             style={styles.imagem}
-            source={{
-              uri: `${api.defaults.baseURL}/uploads/users/${formData.image_url}`,
-            }}
+            source={
+              formData.image_url
+                ? {
+                    uri: `${api.defaults.baseURL}/uploads/users/${formData.image_url}`,
+                  }
+                : require("../../../assets/images/user-conversas-image.png")
+            }
           />
+          <IconEdit />
         </TouchableOpacity>
         {abrirSnackBar && (
           <SnackBar

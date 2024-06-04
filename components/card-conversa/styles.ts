@@ -17,6 +17,12 @@ export const styles = StyleSheet.create({
   containerImage: {
     width: 50,
     height: 50,
+    borderRadius: 99999,
+  },
+  imagem: {
+    width: 50,
+    height: 50,
+    borderRadius: 99999,
   },
   containerTextos: {
     width: "77%",

@@ -10,7 +10,7 @@ import { Client } from "@stomp/stompjs";
 
 import { IconVoltar } from "@/assets/icons/icon-voltar";
 import { useAuth } from "@/context/AuthContext";
-import { api, api_chat } from "@/services/api";
+import { api, api_chat, api_url } from "@/services/api";
 import { AxiosError } from "axios";
 import { TextInput } from "react-native-gesture-handler";
 import { IconEnviar } from "@/assets/icons/icon-enviar";
@@ -23,7 +23,8 @@ export default function ChatConversa() {
   const router = useRouter();
   const { authState } = useAuth();
 
-  const { idDestino, nome } = useLocalSearchParams();
+  const { idDestino, nome, imagem } = useLocalSearchParams();
+  console.log(imagem);
 
   const [dadosConversa, setDadosConversa] = useState<ConversasProps[]>([]);
   const [mensagem, setMensagem] = useState<string>();
@@ -48,7 +49,6 @@ export default function ChatConversa() {
 
   const removerMensagem = async () => {
     const idUser = await AsyncStorage.getItem("id");
-    console.log(selectedMessageId);
     setAbrirSnackBar(false);
     if (idUser && selectedMessageId) {
       try {
@@ -175,7 +175,6 @@ export default function ChatConversa() {
       }
     };
   }, []);
-
   return (
     <>
       <StatusBar style="light" />
@@ -189,8 +188,14 @@ export default function ChatConversa() {
         </TouchableOpacity>
         <View style={styles.containerHeader}>
           <Image
-            source={require("../../../assets/images/user-conversas-image.png")}
+            style={styles.imagem}
+            source={
+              imagem && imagem !== "null"
+                ? { uri: `${api_url}/uploads/users/${imagem}` }
+                : require("../../../assets/images/user-conversas-image.png")
+            }
           />
+
           <Text style={styles.textoHeader}>{nome}</Text>
         </View>
         <FlatList

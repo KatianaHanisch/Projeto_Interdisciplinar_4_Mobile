@@ -29,6 +29,7 @@ interface Props {
   status: boolean;
   sender: {
     name: string;
+    imageUrl: string;
   };
   mensagem: string;
 }
@@ -74,8 +75,12 @@ export function ModalChat() {
     }
   };
 
-  const handleConversa = (id: string, nome: string) => {
-    router.navigate(`/chat-conversa/${id}?nome=${encodeURIComponent(nome)}`);
+  const handleConversa = (id: string, nome: string, imagem: string) => {
+    router.navigate(
+      `/chat-conversa/${id}?nome=${encodeURIComponent(
+        nome
+      )}&imagem=${encodeURIComponent(imagem)}`
+    );
   };
 
   useEffect(() => {
@@ -140,9 +145,10 @@ export function ModalChat() {
               data={conversas}
               renderItem={({ item }) => (
                 <CardConversa
+                  imagem={item.sender.imageUrl}
                   idConversa={idConversa}
                   setIdConversa={setIdConversa}
-                  name={item.sender.name}
+                  nome={item.sender.name}
                   {...item}
                   onPress={handleConversa}
                   id={item.id}

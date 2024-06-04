@@ -134,6 +134,7 @@ export function ModalEditar({
             <Button
               titulo="Salvar alterações"
               carregando={carregando}
+              disabled={carregando}
               onPress={handleSubmit}
             />
           </View>
