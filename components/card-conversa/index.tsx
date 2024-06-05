@@ -13,7 +13,6 @@ import { IconBlock } from "@/assets/icons/icon-block";
 
 export function CardConversa({
   recipientId,
-  status,
   nome,
   id,
   imagem,
@@ -22,6 +21,8 @@ export function CardConversa({
   ultimaMensagem,
   abrirModal,
   idBloquear,
+  isBlocked,
+  setBloqueado,
   fetch,
   onPress,
 }: CardConversaProps) {
@@ -75,10 +76,9 @@ export function CardConversa({
 
   const bloquearUsuario = () => {
     abrirModal(true);
-    idBloquear(id);
+    idBloquear(recipientId);
+    setBloqueado(isBlocked);
   };
-
-  console.log(status);
 
   return (
     <>
@@ -100,7 +100,7 @@ export function CardConversa({
         </View>
         <View style={styles.containerTextos}>
           <View style={styles.containerMensagem}>
-            <Text style={styles.status}>Usuário Bloqueado</Text>
+            {isBlocked && <Text style={styles.status}>Usuário Bloqueado</Text>}
             <Text style={styles.nomeContato}>{nome}</Text>
             <Text style={styles.mensagem}>{ultimaMensagem}</Text>
           </View>

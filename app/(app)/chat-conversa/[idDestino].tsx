@@ -24,7 +24,6 @@ export default function ChatConversa() {
   const { authState } = useAuth();
 
   const { idDestino, nome, imagem } = useLocalSearchParams();
-  // console.log(nome);
 
   const [dadosConversa, setDadosConversa] = useState<ConversasProps[]>([]);
   const [mensagem, setMensagem] = useState<string>();

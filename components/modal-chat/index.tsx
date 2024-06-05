@@ -27,6 +27,7 @@ import { SnackBar } from "../snack-bar";
 interface Props {
   id: string;
   chatId: string;
+  isBlocked: boolean;
   senderId: string;
   recipientId: string;
   status: boolean;
@@ -51,7 +52,7 @@ export function ModalChat() {
   const [tipoSnack, setTipoSnack] = useState<string>("");
   const [mensagemSnack, setMensagemSnack] = useState<string>("");
   const [idBloquear, setIdBloquear] = useState<string>("");
-
+  const [bloqueado, setBloqueado] = useState<boolean>(false);
   const client = useRef<Client | null>(null);
 
   const fetcherDados = async () => {
@@ -79,19 +80,31 @@ export function ModalChat() {
 
   const bloquearUsuario = async () => {
     setCarregando(true);
+
     try {
-      const response = await api.get(`/messages/${idBloquear}`, {
-        headers: {
-          Authorization: `Bearer ${authState?.token}`,
-        },
-      });
+      const response = await api.post(
+        `/messages/block?id=${idBloquear}`,
+        {},
+        {
+          headers: {
+            Authorization: authState?.token,
+          },
+        }
+      );
 
       if (response.status === 200) {
         setCarregando(false);
         setAbrirModal(false);
         setAbrirSnack(true);
 
-        setMensagemSnack("Usuário bloqueado com sucesso!");
+        fetcherDados();
+
+        if (!bloqueado) {
+          setMensagemSnack("Usuário bloqueado com sucesso!");
+        } else if (bloqueado) {
+          setMensagemSnack("Usuário desbloqueado com sucesso!");
+        }
+
         setTipoSnack("sucesso");
         setTimeout(() => {
           setAbrirSnack(false);
@@ -101,7 +114,7 @@ export function ModalChat() {
       setCarregando(false);
       setAbrirModal(false);
       setAbrirSnack(true);
-      setMensagemSnack("Erro ao bloqueado usuário! Tente nvamente.");
+      setMensagemSnack("Erro ao bloqueado usuário!");
       setTipoSnack("falha");
       setTimeout(() => {
         setAbrirSnack(false);
@@ -171,10 +184,12 @@ export function ModalChat() {
       )}
       {abrirModal && (
         <View style={styles.container2}>
-          <View style={[styles.containerModal]}>
+          <View style={styles.containerModal}>
             <View style={styles.containerHeader}>
               <Text style={styles.textoHeader}>
-                Deseja bloquear esse usuário?
+                {!bloqueado
+                  ? "Deseja bloquear esse usuário?"
+                  : "Deseja desbloquear esse usuário?"}
               </Text>
               <TouchableOpacity onPress={() => setAbrirModal(false)}>
                 <IconClose />
@@ -212,20 +227,23 @@ export function ModalChat() {
             <FlatList
               data={conversas}
               renderItem={({ item }) => (
-                <CardConversa
-                  idBloquear={setIdBloquear}
-                  bloquearUsuario={bloquearUsuario}
-                  abrirModal={setAbrirModal}
-                  ultimaMensagem={item.lastMessage}
-                  imagem={item.sender.imageUrl}
-                  idConversa={idConversa}
-                  setIdConversa={setIdConversa}
-                  nome={item.sender.name}
-                  {...item}
-                  onPress={handleConversa}
-                  id={item.id}
-                  fetch={fetcherDados}
-                />
+                <>
+                  <CardConversa
+                    {...item}
+                    setBloqueado={setBloqueado}
+                    idBloquear={setIdBloquear}
+                    abrirModal={setAbrirModal}
+                    ultimaMensagem={item.lastMessage}
+                    imagem={item.sender.imageUrl}
+                    idConversa={idConversa}
+                    setIdConversa={setIdConversa}
+                    nome={item.sender.name}
+                    onPress={handleConversa}
+                    isBlocked={item.isBlocked}
+                    id={item.id}
+                    fetch={fetcherDados}
+                  />
+                </>
               )}
               keyExtractor={(item) => item.id}
             />
