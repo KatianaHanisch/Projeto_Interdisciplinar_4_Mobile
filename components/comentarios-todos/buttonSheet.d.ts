@@ -13,6 +13,7 @@ export type ButtomSheetProps = {
   carregando: boolean;
   tipoRequisicao: string;
   idComentario: string;
+  userImagem: string | undefined;
 };
 
 interface SubCommentsProps {

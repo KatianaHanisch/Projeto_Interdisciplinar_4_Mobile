@@ -3,11 +3,16 @@ interface CardConversaProps {
   chatId: string;
   senderId: string;
   recipientId: string;
-  status: boolean;
-  name: string;
-
+  // status: boolean;
+  isBlocked: boolean;
+  nome: string;
+  imagem: string;
+  ultimaMensagem: string;
   idConversa: string;
+  setBloqueado: State;
   setIdConversa: State;
-  onPress: (id: string, nome: string) => void;
+  abrirModal: State;
+  idBloquear: State;
+  onPress: (id: string, nome: string, imagem: string) => void;
   fetch: () => void;
 }

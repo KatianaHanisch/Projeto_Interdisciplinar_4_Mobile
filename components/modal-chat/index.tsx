@@ -20,23 +20,22 @@ import { api, api_chat } from "@/services/api";
 import { theme } from "@/constants";
 
 import { Client } from "@stomp/stompjs";
+import { Button } from "../button";
+import { IconClose } from "@/assets/icons/icon-close";
+import { SnackBar } from "../snack-bar";
 
 interface Props {
   id: string;
   chatId: string;
+  isBlocked: boolean;
   senderId: string;
   recipientId: string;
   status: boolean;
   sender: {
     name: string;
+    imageUrl: string;
   };
-  mensagem: string;
-}
-
-interface Mensagem {
-  content: string;
-  senderId: string;
-  recipientId: string;
+  lastMessage: string;
 }
 
 export function ModalChat() {
@@ -45,10 +44,15 @@ export function ModalChat() {
 
   const [carregando, setCarregando] = useState<boolean>();
   const [conversas, setConversas] = useState<Props[]>([]);
-  // const [mensagem, setMensagem] = useState<Mensagem>();
 
   const [idConversa, setIdConversa] = useState<string>("");
+  const [abrirModal, setAbrirModal] = useState<boolean>(false);
 
+  const [abrirSnack, setAbrirSnack] = useState<boolean>(false);
+  const [tipoSnack, setTipoSnack] = useState<string>("");
+  const [mensagemSnack, setMensagemSnack] = useState<string>("");
+  const [idBloquear, setIdBloquear] = useState<string>("");
+  const [bloqueado, setBloqueado] = useState<boolean>(false);
   const client = useRef<Client | null>(null);
 
   const fetcherDados = async () => {
@@ -74,8 +78,58 @@ export function ModalChat() {
     }
   };
 
-  const handleConversa = (id: string, nome: string) => {
-    router.navigate(`/chat-conversa/${id}?nome=${encodeURIComponent(nome)}`);
+  const bloquearUsuario = async () => {
+    setCarregando(true);
+
+    try {
+      const response = await api.post(
+        `/messages/block?id=${idBloquear}`,
+        {},
+        {
+          headers: {
+            Authorization: authState?.token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setCarregando(false);
+        setAbrirModal(false);
+        setAbrirSnack(true);
+
+        fetcherDados();
+
+        if (!bloqueado) {
+          setMensagemSnack("Usuário bloqueado com sucesso!");
+        } else if (bloqueado) {
+          setMensagemSnack("Usuário desbloqueado com sucesso!");
+        }
+
+        setTipoSnack("sucesso");
+        setTimeout(() => {
+          setAbrirSnack(false);
+        }, 4000);
+      }
+    } catch (error) {
+      setCarregando(false);
+      setAbrirModal(false);
+      setAbrirSnack(true);
+      setMensagemSnack("Erro ao bloqueado usuário!");
+      setTipoSnack("falha");
+      setTimeout(() => {
+        setAbrirSnack(false);
+      }, 4000);
+
+      console.log(error);
+    }
+  };
+
+  const handleConversa = (id: string, nome: string, imagem: string) => {
+    router.navigate(
+      `/chat-conversa/${id}?nome=${encodeURIComponent(
+        nome
+      )}&imagem=${encodeURIComponent(imagem)}`
+    );
   };
 
   useEffect(() => {
@@ -119,6 +173,40 @@ export function ModalChat() {
 
   return (
     <View style={styles.container}>
+      {abrirSnack && (
+        <View style={{ width: "100%", top: 10, zIndex: 5 }}>
+          <SnackBar
+            mensagem={mensagemSnack}
+            tipo={tipoSnack}
+            onClose={() => setAbrirSnack(false)}
+          />
+        </View>
+      )}
+      {abrirModal && (
+        <View style={styles.container2}>
+          <View style={styles.containerModal}>
+            <View style={styles.containerHeader}>
+              <Text style={styles.textoHeader}>
+                {!bloqueado
+                  ? "Deseja bloquear esse usuário?"
+                  : "Deseja desbloquear esse usuário?"}
+              </Text>
+              <TouchableOpacity onPress={() => setAbrirModal(false)}>
+                <IconClose />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.containerDados}>
+              <View style={styles.containerInformaçoes}></View>
+              <Button
+                titulo="Confirmar"
+                carregando={carregando}
+                disabled={carregando}
+                onPress={() => bloquearUsuario()}
+              />
+            </View>
+          </View>
+        </View>
+      )}
       <TouchableOpacity onPress={() => setIdConversa("")} activeOpacity={1}>
         <View style={styles.containerHeaderModal}>
           <Text style={styles.tituloHeader}>Conversas</Text>
@@ -139,15 +227,23 @@ export function ModalChat() {
             <FlatList
               data={conversas}
               renderItem={({ item }) => (
-                <CardConversa
-                  idConversa={idConversa}
-                  setIdConversa={setIdConversa}
-                  name={item.sender.name}
-                  {...item}
-                  onPress={handleConversa}
-                  id={item.id}
-                  fetch={fetcherDados}
-                />
+                <>
+                  <CardConversa
+                    {...item}
+                    setBloqueado={setBloqueado}
+                    idBloquear={setIdBloquear}
+                    abrirModal={setAbrirModal}
+                    ultimaMensagem={item.lastMessage}
+                    imagem={item.sender.imageUrl}
+                    idConversa={idConversa}
+                    setIdConversa={setIdConversa}
+                    nome={item.sender.name}
+                    onPress={handleConversa}
+                    isBlocked={item.isBlocked}
+                    id={item.id}
+                    fetch={fetcherDados}
+                  />
+                </>
               )}
               keyExtractor={(item) => item.id}
             />

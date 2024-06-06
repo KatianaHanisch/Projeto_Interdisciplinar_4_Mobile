@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 9999,
   },
   containerComentario: {
     flexDirection: "column",
