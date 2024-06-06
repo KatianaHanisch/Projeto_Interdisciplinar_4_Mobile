@@ -17,12 +17,14 @@ export function Header({
   pagina,
   handleFecharModal,
 }: HeaderProps) {
+  const backgroundOrange = pagina === "post" || pagina === "perfil-usuario";
+
   return (
     <>
       <View
         style={[
           styles.container,
-          pagina === "perfil-usuario" && styles.containerPerfilUsuario,
+          backgroundOrange && styles.containerPerfilUsuario,
         ]}
       >
         <TouchableOpacity

@@ -15,7 +15,6 @@ import { styles } from "./styles";
 import { IconClose } from "@/assets/icons/icon-close";
 import { StatusBar } from "expo-status-bar";
 import { IconEdit } from "@/assets/icons/icon-edit";
-import { useForm } from "@/hooks/useForm";
 import { Button } from "../button";
 
 export function ModalEditar({

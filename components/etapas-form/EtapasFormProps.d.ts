@@ -1,0 +1,3 @@
+interface EtapasFormProps {
+  currentEtapa: number;
+}
