@@ -157,5 +157,6 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     padding: 5,
+    marginTop: 20,
   },
 });

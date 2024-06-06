@@ -17,11 +17,13 @@ import { ButtomSheetProps } from "./buttonSheet";
 
 import { styles } from "./styles";
 import { IconClose } from "@/assets/icons/icon-close";
+import { api_url } from "@/services/api";
 
 export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
   (
     {
       data,
+      userImagem,
       onClose,
       inputRef,
       abrirRespontas,
@@ -39,7 +41,7 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
   ) => {
     const [keyboardSpace, setKeyboardSpace] = useState(0);
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-
+    console.log(data);
     const handleRequisicao = async (tipoRequisicao: string) => {
       if (tipoRequisicao === "novoComentario") {
         handleSubmit();
@@ -70,6 +72,8 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
         keyboardDidHideListener.remove();
       };
     }, []);
+
+    console.log(`${api_url}/uploads/users/${userImagem}`);
 
     return (
       <BottomSheet
@@ -120,7 +124,12 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
                 <View style={styles.containerInput}>
                   <View style={styles.containerImagem}>
                     <Image
-                      source={require("../../assets/images/icon-user-comentar.png")}
+                      source={
+                        userImagem && userImagem !== "null"
+                          ? { uri: `${api_url}/uploads/users/${userImagem}` }
+                          : require("../../assets/images/user-conversas-image.png")
+                      }
+                      style={styles.imagem}
                     />
                   </View>
                   <TextInput

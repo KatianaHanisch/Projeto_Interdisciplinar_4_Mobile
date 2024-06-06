@@ -7,6 +7,7 @@ import { RespostaComentario } from "../resposta-comentario";
 
 import { styles } from "./styles";
 import { formatarData } from "@/utils/formatarData";
+import { api_url } from "@/services/api";
 
 export const Comentario = memo(
   ({
@@ -29,7 +30,11 @@ export const Comentario = memo(
           <View style={styles.containerInterno}>
             <View style={styles.containerImagem}>
               <Image
-                source={require("../../assets/images/icon-user-comentar.png")}
+                source={
+                  user.imageUrl && user.imageUrl !== "null"
+                    ? { uri: `${api_url}/uploads/users/${user.imageUrl}` }
+                    : require("../../assets/images/user-conversas-image.png")
+                }
                 style={styles.image}
               />
             </View>

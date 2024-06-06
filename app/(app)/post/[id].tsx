@@ -373,22 +373,23 @@ export default function ModalDetalhesAnimal() {
                     </SafeAreaView>
                   </>
                 )}
+                {/* <TouchableOpacity onPress={handleButtonAdicionarComentario}>
+                  <Text style={styles.buttonComentarios}>
+                    Adicionar comentário
+                  </Text>
+                </TouchableOpacity> */}
                 {dadosPost?.comments && dadosPost?.comments.length > 0 && (
                   <TouchableOpacity onPress={handleButtonSheetOpen}>
-                    <Text style={styles.buttonComentariosTodos}>
+                    <Text style={styles.buttonComentarios}>
                       Ver todos os comentários
                     </Text>
                   </TouchableOpacity>
                 )}
-                <TouchableOpacity onPress={handleButtonAdicionarComentario}>
-                  <Text style={styles.buttonComentarios}>
-                    Adicionar comentário
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
             <ComentariosTodos
               ref={bottomSheetRef}
+              userImagem={dadosPost?.user.imageUrl}
               onClose={handleCloseButton}
               inputRef={inputResponderRef}
               handleResposta={handleResposta}

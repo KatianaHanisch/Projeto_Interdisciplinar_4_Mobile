@@ -85,4 +85,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
   },
+  imagem: {
+    width: 30,
+    height: 30,
+    borderRadius: 9999,
+  },
 });
