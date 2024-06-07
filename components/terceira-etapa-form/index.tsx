@@ -11,7 +11,6 @@ export function TerceiraEtapaForm({
   handleRemoverImagem,
   imagens,
 }: TerceiraEtapaProps) {
-  console.log(imagens);
   return (
     <View style={styles.containerUploadImagem}>
       {imagens!.length > 0 ? (

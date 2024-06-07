@@ -73,8 +73,6 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
       };
     }, []);
 
-    console.log(`${api_url}/uploads/users/${userImagem}`);
-
     return (
       <BottomSheet
         backgroundStyle={styles.background}

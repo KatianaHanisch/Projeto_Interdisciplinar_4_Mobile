@@ -148,11 +148,11 @@ export default function ChatConversa() {
           });
         },
         onStompError: (frame) => {
-          console.log("Broker reported error: " + frame.headers["message"]);
-          console.log("Additional details: " + frame.body);
+          // console.log("Broker reported error: " + frame.headers["message"]);
+          // console.log("Additional details: " + frame.body);
         },
         onWebSocketError: (error) => {
-          console.log("WebSocket error: ", error);
+          // console.log("WebSocket error: ", error);
         },
         forceBinaryWSFrames: true,
         appendMissingNULLonIncoming: true,

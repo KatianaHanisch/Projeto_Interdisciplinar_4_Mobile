@@ -15,6 +15,7 @@ import { Entypo } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { api } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
+import { SnackBar } from "../snack-bar";
 
 const formTemplate = {
   name: "",
@@ -56,6 +57,10 @@ export function ModalCriarPost() {
   const [imagens, setImagens] = useState<ImagemProps[]>([]);
   const [formData, setFormData] = useState<FormDataProps>(formTemplate);
 
+  const [abrirSnackBar, setAbrirSnackBar] = useState<boolean>(false);
+  const [tipoSnackBar, setTipoSnackBar] = useState<string>("");
+  const [mensagemSnackBar, setMensagemSnackBar] = useState<string>("");
+
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const { authState } = useAuth();
@@ -89,69 +94,6 @@ export function ModalCriarPost() {
   const handleRemoverImagem = (index: number) => {
     const novasImagens = imagens.filter((_, i) => i !== index);
     setImagens(novasImagens);
-  };
-
-  const handleSubmit = async () => {
-    const form: any = new FormData();
-
-    console.log(formData);
-
-    form.append("name", formData.name);
-    form.append("age", formData.age);
-    form.append("description", formData.description);
-    form.append("city", formData.city);
-    form.append("uf", formData.uf);
-    form.append("sex", formData.sex);
-    form.append("race", formData.race);
-    form.append("type", formData.type);
-
-    // form.append("image", {
-    //   uri: imagens[0].uri,
-    //   type: mime.getType(imagens[0]),
-    //   name: image.split("/").pop(),
-    // });
-
-    // imagens.forEach((imagem) => {
-    //   form.append("images", {
-    //     uri: imagem.uri,
-    //     type: mime.getType(imagem.uri!),
-    //     name: imagem.nome,
-    //   });
-    // });
-
-    // // Append other form data
-    // for (const key in formData) {
-    //   if (key !== "images") {
-    //     form.append(key, formData[key]);
-    //   }
-    // }
-
-    if (imagens.length > 0) {
-      for (const image of imagens) {
-        console.log(image);
-        form.append("images", {
-          uri: image.uri,
-          type: mime.getType(image.uri!),
-          name: image.nome,
-        });
-      }
-    }
-
-    try {
-      const response = await api.post("/posts/post", form, {
-        headers: {
-          Authorization: authState?.token,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.status === 200) {
-        alert("Post criado com sucesso!");
-      }
-    } catch (err) {
-      const error = err as AxiosError<Error>;
-      console.error(error.response?.data.message);
-    }
   };
 
   useEffect(() => {
@@ -227,6 +169,58 @@ export function ModalCriarPost() {
     }
   };
 
+  const handleSubmit = async () => {
+    const form: any = new FormData();
+
+    for (const key in formData) {
+      if (key !== "images") {
+        form.append(key, formData[key as keyof FormDataProps]);
+      }
+    }
+
+    imagens.forEach((imagem) => {
+      form.append("image", {
+        uri: imagem.uri,
+        type: mime.getType(imagem.uri!),
+        name: imagem.nome,
+      });
+    });
+
+    try {
+      const response = await api.post("/posts/post", form, {
+        headers: {
+          Authorization: authState?.token,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        setTipoSnackBar("sucesso");
+        setMensagemSnackBar("Post criado com sucesso");
+        setAbrirSnackBar(true);
+
+        setTimeout(() => {
+          setAbrirSnackBar(false);
+        }, 4000);
+
+        setFormData(formTemplate);
+        setImagens([]);
+        changeEtapa(0);
+      }
+    } catch (err) {
+      setTipoSnackBar("erro");
+      setMensagemSnackBar("Não foi possível criar o post");
+      setAbrirSnackBar(true);
+
+      setTimeout(() => {
+        setAbrirSnackBar(false);
+      }, 4000);
+
+      const error = err as AxiosError<Error>;
+      console.error(error.response?.data.message);
+    }
+  };
+
   useEffect(() => {
     fetcherEstados();
   }, []);
@@ -239,6 +233,13 @@ export function ModalCriarPost() {
 
   return (
     <View style={styles.container}>
+      {abrirSnackBar && (
+        <SnackBar
+          mensagem={mensagemSnackBar}
+          tipo={tipoSnackBar}
+          onClose={() => setAbrirSnackBar(false)}
+        />
+      )}
       <View
         style={[styles.containerWhite, isKeyboardVisible && { marginTop: 20 }]}
       >

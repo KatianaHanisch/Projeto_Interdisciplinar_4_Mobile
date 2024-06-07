@@ -25,4 +25,10 @@ export const styles = StyleSheet.create({
     bottom: 0,
     zIndex: -1,
   },
+  containerPosts: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "78%",
+  },
 });

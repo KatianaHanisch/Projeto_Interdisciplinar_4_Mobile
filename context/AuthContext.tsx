@@ -96,8 +96,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     await AsyncStorage.removeItem("email");
     await AsyncStorage.removeItem("image_url");
 
-    // console.log("chamou");
-
     axios.defaults.headers.common["Authorization"] = "";
 
     setAuthState({

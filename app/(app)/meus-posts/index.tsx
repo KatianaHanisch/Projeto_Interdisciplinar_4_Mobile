@@ -110,7 +110,7 @@ export default function MeusPosts() {
         />
       )}
       <Text style={styles.headerTitulo}>Meus Posts</Text>
-      <SafeAreaView>
+      <SafeAreaView style={styles.containerPosts}>
         <FlatList
           data={posts}
           renderItem={({ item }) => (
