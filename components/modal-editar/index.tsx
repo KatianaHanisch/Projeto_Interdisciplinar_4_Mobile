@@ -31,18 +31,21 @@ export function ModalEditar({
   input2,
 }: ModalEditarProps) {
   const [modalHeight, setModalHeight] = useState(60);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
-        setModalHeight(80);
+        setModalHeight(85);
+        setIsKeyboardVisible(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
         setModalHeight(60);
+        setIsKeyboardVisible(false);
       }
     );
 

@@ -9,6 +9,12 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.orangeLight,
     paddingVertical: 10,
   },
+  containerCarregamento: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.colors.white,
+  },
   containerHeader: {
     width: "100%",
     height: 150,

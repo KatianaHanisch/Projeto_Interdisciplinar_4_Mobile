@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "@/hooks/useNavigate";
@@ -10,6 +16,7 @@ import { IconArrowRigth } from "@/assets/icons/icon-arrow-rigth";
 import { styles } from "./styles";
 import { api } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { theme } from "@/constants";
 
 export function ModalPerfilUsuario() {
   const { authState, onLogout } = useAuth();
@@ -56,40 +63,48 @@ export function ModalPerfilUsuario() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerHeader}>
-        <Image
-          style={styles.imagem}
-          source={
-            dadosUsuario.image_url
-              ? {
-                  uri: `${api.defaults.baseURL}/uploads/users/${dadosUsuario.image_url}`,
-                }
-              : require("../../assets/images/user-conversas-image.png")
-          }
-        />
-        <Text style={styles.nomeHeader}>{dadosUsuario.name}</Text>
-      </View>
-      <View style={styles.containerButtons}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate("meus-dados")}
-        >
-          <Text style={styles.textButton}>Acessar meus dados</Text>
-          <IconArrowRigth />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate("meus-posts")}
-        >
-          <Text style={styles.textButton}>Meus Posts</Text>
-          <IconArrowRigth />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => onLogout!()}>
-          <Text style={styles.textButton}>Sair</Text>
-          <IconArrowRigth />
-        </TouchableOpacity>
-      </View>
-    </View>
+    <>
+      {carregando ? (
+        <View style={styles.containerCarregamento}>
+          <ActivityIndicator size={50} color={theme.colors.orangePrimaryDark} />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.containerHeader}>
+            <Image
+              style={styles.imagem}
+              source={
+                dadosUsuario.image_url
+                  ? {
+                      uri: `${api.defaults.baseURL}/uploads/users/${dadosUsuario.image_url}`,
+                    }
+                  : require("../../assets/images/user-conversas-image.png")
+              }
+            />
+            <Text style={styles.nomeHeader}>{dadosUsuario.name}</Text>
+          </View>
+          <View style={styles.containerButtons}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigate("meus-dados")}
+            >
+              <Text style={styles.textButton}>Acessar meus dados</Text>
+              <IconArrowRigth />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigate("meus-posts")}
+            >
+              <Text style={styles.textButton}>Meus Posts</Text>
+              <IconArrowRigth />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => onLogout!()}>
+              <Text style={styles.textButton}>Sair</Text>
+              <IconArrowRigth />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </>
   );
 }

@@ -334,7 +334,9 @@ export default function ModalDetalhesAnimal() {
                   </View>
                   <View style={styles.containerGenero}>
                     <Text style={styles.genero}>
-                      {dadosPost?.sex === "Macho" ? "Macho" : "Fêmea"}
+                      {dadosPost?.sex.toLocaleLowerCase() === "macho"
+                        ? "macho"
+                        : "femea"}
                     </Text>
                   </View>
                 </View>
@@ -373,15 +375,16 @@ export default function ModalDetalhesAnimal() {
                     </SafeAreaView>
                   </>
                 )}
-                {/* <TouchableOpacity onPress={handleButtonAdicionarComentario}>
-                  <Text style={styles.buttonComentarios}>
-                    Adicionar comentário
-                  </Text>
-                </TouchableOpacity> */}
-                {dadosPost?.comments && dadosPost?.comments.length > 0 && (
+                {dadosPost?.comments && dadosPost?.comments.length > 0 ? (
                   <TouchableOpacity onPress={handleButtonSheetOpen}>
                     <Text style={styles.buttonComentarios}>
                       Ver todos os comentários
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={handleButtonAdicionarComentario}>
+                    <Text style={styles.buttonComentarios}>
+                      Adicionar comentário
                     </Text>
                   </TouchableOpacity>
                 )}

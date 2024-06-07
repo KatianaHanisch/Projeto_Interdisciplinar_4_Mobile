@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     padding: 20,
     borderRadius: 20,
+    zIndex: 99,
   },
   containerHeader: {
     width: "100%",

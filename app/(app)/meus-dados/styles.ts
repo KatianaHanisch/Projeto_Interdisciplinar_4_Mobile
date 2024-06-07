@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     marginTop: -45,
   },
   containerVoltar: {
-    zIndex: 5,
+    zIndex: 1,
     left: 20,
     top: 40,
     position: "absolute",

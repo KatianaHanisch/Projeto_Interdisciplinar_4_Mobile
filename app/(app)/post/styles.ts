@@ -127,15 +127,17 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
     backgroundColor: theme.colors.orangeLight,
-    height: 280,
+    height: 250,
     borderRadius: 20,
   },
   containerComentariosSemComentarios: {
     backgroundColor: theme.colors.white,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: 0,
   },
   listaComentarios: {
     width: "100%",
-    height: 150,
     backgroundColor: theme.colors.orangeLight,
     borderRadius: 20,
   },
@@ -157,6 +159,5 @@ export const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     padding: 5,
-    marginTop: 20,
   },
 });
