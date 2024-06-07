@@ -21,8 +21,8 @@ import { ComentariosTodos } from "@/components/comentarios-todos";
 import { Comentario } from "@/components/comentario";
 import { SlideItem } from "@/components/slide-item";
 
-import { IconVoltar } from "@/assets/icons/icon-voltar";
 import { IconLocalidade } from "@/assets/icons/icon-localidade";
+import { AntDesign } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { Pagination } from "@/components/pagination";
@@ -303,7 +303,7 @@ export default function ModalDetalhesAnimal() {
               style={styles.buttonVoltar}
               onPress={handleButtonBack}
             >
-              <IconVoltar />
+              <AntDesign name="arrowleft" size={26} color="#ffffff" />
             </TouchableOpacity>
             <View style={styles.containerItens}>
               <View style={styles.containerPublicacao}>

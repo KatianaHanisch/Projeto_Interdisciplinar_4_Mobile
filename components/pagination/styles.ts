@@ -4,7 +4,7 @@ import { theme } from "@/constants";
 export const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 30,
+    bottom: 25,
     flexDirection: "row",
     width: "100%",
     alignItems: "center",

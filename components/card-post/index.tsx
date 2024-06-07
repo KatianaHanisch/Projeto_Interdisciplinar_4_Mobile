@@ -37,7 +37,11 @@ export function CardPost({
       <View style={styles.containerTextos}>
         <View style={styles.containerTitulo}>
           <Text style={styles.tituloNome}>{name}</Text>
-          {sex === "Macho" ? <IconGeneroMasculino /> : <IconGeneroFeminino />}
+          {sex.toLocaleLowerCase() === "macho" ? (
+            <IconGeneroMasculino />
+          ) : (
+            <IconGeneroFeminino />
+          )}
         </View>
         <Text style={styles.textoIdade}>{age} anos</Text>
         <View style={styles.containerLocalidade}>

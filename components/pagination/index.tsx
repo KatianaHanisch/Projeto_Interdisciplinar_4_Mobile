@@ -33,11 +33,7 @@ export function Pagination({ data, scrollX, index }: PaginationProps) {
         return (
           <Animated.View
             key={idx.toString()}
-            style={[
-              styles.dot,
-              { width: dotWidth, backgroundColor },
-              // idx === index && styles.dotActive,
-            ]}
+            style={[styles.dot, { width: dotWidth, backgroundColor }]}
           />
         );
       })}

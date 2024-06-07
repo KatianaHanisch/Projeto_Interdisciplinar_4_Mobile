@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   containerSlide: {
     width: width,
-    height: 260,
+    height: 290,
     alignItems: "center",
   },
   buttonVoltar: {
