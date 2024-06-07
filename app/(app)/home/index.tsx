@@ -31,9 +31,18 @@ export default function Home() {
 
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
   const [posts, setPosts] = useState<PostProps[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostProps[]>([]);
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
+    if (filtro === "") {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter(
+        (post) => post.type.toLowerCase() === filtro
+      );
+      setFilteredPosts(filtered);
+    }
   };
 
   const handleDetalhes = (id: string) => {
@@ -53,6 +62,7 @@ export default function Home() {
       });
 
       setPosts(response.data.posts);
+      setFilteredPosts(response.data.posts);
     } catch (err) {
       const error = err as AxiosError<Error>;
       console.error(error.response?.data.message);
@@ -136,7 +146,7 @@ export default function Home() {
           />
           <SafeAreaView style={styles.containerLista}>
             <FlatList
-              data={posts}
+              data={filteredPosts}
               renderItem={({ item }) => (
                 <CardPost
                   {...item}

@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   containerPost: {
     alignItems: "center",
     flexDirection: "row",
-    width: "95%",
+    width: "100%",
     height: 135,
     marginBottom: 12,
     borderRadius: 20,

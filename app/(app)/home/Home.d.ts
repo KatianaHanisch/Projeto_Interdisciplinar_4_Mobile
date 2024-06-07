@@ -12,6 +12,7 @@ interface PostProps {
   uf: string;
   city: string;
   sex: string;
+  type: string;
   race: string;
   createdAt: string;
   user: {
