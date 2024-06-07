@@ -4,8 +4,7 @@ import {
   TextInput,
   SafeAreaView,
   FlatList,
-  TouchableOpacity,
-  Button,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigate } from "@/hooks/useNavigate";
 import { AxiosError } from "axios";
@@ -32,6 +31,9 @@ export default function Home() {
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostProps[]>([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
@@ -53,19 +55,38 @@ export default function Home() {
     navigate(`/about/${value}`);
   };
 
-  const fetcherPosts = async () => {
+  const fetcherPosts = async (pageNumber: number = 0) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
     try {
-      const response = await api.get("/posts?page=0", {
+      const response = await api.get(`/posts?page=${pageNumber}`, {
         headers: {
           Authorization: authState?.token,
         },
       });
 
-      setPosts(response.data.posts);
-      setFilteredPosts(response.data.posts);
+      const newPosts = response.data.posts;
+      if (newPosts.length === 0) {
+        setHasMore(false);
+      } else {
+        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+        setFilteredPosts((prevFilteredPosts) => [
+          ...prevFilteredPosts,
+          ...newPosts,
+        ]);
+      }
     } catch (err) {
       const error = err as AxiosError<Error>;
       console.error(error.response?.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadMorePosts = () => {
+    if (!loading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
@@ -124,9 +145,9 @@ export default function Home() {
 
   useEffect(() => {
     connect();
-    fetcherPosts();
+    fetcherPosts(page);
     fetcherDados();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -156,6 +177,9 @@ export default function Home() {
               )}
               keyExtractor={(post) => post.id}
               showsVerticalScrollIndicator={false}
+              onEndReached={loadMorePosts}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={loading ? <ActivityIndicator /> : null}
             />
           </SafeAreaView>
         </View>

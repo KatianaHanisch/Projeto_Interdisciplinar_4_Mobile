@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -25,6 +26,9 @@ export default function MeusPosts() {
   const [mensagemSnackBar, setMensagemSnackbar] = useState<string>("");
   const [tipoSnackBar, setTipoSnackBar] = useState<string>("");
   const [abrirSnackBar, setAbrirSnackBar] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   const { authState } = useAuth();
   const router = useRouter();
@@ -50,7 +54,7 @@ export default function MeusPosts() {
         setTipoSnackBar("sucesso");
         setAbrirSnackBar(true);
 
-        fecthPostUsuario();
+        fecthPostUsuario(0);
 
         setTimeout(() => {
           setAbrirSnackBar(false);
@@ -70,28 +74,46 @@ export default function MeusPosts() {
     }
   };
 
-  const fecthPostUsuario = async () => {
+  const fecthPostUsuario = async (pageNumber: number = 0) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
     const id = await AsyncStorage.getItem("id");
 
     try {
-      const response = await api.get(`/posts/user/${id}?page=0`, {
+      const response = await api.get(`/posts/user/${id}?page=${pageNumber}`, {
         headers: {
           Authorization: `Bearer ${authState?.token}`,
         },
       });
 
       if (response.status === 200) {
-        setPosts(response.data);
+        const newPosts = response.data;
+        if (newPosts.length === 0) {
+          setHasMore(false);
+        } else {
+          setPosts((prevPosts) =>
+            pageNumber === 0 ? newPosts : [...prevPosts, ...newPosts]
+          );
+        }
       }
     } catch (err) {
       const error = err as AxiosError<Error>;
       console.error(error.response?.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadMorePosts = () => {
+    if (!loading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
   useEffect(() => {
-    fecthPostUsuario();
-  }, []);
+    fecthPostUsuario(page);
+  }, [page]);
 
   return (
     <View style={styles.container}>
@@ -123,6 +145,9 @@ export default function MeusPosts() {
           )}
           keyExtractor={(post) => post.id}
           showsVerticalScrollIndicator={false}
+          onEndReached={loadMorePosts}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={loading ? <ActivityIndicator /> : null}
         />
       </SafeAreaView>
       <View style={styles.containerImagem}>
