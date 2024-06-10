@@ -18,7 +18,7 @@ interface LoginProps {
 }
 
 export default function Login() {
-  const { onLogin, isLoanding, authState } = useAuth();
+  const { onLogin, isLoanding } = useAuth();
 
   const [abrirModal, setAbrirModal] = useState<boolean>(false);
   const [abrirAlerta, setAbrirAlerta] = useState<boolean>(false);

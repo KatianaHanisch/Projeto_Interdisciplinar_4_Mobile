@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-
-import { View, Text, Image, TouchableOpacity } from "react-native";
-
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { styles } from "./styles";
 import { IconLixeiraConversa } from "@/assets/icons/icon-lixeira-conversa";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,7 +25,6 @@ export function CardConversa({
   onPress,
 }: CardConversaProps) {
   const { authState } = useAuth();
-
   const [abrirSnackBar, setAbrirSnackBar] = useState<boolean>(false);
 
   const handleLongPress = (id: string) => {
@@ -35,7 +32,7 @@ export function CardConversa({
   };
 
   const handleSubmit = () => {
-    onPress(recipientId, nome, imagem);
+    onPress(recipientId, nome!, imagem!);
   };
 
   const removerConversa = async () => {
@@ -101,12 +98,11 @@ export function CardConversa({
         <View style={styles.containerTextos}>
           <View style={styles.containerMensagem}>
             {isBlocked && <Text style={styles.status}>Usuário Bloqueado</Text>}
-            <Text style={styles.nomeContato}>{nome}</Text>
+            <Text style={styles.nomeContato}>
+              {nome ? nome : "Nome indisponível"}
+            </Text>
             <Text style={styles.mensagem}>{ultimaMensagem}</Text>
           </View>
-          {/* <View style={styles.containerQuantidadeMensagens}>
-          <Text style={styles.quantidadeMensagens}>1</Text>
-        </View> */}
         </View>
 
         {idConversa === id && (

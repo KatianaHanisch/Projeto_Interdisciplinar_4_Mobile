@@ -5,8 +5,8 @@ interface CardConversaProps {
   recipientId: string;
   // status: boolean;
   isBlocked: boolean;
-  nome: string;
-  imagem: string;
+  nome?: string;
+  imagem?: string | undefined;
   ultimaMensagem: string;
   idConversa: string;
   setBloqueado: State;
