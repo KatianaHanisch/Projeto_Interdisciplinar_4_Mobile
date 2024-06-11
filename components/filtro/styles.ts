@@ -6,9 +6,19 @@ export const styles = StyleSheet.create({
   containerFiltros: {
     width: "100%",
     alignItems: "center",
+    justifyContent: "space-between",
     flexDirection: "row",
     gap: 10,
     marginTop: 15,
+  },
+  containerButtons: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
+  containerIcon: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemFiltro: {
     width: 60,

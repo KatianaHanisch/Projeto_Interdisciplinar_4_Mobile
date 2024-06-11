@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 4,
     shadowColor: "#000",
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.25,
     shadowRadius: 2,
     shadowOffset: { width: 8, height: 10 },
   },
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     backgroundColor: theme.colors.white,
-    marginLeft: -10,
+    // marginLeft: -10,
     zIndex: -1,
   },
   containerTitulo: {

@@ -94,6 +94,8 @@ export default function MeusDados() {
       );
 
       if (response.status === 200) {
+        await AsyncStorage.removeItem("image_url");
+
         setAbrirSnackBar(true);
         setCarregando(false);
         setButtonVisivel(false);

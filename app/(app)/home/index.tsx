@@ -1,31 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
-  TextInput,
   SafeAreaView,
   FlatList,
   ActivityIndicator,
+  Text,
 } from "react-native";
 import { useNavigate } from "@/hooks/useNavigate";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Client } from "@stomp/stompjs";
 
 import { Header } from "@/components/header";
 import { Filtro } from "@/components/filtro";
 import { CardPost } from "@/components/card-post";
+import { ModalFiltro } from "@/components/modal-filtro";
 
-import { IconBusca } from "@/assets/icons/icon-busca";
-
-import { styles } from "./styles";
 import { api, api_chat } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
+import { useForm } from "@/hooks/useForm";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { theme } from "@/constants";
+import { styles } from "./styles";
 
 export default function Home() {
   const navigate = useNavigate();
-
   const { authState, onLogout } = useAuth();
 
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("");
@@ -34,6 +36,15 @@ export default function Home() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+
+  const [abrirModalFiltro, setAbrirModalFiltro] = useState<boolean>(false);
+  const [estados, setEstados] = useState<EstadoProps[]>([]);
+
+  const { formData, setFormData, handleInputChange } = useForm<FormProps>({
+    initialValues: {
+      uf: "",
+    },
+  });
 
   const handleSelecionarFiltro = (filtro: string) => {
     setFiltroSelecionado(filtro);
@@ -53,6 +64,44 @@ export default function Home() {
 
   const handleNavigate = (value: string) => {
     navigate(`/about/${value}`);
+  };
+
+  const handleCloseFiltro = () => {
+    setAbrirModalFiltro(false);
+  };
+
+  const fetchEstados = async () => {
+    try {
+      const response = await axios.get(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
+      );
+
+      if (response.status === 200) {
+        setEstados(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetcherPostsPorRegiao = async (uf: string) => {
+    setLoading(true);
+    try {
+      const response = await api.get(`/posts/${uf}?page=0`, {
+        headers: {
+          Authorization: authState?.token,
+        },
+      });
+
+      if (response.status === 200) {
+        setFilteredPosts(response.data.posts);
+        setAbrirModalFiltro(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
 
   const fetcherPosts = async (pageNumber: number = 0) => {
@@ -143,45 +192,73 @@ export default function Home() {
     }
   };
 
+  const handleDropdownChange = (name: string, value: string) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
     connect();
     fetcherPosts(page);
     fetcherDados();
+    fetchEstados();
   }, [page]);
 
   return (
     <>
       <View style={styles.container}>
         <Header handleNavigate={handleNavigate} />
+        {abrirModalFiltro && (
+          <ModalFiltro
+            estados={estados}
+            formData={formData}
+            fetcherPostsPorRegiao={fetcherPostsPorRegiao}
+            handleCloseFiltro={handleCloseFiltro}
+            handleDropdownChange={handleDropdownChange}
+            carregando={loading}
+          />
+        )}
         <View style={styles.containerItens}>
-          <View style={styles.containerInput}>
-            <IconBusca />
-            <TextInput
-              style={styles.input}
-              placeholder="Procure por palavras-chaves"
-            />
-          </View>
           <Filtro
             filtroSelecionado={filtroSelecionado}
             handleSelecionarFiltro={handleSelecionarFiltro}
+            handleAbrirFiltro={() => setAbrirModalFiltro(true)}
           />
-          <SafeAreaView style={styles.containerLista}>
-            <FlatList
-              data={filteredPosts}
-              renderItem={({ item }) => (
-                <CardPost
-                  {...item}
-                  handleNavigate={handleDetalhes}
-                  tipoPost="home"
-                />
-              )}
-              keyExtractor={(post) => post.id}
-              showsVerticalScrollIndicator={false}
-              onEndReached={loadMorePosts}
-              onEndReachedThreshold={0.5}
-              ListFooterComponent={loading ? <ActivityIndicator /> : null}
-            />
-          </SafeAreaView>
+          {filteredPosts.length === 0 ? (
+            <View style={styles.containerListaVazia}>
+              <MaterialIcons name="not-interested" size={30} color="#555555" />
+              <Text style={styles.textoListaVazia}>
+                Nenhum post foi encontrado
+              </Text>
+            </View>
+          ) : (
+            <SafeAreaView style={styles.containerLista}>
+              <FlatList
+                data={filteredPosts}
+                renderItem={({ item }) => (
+                  <CardPost
+                    {...item}
+                    handleNavigate={handleDetalhes}
+                    tipoPost="home"
+                  />
+                )}
+                keyExtractor={(post) => post.id}
+                showsVerticalScrollIndicator={false}
+                onEndReached={loadMorePosts}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={
+                  loading ? (
+                    <ActivityIndicator
+                      color={theme.colors.orangePrimaryDark}
+                      size={25}
+                    />
+                  ) : null
+                }
+              />
+            </SafeAreaView>
+          )}
         </View>
       </View>
     </>

@@ -20,6 +20,7 @@ import { ImagemButtonPosts } from "@/assets/images/imagem-bottom-posts";
 import { AxiosError } from "axios";
 import { CardPost } from "@/components/card-post";
 import { SnackBar } from "@/components/snack-bar";
+import { theme } from "@/constants";
 
 export default function MeusPosts() {
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -147,7 +148,14 @@ export default function MeusPosts() {
           showsVerticalScrollIndicator={false}
           onEndReached={loadMorePosts}
           onEndReachedThreshold={0.5}
-          ListFooterComponent={loading ? <ActivityIndicator /> : null}
+          ListFooterComponent={
+            loading ? (
+              <ActivityIndicator
+                color={theme.colors.orangePrimaryDark}
+                size={"small"}
+              />
+            ) : null
+          }
         />
       </SafeAreaView>
       <View style={styles.containerImagem}>

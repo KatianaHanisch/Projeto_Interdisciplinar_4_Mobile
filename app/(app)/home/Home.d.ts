@@ -29,3 +29,13 @@ interface Error {
   message: string[];
   statusCode: number;
 }
+
+interface EstadoProps {
+  id: number;
+  sigla: string;
+  nome: string;
+}
+
+interface FormProps {
+  uf: string;
+}

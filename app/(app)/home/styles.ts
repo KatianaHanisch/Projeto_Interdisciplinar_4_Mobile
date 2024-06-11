@@ -37,8 +37,20 @@ export const styles = StyleSheet.create({
   },
   containerLista: {
     width: "100%",
-    height: 510,
+    height: "90%",
     alignItems: "center",
     marginTop: 15,
+  },
+  containerListaVazia: {
+    width: "100%",
+    alignItems: "center",
+    padding: 20,
+    marginTop: 20,
+  },
+  textoListaVazia: {
+    fontSize: 16,
+    fontFamily: theme.fontFamily.raleway.medium,
+    color: theme.colors.grayMedium,
+    textAlign: "center",
   },
 });

@@ -1,6 +1,6 @@
 interface DropdownProps<T> {
   data: T[];
-  value: string;
+  value?: string;
   name: string;
   textoDropdown: string;
   handleInputChange: (field: string, value: string) => void;

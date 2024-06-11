@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   containerPosts: {
     width: "100%",
     alignItems: "center",
-    justifyContent: "center",
-    height: "78%",
+    height: "70%",
+    marginTop: 10,
   },
 });
