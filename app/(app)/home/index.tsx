@@ -96,6 +96,7 @@ export default function Home() {
       if (response.status === 200) {
         setFilteredPosts(response.data.posts);
         setAbrirModalFiltro(false);
+
         setLoading(false);
       }
     } catch (error) {

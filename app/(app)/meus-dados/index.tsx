@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -19,9 +26,12 @@ import { styles } from "./styles";
 import { useForm } from "@/hooks/useForm";
 import { SnackBar } from "@/components/snack-bar";
 import { ImagemInformacoesUsuarios } from "@/assets/images/imagem-informacoes-usuarios";
+import { useNavigate } from "@/hooks/useNavigate";
+import { theme } from "@/constants";
 
 export default function MeusDados() {
   const { authState } = useAuth();
+  const navigate = useNavigate();
 
   const { formData, setFormData, handleInputChange } = useForm<UserDataProps>({
     initialValues: {
@@ -38,6 +48,8 @@ export default function MeusDados() {
   const [tipoSnackBar, setTipoSnackBar] = useState<string>("");
 
   const [carregando, setCarregando] = useState<boolean>(false);
+  const [imagemCarregada, setImagemCarregada] = useState<boolean>(false);
+  const [carregando2, setCarregando2] = useState<boolean>(false);
   const [abrirModal, setAbrirModal] = useState<boolean>(false);
   const [buttonVisivel, setButtonVisivel] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
@@ -76,7 +88,7 @@ export default function MeusDados() {
     setCarregando(true);
 
     if (image !== null) {
-      handleUploadImage();
+      await handleUploadImage();
     }
 
     try {
@@ -94,7 +106,10 @@ export default function MeusDados() {
       );
 
       if (response.status === 200) {
-        await AsyncStorage.removeItem("image_url");
+        await AsyncStorage.setItem("name", formData.name!);
+        await AsyncStorage.setItem("image_url", response.data.imageUrl);
+
+        await handleDados();
 
         setAbrirSnackBar(true);
         setCarregando(false);
@@ -107,11 +122,6 @@ export default function MeusDados() {
         setTimeout(() => {
           setAbrirSnackBar(false);
         }, 4000);
-
-        await AsyncStorage.setItem("name", formData.name!);
-        await AsyncStorage.setItem("image_url", response.data.imageUrl);
-
-        await handleDados();
       }
     } catch (error) {
       setCarregando(false);
@@ -143,6 +153,11 @@ export default function MeusDados() {
 
         if (response.status === 200) {
           setImage(null);
+          setCarregando2(true);
+          setTimeout(() => {
+            navigate(`/about/perfil-usuario`);
+            setCarregando2(false);
+          }, 500);
         }
       } catch (error) {
         console.log(error);
@@ -181,89 +196,108 @@ export default function MeusDados() {
 
   useEffect(() => {
     handleDados();
+    setImagemCarregada(false);
+    setTimeout(() => {
+      setImagemCarregada(true);
+    }, 500);
   }, []);
 
   return (
     <>
-      {abrirModal && (
-        <ModalEditar
-          handleFecharModal={handleFecharModal}
-          handleFocusInput={handleFocusInput}
-          handleRemoverImagem={handleRemoverImagem}
-          handleInputChange={handleInputChange}
-          handleSubmit={handleSubmit}
-          formData={formData}
-          uploadImage={selecionarImage}
-          carregando={carregando}
-          imageUrl={image}
-          input1={input1}
-          input2={input2}
-        />
-      )}
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.containerVoltar}
-          onPress={handleButtonBack}
-        >
-          <IconVoltar />
-        </TouchableOpacity>
-
-        <ImagemDadosUsuario />
-        <TouchableOpacity
-          style={styles.containerImagem}
-          onPress={() => setAbrirModal(true)}
-        >
-          <Image
-            style={styles.imagem}
-            source={
-              formData.image_url
-                ? {
-                    uri: `${api.defaults.baseURL}/uploads/users/${formData.image_url}`,
-                  }
-                : require("../../../assets/images/user-conversas-image.png")
-            }
-          />
-          <IconEdit />
-        </TouchableOpacity>
-        {abrirSnackBar && (
-          <SnackBar
-            mensagem={mensagemSnackBar}
-            tipo={tipoSnackBar}
-            onClose={() => setAbrirSnackBar(false)}
-          />
-        )}
-        <View style={styles.containerDadosUsuario}>
-          <View style={styles.containerDados}>
-            <Text style={styles.tituloInformaçoes}>Nome</Text>
-            <View style={styles.containerInformacoes}>
-              <Text style={styles.informacoes}>{formData.name}</Text>
-              <TouchableOpacity
-                style={styles.buttonEdit}
-                onPress={() => {
-                  handleAbrirModal("input1");
-                }}
-              >
-                <IconEdit />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.containerDados}>
-            <Text style={styles.tituloInformaçoes}>Senha</Text>
-            <View style={styles.containerInformacoes}>
-              <Text style={styles.informacoes}>********</Text>
-              <TouchableOpacity
-                style={styles.buttonEdit}
-                onPress={() => {
-                  handleAbrirModal("input2");
-                }}
-              >
-                <IconEdit />
-              </TouchableOpacity>
-            </View>
-          </View>
+      {carregando2 ? (
+        <View style={styles.load}>
+          <ActivityIndicator color={theme.colors.orangePrimaryDark} size={50} />
         </View>
-      </View>
-      <ImagemInformacoesUsuarios />
+      ) : (
+        <>
+          {abrirModal && (
+            <ModalEditar
+              handleFecharModal={handleFecharModal}
+              handleFocusInput={handleFocusInput}
+              handleRemoverImagem={handleRemoverImagem}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              formData={formData}
+              uploadImage={selecionarImage}
+              carregando={carregando}
+              imageUrl={image}
+              input1={input1}
+              input2={input2}
+            />
+          )}
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.containerVoltar}
+              onPress={handleButtonBack}
+            >
+              <IconVoltar />
+            </TouchableOpacity>
+
+            <ImagemDadosUsuario />
+            <TouchableOpacity
+              style={styles.containerImagem}
+              onPress={() => setAbrirModal(true)}
+            >
+              {imagemCarregada ? (
+                <Image
+                  style={styles.imagem}
+                  source={
+                    formData.image_url
+                      ? {
+                          uri: `${api.defaults.baseURL}/uploads/users/${formData.image_url}`,
+                        }
+                      : require("../../../assets/images/user-conversas-image.png")
+                  }
+                />
+              ) : (
+                <View style={styles.imagemLoading}>
+                  <ActivityIndicator color={"black"} size={50} />
+                </View>
+              )}
+
+              <IconEdit />
+            </TouchableOpacity>
+            {abrirSnackBar && (
+              <SnackBar
+                mensagem={mensagemSnackBar}
+                tipo={tipoSnackBar}
+                onClose={() => setAbrirSnackBar(false)}
+              />
+            )}
+            <View style={styles.containerDadosUsuario}>
+              <View style={styles.containerDados}>
+                <Text style={styles.tituloInformaçoes}>Nome</Text>
+                <View style={styles.containerInformacoes}>
+                  <Text style={styles.informacoes}>{formData.name}</Text>
+                  <TouchableOpacity
+                    style={styles.buttonEdit}
+                    onPress={() => {
+                      handleAbrirModal("input1");
+                    }}
+                  >
+                    <IconEdit />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.containerDados}>
+                <Text style={styles.tituloInformaçoes}>Senha</Text>
+                <View style={styles.containerInformacoes}>
+                  <Text style={styles.informacoes}>********</Text>
+                  <TouchableOpacity
+                    style={styles.buttonEdit}
+                    onPress={() => {
+                      handleAbrirModal("input2");
+                    }}
+                  >
+                    <IconEdit />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+          <ImagemInformacoesUsuarios />
+        </>
+      )}
     </>
   );
 }

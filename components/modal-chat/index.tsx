@@ -61,7 +61,9 @@ export function ModalChat() {
 
       if (response.status === 200) {
         setConversas(response.data.reverse());
-        setCarregando(false);
+        setTimeout(() => {
+          setCarregando(false);
+        }, 300);
       }
     } catch (error) {
       setCarregando(false);

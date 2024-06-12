@@ -50,7 +50,7 @@ export const Comentario = memo(
               <Text style={styles.textoComentario}>{description}</Text>
               <TouchableOpacity
                 style={styles.buttonResponder}
-                onPress={() => handleResposta(id)}
+                onPress={() => handleResposta(id, user.name)}
               >
                 <Text style={styles.textoResponder}>Responder</Text>
               </TouchableOpacity>

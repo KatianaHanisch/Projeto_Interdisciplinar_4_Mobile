@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import BottomSheet, { BottomSheetFlatListMethods } from "@gorhom/bottom-sheet";
 
@@ -113,13 +113,20 @@ export default function ModalDetalhesAnimal() {
   ) => {
     if (dadosPost) {
       setDadosPost((prevDadosPost) => {
-        if (!prevDadosPost) return prevDadosPost;
+        if (!prevDadosPost) {
+          console.log("prevDadosPost é null ou undefined");
+          return prevDadosPost;
+        }
 
         if (id) {
           return {
             ...prevDadosPost,
             comments: prevDadosPost.comments.map((comentario) => {
               if (comentario.id === id) {
+                console.log("prevdata: ", comentario);
+                if (!comentario.sub_comments) {
+                  comentario.sub_comments = []; //tem que ser uma lista antes de tudo
+                }
                 return {
                   ...comentario,
                   sub_comments: [...comentario.sub_comments, novoComentario],
@@ -135,6 +142,8 @@ export default function ModalDetalhesAnimal() {
           };
         }
       });
+    } else {
+      console.log("dadosPost é null ou undefined");
     }
   };
 
@@ -227,6 +236,9 @@ export default function ModalDetalhesAnimal() {
   const handleSubmitResposta = async (id: string) => {
     if (id === "" || inputValue === "") return;
 
+    // fetcherPost(idPost);
+    // handleButtonSheetOpen();
+
     try {
       setCarregando(true);
 
@@ -268,146 +280,148 @@ export default function ModalDetalhesAnimal() {
     <>
       <StatusBar style="light" />
       <View style={styles.container}>
-        {carregandoPosts ? (
+        {/* {carregandoPosts ? (
           <View style={styles.containerCarregamento}>
             <ActivityIndicator
               size={50}
               color={theme.colors.orangePrimaryDark}
             />
           </View>
-        ) : (
-          <>
-            <SafeAreaView style={styles.containerSlide}>
-              <FlatList
-                data={dadosPost?.images}
-                renderItem={({ item }) => <SlideItem item={item} />}
-                horizontal
-                pagingEnabled
-                snapToAlignment="center"
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                onScroll={handleOnScroll}
-                onViewableItemsChanged={handleOnViewableItemsChanged}
-                viewabilityConfig={viewabilityConfig}
+        ) : ( */}
+        <>
+          <SafeAreaView style={styles.containerSlide}>
+            <FlatList
+              data={dadosPost?.images}
+              renderItem={({ item }) => <SlideItem item={item} />}
+              horizontal
+              pagingEnabled
+              snapToAlignment="center"
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              onScroll={handleOnScroll}
+              onViewableItemsChanged={handleOnViewableItemsChanged}
+              viewabilityConfig={viewabilityConfig}
+            />
+            {dadosPost?.images && dadosPost?.images.length > 1 && (
+              <Pagination
+                data={dadosPost.images}
+                scrollX={scrollX}
+                index={index}
               />
-              {dadosPost?.images && dadosPost?.images.length > 1 && (
-                <Pagination
-                  data={dadosPost.images}
-                  scrollX={scrollX}
-                  index={index}
-                />
-              )}
-            </SafeAreaView>
+            )}
+          </SafeAreaView>
 
-            <TouchableOpacity
-              style={styles.buttonVoltar}
-              onPress={handleButtonBack}
-            >
-              <AntDesign name="arrowleft" size={26} color="#ffffff" />
-            </TouchableOpacity>
-            <View style={styles.containerItens}>
-              <View style={styles.containerPublicacao}>
-                <Text style={styles.dataPublicacao}>
-                  {formatarData(dadosPost?.createdAt)}
-                </Text>
-                <Text
-                  onPress={handleAbrirChat}
-                  style={styles.informacoesPublicacao}
-                >
-                  publicado por {dadosPost?.user?.name.toLowerCase()}
-                </Text>
-              </View>
-              <View style={styles.containerInformacoes}>
-                <View style={styles.containerTextos}>
-                  <Text style={styles.textoNome}>{dadosPost?.name}</Text>
-                  <Text style={styles.descricao}>{dadosPost?.description}</Text>
-                  <View style={styles.containerLocalidade}>
-                    <IconLocalidade />
-                    <Text style={styles.localidade}>
-                      {dadosPost?.city} - {dadosPost?.uf}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.containerIdadeGenero}>
-                  <View style={styles.containerIdade}>
-                    <Text style={styles.idade}>{dadosPost?.age} anos</Text>
-                  </View>
-                  <View style={styles.containerGenero}>
-                    <Text style={styles.genero}>
-                      {dadosPost?.sex.toLocaleLowerCase() === "macho"
-                        ? "macho"
-                        : "femea"}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.containerComentarios,
-                  dadosPost?.comments.length === 0
-                    ? styles.containerComentariosSemComentarios
-                    : null,
-                ]}
+          <TouchableOpacity
+            style={styles.buttonVoltar}
+            onPress={handleButtonBack}
+          >
+            <AntDesign name="arrowleft" size={26} color="#ffffff" />
+          </TouchableOpacity>
+          <View style={styles.containerItens}>
+            <View style={styles.containerPublicacao}>
+              <Text style={styles.dataPublicacao}>
+                {formatarData(dadosPost?.createdAt)}
+              </Text>
+              <Text
+                onPress={handleAbrirChat}
+                style={styles.informacoesPublicacao}
               >
-                {dadosPost?.comments && dadosPost?.comments.length > 0 && (
-                  <>
-                    <Text style={styles.tituloComentarios}>Comentários</Text>
-                    <SafeAreaView style={styles.listaComentarios}>
-                      {dadosPost.comments ? (
-                        <FlatList
-                          renderItem={({ item }) => (
-                            <Comentario
-                              {...item}
-                              handleResposta={handleResposta}
-                            />
-                          )}
-                          data={dadosPost?.comments}
-                          keyExtractor={(item) => item.id}
-                          initialNumToRender={5}
-                          maxToRenderPerBatch={10}
-                        />
-                      ) : (
-                        <ActivityIndicator
-                          size={"large"}
-                          color={theme.colors.orangePrimaryDark}
-                        />
-                      )}
-                    </SafeAreaView>
-                  </>
-                )}
-                {dadosPost?.comments && dadosPost?.comments.length > 0 ? (
-                  <TouchableOpacity onPress={handleButtonSheetOpen}>
-                    <Text style={styles.buttonComentarios}>
-                      Ver todos os comentários
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={handleButtonAdicionarComentario}>
-                    <Text style={styles.buttonComentarios}>
-                      Adicionar comentário
-                    </Text>
-                  </TouchableOpacity>
-                )}
+                publicado por{" "}
+                <Text style={styles.userName}>
+                  {dadosPost?.user?.name.toLowerCase()}
+                </Text>
+              </Text>
+            </View>
+            <View style={styles.containerInformacoes}>
+              <View style={styles.containerTextos}>
+                <Text style={styles.textoNome}>{dadosPost?.name}</Text>
+                <Text style={styles.descricao}>{dadosPost?.description}</Text>
+                <View style={styles.containerLocalidade}>
+                  <IconLocalidade />
+                  <Text style={styles.localidade}>
+                    {dadosPost?.city} - {dadosPost?.uf}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.containerIdadeGenero}>
+                <View style={styles.containerIdade}>
+                  <Text style={styles.idade}>{dadosPost?.age} anos</Text>
+                </View>
+                <View style={styles.containerGenero}>
+                  <Text style={styles.genero}>
+                    {dadosPost?.sex.toLocaleLowerCase() === "macho"
+                      ? "macho"
+                      : "femea"}
+                  </Text>
+                </View>
               </View>
             </View>
-            <ComentariosTodos
-              ref={bottomSheetRef}
-              userImagem={dadosPost?.user.imageUrl}
-              onClose={handleCloseButton}
-              inputRef={inputResponderRef}
-              handleResposta={handleResposta}
-              data={dadosPost?.comments}
-              handleSubmit={handleSubmit}
-              handleSubmitResposta={handleSubmitResposta}
-              handleInputValue={handleInputValue}
-              inputValue={inputValue}
-              carregando={carregando}
-              flatListRef={flatListRef}
-              tipoRequisicao={tipoRequisicao}
-              idComentario={idComentario}
-            />
-          </>
-        )}
+            <View
+              style={[
+                styles.containerComentarios,
+                dadosPost?.comments.length === 0
+                  ? styles.containerComentariosSemComentarios
+                  : null,
+              ]}
+            >
+              {dadosPost?.comments && dadosPost?.comments.length > 0 && (
+                <>
+                  <Text style={styles.tituloComentarios}>Comentários</Text>
+                  <SafeAreaView style={styles.listaComentarios}>
+                    {dadosPost.comments ? (
+                      <FlatList
+                        style={styles.listaComentarios2}
+                        renderItem={({ item }) => (
+                          <Comentario
+                            {...item}
+                            handleResposta={handleResposta}
+                          />
+                        )}
+                        data={dadosPost?.comments.slice(0, 5)}
+                        keyExtractor={(item) => item.id}
+                      />
+                    ) : (
+                      <ActivityIndicator
+                        size={"large"}
+                        color={theme.colors.orangePrimaryDark}
+                      />
+                    )}
+                  </SafeAreaView>
+                </>
+              )}
+              {dadosPost?.comments && dadosPost?.comments.length > 0 ? (
+                <TouchableOpacity onPress={handleButtonSheetOpen}>
+                  <Text style={styles.buttonComentarios}>
+                    Ver todos os comentários
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={handleButtonAdicionarComentario}>
+                  <Text style={styles.buttonComentarios}>
+                    Adicionar comentário
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+          <ComentariosTodos
+            ref={bottomSheetRef}
+            userImagem={dadosPost?.user.imageUrl}
+            onClose={handleCloseButton}
+            inputRef={inputResponderRef}
+            handleResposta={handleResposta}
+            data={dadosPost?.comments}
+            handleSubmit={handleSubmit}
+            handleSubmitResposta={handleSubmitResposta}
+            handleInputValue={handleInputValue}
+            inputValue={inputValue}
+            carregando={carregando}
+            flatListRef={flatListRef}
+            tipoRequisicao={tipoRequisicao}
+            idComentario={idComentario}
+          />
+        </>
+        {/* )} */}
       </View>
     </>
   );

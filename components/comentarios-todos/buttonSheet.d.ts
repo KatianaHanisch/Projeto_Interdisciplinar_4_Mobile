@@ -14,6 +14,7 @@ export type ButtomSheetProps = {
   tipoRequisicao: string;
   idComentario: string;
   userImagem: string | undefined;
+  nameResposta?: string | undefined;
 };
 
 interface SubCommentsProps {

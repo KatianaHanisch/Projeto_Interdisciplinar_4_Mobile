@@ -53,4 +53,22 @@ export const styles = StyleSheet.create({
     height: 85,
     borderRadius: 100,
   },
+  imagemLoading: {
+    width: 90,
+    height: 85,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imagemContainer: {
+    width: 100,
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    overflow: "hidden",
+  },
+  imagemCarregando: {
+    position: "absolute",
+  },
 });

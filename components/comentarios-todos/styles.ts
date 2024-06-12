@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
+    // marginBottom: 20,
   },
   containerHeader: {
     width: "100%",
