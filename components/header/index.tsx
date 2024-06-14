@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { View, TouchableOpacity, Text } from "react-native";
 
@@ -11,6 +11,9 @@ import { IconCriarPostSelecionado } from "@/assets/icons/icon-criar-post-selecio
 import { IconUserSelecionado } from "@/assets/icons/icon-user-selecionado";
 
 import { styles } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 export function Header({
   handleNavigate,
@@ -18,6 +21,28 @@ export function Header({
   handleFecharModal,
 }: HeaderProps) {
   const backgroundOrange = pagina === "post" || pagina === "perfil-usuario";
+  const { authState } = useAuth();
+
+  const [notificacao, setNotificacao] = useState<boolean>(false);
+
+  useEffect(() => {
+    const notification = async () => {
+      try {
+        const response = await api.get(`/messages/notification`, {
+          headers: {
+            Authorization: authState?.token,
+          },
+        });
+
+        if (response.status === 200) {
+          setNotificacao(response.data);
+        }
+      } catch (err) {
+        setNotificacao(true);
+      }
+    };
+    notification();
+  }, []);
 
   return (
     <>
@@ -43,14 +68,16 @@ export function Header({
             onPress={() => handleNavigate!("chat")}
           >
             {pagina === "chat" ? <IconChatSelecionado /> : <IconChat />}
-            {/* <View
-              style={[
-                styles.containerMensagens,
-                pagina === "chat" && styles.containerMensagensSelecionado,
-              ]}
-            >
-              <Text style={styles.quantidadeMensagens}>5</Text>
-            </View> */}
+            {notificacao && (
+              <View
+                style={[
+                  styles.containerMensagens,
+                  pagina === "chat" && styles.containerMensagensSelecionado,
+                ]}
+              >
+                <Text style={styles.quantidadeMensagens}></Text>
+              </View>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={[

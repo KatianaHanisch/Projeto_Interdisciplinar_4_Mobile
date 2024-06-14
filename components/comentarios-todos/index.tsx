@@ -50,6 +50,14 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
         handleSubmitResposta(idComentario);
       }
     };
+    const handleNameResposta = (id: string, name: string) => {
+      handleResposta!(id);
+
+      setNameResposta(name);
+    };
+    const clearNameResposta = () => {
+      setNameResposta("");
+    };
     useEffect(() => {
       const keyboardDidShowListener = Keyboard.addListener(
         "keyboardDidShow",
@@ -73,14 +81,6 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
       };
     }, []);
 
-    const handleNameResposta = (id: string, name: string) => {
-      handleResposta!(id);
-
-      setNameResposta(name);
-    };
-    const clearNameResposta = () => {
-      setNameResposta("");
-    };
     return (
       <BottomSheet
         backgroundStyle={styles.background}

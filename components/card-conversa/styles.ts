@@ -50,12 +50,12 @@ export const styles = StyleSheet.create({
   },
   containerQuantidadeMensagens: {
     width: 30,
-    height: 35,
+    height: 30,
     backgroundColor: theme.colors.orangePrimaryDark,
     alignItems: "center",
     justifyContent: "center",
     marginRight: -15,
-    borderRadius: 10,
+    borderRadius: 1000,
   },
   quantidadeMensagens: {
     fontSize: 16,

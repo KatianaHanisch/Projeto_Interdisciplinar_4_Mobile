@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from "react-native";
 
 import { styles } from "./styles";
 import { StatusBar } from "expo-status-bar";
@@ -31,6 +38,8 @@ export default function ChatConversa() {
 
   const [selectedMessageId, setSelectedMessageId] = useState<string>("");
   const [abrirSnackBar, setAbrirSnackBar] = useState<boolean>(false);
+  const [abrirSnackBarLimite, setAbrirSnackBarLimite] =
+    useState<boolean>(false);
 
   const client = useRef<Client | null>(null);
   const flatListRef = useRef<FlatList>(null);
@@ -104,6 +113,10 @@ export default function ChatConversa() {
     const id = await AsyncStorage.getItem("id");
 
     if (mensagem !== undefined && mensagem !== "" && client && idDestino) {
+      if (mensagem!.length > 255) {
+        setAbrirSnackBarLimite(true);
+        return;
+      }
       const chatMensagemAmostra = {
         senderId: id,
         recipientId: idDestino,
@@ -253,6 +266,13 @@ export default function ChatConversa() {
             mensagem="Erro ao apagar mensagem"
             tipo="erro"
             onClose={() => setAbrirSnackBar(false)}
+          />
+        )}
+        {abrirSnackBarLimite && (
+          <SnackBar
+            mensagem="Limite de 255 caracteres"
+            tipo="erro"
+            onClose={() => setAbrirSnackBarLimite(false)}
           />
         )}
         <View style={styles.containerInput}>

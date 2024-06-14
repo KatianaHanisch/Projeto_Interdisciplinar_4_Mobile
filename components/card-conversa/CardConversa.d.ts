@@ -8,6 +8,7 @@ interface CardConversaProps {
   nome?: string;
   imagem?: string | undefined;
   ultimaMensagem: string;
+  read?: boolean;
   idConversa: string;
   setBloqueado: State;
   setIdConversa: State;
