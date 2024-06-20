@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://192.168.0.118:8081/api",
+  baseURL: "http://10.0.0.103:8081/api",
 });
 
-export const api_chat = "ws://192.168.0.118:8081/api";
-export const api_url = "http://192.168.0.118:8081/api";
+export const api_chat = "ws://10.0.0.103:8081/api";
+export const api_url = "http://10.0.0.103:8081/api";
