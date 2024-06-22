@@ -43,6 +43,7 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
     const [nameResposta, setNameResposta] = useState<string>("");
     const [keyboardSpace, setKeyboardSpace] = useState(0);
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
     const handleRequisicao = async (tipoRequisicao: string) => {
       if (tipoRequisicao === "novoComentario") {
         handleSubmit();

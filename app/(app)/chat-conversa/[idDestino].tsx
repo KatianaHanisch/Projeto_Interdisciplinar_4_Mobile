@@ -104,7 +104,7 @@ export default function ChatConversa() {
         }
       } catch (err) {
         const error = err as AxiosError<Error>;
-        console.error(error.response?.data.message);
+        console.log(error.response?.data.message);
       }
     }
   };

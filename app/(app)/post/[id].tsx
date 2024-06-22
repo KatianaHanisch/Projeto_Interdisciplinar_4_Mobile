@@ -46,6 +46,7 @@ export default function ModalDetalhesAnimal() {
   const [idComentario, setIdComentario] = useState<string>("");
   const [tipoRequisicao, setTipoRequisicao] =
     useState<string>("novoComentario");
+  const [imageUser, setImageUser] = useState<string | null>(null);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [dadosPost, setDadosPost] = useState<PostDetalhesProps>();
@@ -148,6 +149,9 @@ export default function ModalDetalhesAnimal() {
   };
 
   const fetcherPost = async (id: string | string[] | undefined) => {
+    const imageUser2 = await AsyncStorage.getItem("image_url");
+    setImageUser(imageUser2 || null);
+
     try {
       setCarregandoPosts(true);
 
@@ -406,7 +410,7 @@ export default function ModalDetalhesAnimal() {
           </View>
           <ComentariosTodos
             ref={bottomSheetRef}
-            userImagem={dadosPost?.user.imageUrl}
+            userImagem={imageUser}
             onClose={handleCloseButton}
             inputRef={inputResponderRef}
             handleResposta={handleResposta}
