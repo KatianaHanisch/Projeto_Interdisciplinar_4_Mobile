@@ -124,7 +124,6 @@ export default function ModalDetalhesAnimal() {
             ...prevDadosPost,
             comments: prevDadosPost.comments.map((comentario) => {
               if (comentario.id === id) {
-                console.log("prevdata: ", comentario);
                 if (!comentario.sub_comments) {
                   comentario.sub_comments = []; //tem que ser uma lista antes de tudo
                 }

@@ -70,11 +70,6 @@ export function ModalPerfilUsuario() {
 
   return (
     <>
-      {/* {carregando ? (
-        <View style={styles.containerCarregamento}>
-          <ActivityIndicator size={50} color={theme.colors.orangePrimaryDark} />
-        </View>
-      ) : ( */}
       <View style={styles.container}>
         <View style={styles.containerHeader}>
           {imagemCarregada ? (

@@ -187,10 +187,10 @@ export default function ChatConversa() {
       }
     };
   }, []);
+
   return (
     <>
       <StatusBar style="light" />
-
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.containerVoltar}
@@ -207,8 +207,9 @@ export default function ChatConversa() {
                 : require("../../../assets/images/user-conversas-image.png")
             }
           />
-
-          <Text style={styles.textoHeader}>{nome}</Text>
+          <Text style={styles.textoHeader}>
+            {nome === "undefined" ? "" : nome}
+          </Text>
         </View>
         <FlatList
           ref={flatListRef}

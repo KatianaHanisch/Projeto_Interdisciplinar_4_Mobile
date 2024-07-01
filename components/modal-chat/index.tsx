@@ -8,7 +8,6 @@ import {
   FlatList,
 } from "react-native";
 import { styles } from "./styles";
-import { IconBusca } from "@/assets/icons/icon-busca";
 import { CardConversa } from "../card-conversa";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -197,9 +196,6 @@ export function ModalChat() {
       <TouchableOpacity onPress={() => setIdConversa("")} activeOpacity={1}>
         <View style={styles.containerHeaderModal}>
           <Text style={styles.tituloHeader}>Conversas</Text>
-          <View style={styles.containerIcone}>
-            <IconBusca />
-          </View>
         </View>
 
         {carregando ? (
