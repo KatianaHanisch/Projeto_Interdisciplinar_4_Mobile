@@ -11,6 +11,7 @@ import { useForm } from "@/hooks/useForm";
 import { styles } from "./styles";
 import { ModalVerificarEmail } from "@/components/modal-verificar-email";
 import { useAuth } from "@/context/AuthContext";
+import { Logo } from "@/assets/images/logo";
 
 interface LoginProps {
   email: string;
@@ -68,7 +69,7 @@ export default function Login() {
         <View style={styles.container}>
           <ImagemTelaLogin />
           <View style={styles.containerLogin}>
-            <Text>logo</Text>
+            <Logo />
             <TextInput
               style={styles.input}
               placeholder="Digite seu email"

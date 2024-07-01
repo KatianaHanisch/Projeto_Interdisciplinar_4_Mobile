@@ -15,6 +15,7 @@ import { api } from "@/services/api";
 import { useForm } from "@/hooks/useForm";
 
 import { styles } from "./styles";
+import { Logo } from "@/assets/images/logo";
 
 export default function Cadastro() {
   const [carregando, setCarregando] = useState<boolean>(false);
@@ -114,7 +115,7 @@ export default function Cadastro() {
         <View style={styles.container}>
           <ImagemPaginaCadastro />
           <View style={styles.containerLogin}>
-            <Text>logo</Text>
+            <Logo />
             <TextInput
               style={styles.input}
               placeholder="Digite seu nome"
