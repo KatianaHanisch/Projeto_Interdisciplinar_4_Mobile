@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import { Link } from "expo-router";
-import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalVerificarEmail } from "@/components/modal-verificar-email";
@@ -27,6 +34,8 @@ export default function Cadastro() {
   >("");
 
   const [abrirModal, setAbrirModal] = useState<boolean>(false);
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const { formData, setFormData, handleInputChange } = useForm<UserProps>({
     initialValues: {
@@ -101,6 +110,26 @@ export default function Cadastro() {
     }
   };
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
     <>
       {abrirModal ? (
@@ -114,8 +143,13 @@ export default function Cadastro() {
       ) : (
         <View style={styles.container}>
           <ImagemPaginaCadastro />
-          <View style={styles.containerLogin}>
-            <Logo />
+          <View
+            style={[
+              styles.containerLogin,
+              isKeyboardVisible ? styles.containerLoginTecladoVisivel : null,
+            ]}
+          >
+            {isKeyboardVisible ? null : <Logo />}
             <TextInput
               style={styles.input}
               placeholder="Digite seu nome"

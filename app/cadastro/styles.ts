@@ -11,8 +11,13 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
-    paddingTop: 20,
     gap: 15,
+  },
+  containerLoginTecladoVisivel: {
+    height: "90%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    zIndex: 99,
   },
   input: {
     width: "100%",
