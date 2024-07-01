@@ -1,12 +1,16 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 import { theme } from "@/constants";
+const { width, height } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
+  containerPrincipal: {
+    flex: 1,
+  },
   containerPost: {
+    width: "100%",
     alignItems: "center",
     flexDirection: "row",
-    width: "100%",
     height: 135,
     marginBottom: 12,
     borderRadius: 20,
@@ -19,7 +23,9 @@ export const styles = StyleSheet.create({
   containerImage: {
     width: 125,
     height: 135,
-    borderRadius: 10,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    backgroundColor: "white",
   },
   image: {
     width: "100%",
@@ -27,7 +33,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   containerTextos: {
-    width: "67%",
+    width: width - 168,
     height: "100%",
     alignItems: "flex-start",
     justifyContent: "center",

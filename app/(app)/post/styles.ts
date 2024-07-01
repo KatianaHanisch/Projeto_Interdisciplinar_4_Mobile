@@ -50,22 +50,26 @@ export const styles = StyleSheet.create({
     color: theme.colors.grayDark,
   },
   containerInformacoes: {
+    position: "relative",
     width: "95%",
     flexDirection: "row",
     backgroundColor: theme.colors.orangeLight,
-    height: 135,
+    // height: 135,
     borderRadius: 20,
     padding: 20,
     alignItems: "center",
     justifyContent: "space-between",
   },
   containerIdadeGenero: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
     gap: 10,
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    marginTop: -70,
-    height: "100%",
+    top: -22,
+    right: -170,
   },
   containerIdade: {
     backgroundColor: theme.colors.orangePrimaryDark,
@@ -122,8 +126,10 @@ export const styles = StyleSheet.create({
   },
 
   containerComentarios: {
+    justifyContent: "space-between",
     width: "95%",
     marginTop: 15,
+    marginBottom: 15,
     alignItems: "center",
     padding: 15,
     backgroundColor: theme.colors.orangeLight,
@@ -141,6 +147,10 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.orangeLight,
     borderRadius: 20,
   },
+  listaComentarios2: {
+    width: "100%",
+    height: 150,
+  },
   tituloComentarios: {
     fontSize: 18,
     fontFamily: theme.fontFamily.montserrat.bold,
@@ -155,9 +165,14 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
   },
   buttonComentarios: {
+    marginBottom: 10,
     fontSize: 16,
     fontFamily: theme.fontFamily.montserrat.semiBold,
     color: theme.colors.grayMedium,
     padding: 5,
+  },
+  userName: {
+    color: theme.colors.blue,
+    textDecorationLine: "underline",
   },
 });

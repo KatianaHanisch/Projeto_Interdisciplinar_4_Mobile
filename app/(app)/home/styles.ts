@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     marginLeft: 8,
   },
   containerLista: {
-    width: "100%",
+    // width: "100%",
     height: "90%",
     alignItems: "center",
     marginTop: 15,

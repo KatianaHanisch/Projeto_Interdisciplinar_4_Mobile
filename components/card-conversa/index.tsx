@@ -21,6 +21,7 @@ export function CardConversa({
   idBloquear,
   isBlocked,
   setBloqueado,
+  read,
   fetch,
   onPress,
 }: CardConversaProps) {
@@ -101,8 +102,19 @@ export function CardConversa({
             <Text style={styles.nomeContato}>
               {nome ? nome : "Nome indisponível"}
             </Text>
-            <Text style={styles.mensagem}>{ultimaMensagem}</Text>
+            <Text
+              style={styles.mensagem}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {ultimaMensagem}
+            </Text>
           </View>
+          {!read && (
+            <View style={styles.containerQuantidadeMensagens}>
+              <Text style={styles.quantidadeMensagens}></Text>
+            </View>
+          )}
         </View>
 
         {idConversa === id && (

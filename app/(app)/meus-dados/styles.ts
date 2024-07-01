@@ -32,8 +32,8 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
   },
   imagem: {
-    width: 90,
-    height: 85,
+    width: 130,
+    height: 130,
     borderRadius: 100,
   },
   nome: {
@@ -78,5 +78,19 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
+  },
+  load: {
+    display: "flex",
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imagemLoading: {
+    width: 130,
+    height: 130,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

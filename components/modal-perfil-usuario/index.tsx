@@ -24,6 +24,8 @@ export function ModalPerfilUsuario() {
   const navigate = useNavigate();
 
   const [carregando, setCarregando] = useState<boolean>(false);
+  const [imagemCarregada, setImagemCarregada] = useState<boolean>(false);
+
   const [dadosUsuario, setDadosUsuario] = useState<DadosUsuarioProps>({
     id: "",
     name: "",
@@ -60,17 +62,22 @@ export function ModalPerfilUsuario() {
 
   useEffect(() => {
     fetcherDados();
+    setImagemCarregada(false);
+    setTimeout(() => {
+      setImagemCarregada(true);
+    }, 500);
   }, []);
 
   return (
     <>
-      {carregando ? (
+      {/* {carregando ? (
         <View style={styles.containerCarregamento}>
           <ActivityIndicator size={50} color={theme.colors.orangePrimaryDark} />
         </View>
-      ) : (
-        <View style={styles.container}>
-          <View style={styles.containerHeader}>
+      ) : ( */}
+      <View style={styles.container}>
+        <View style={styles.containerHeader}>
+          {imagemCarregada ? (
             <Image
               style={styles.imagem}
               source={
@@ -81,30 +88,35 @@ export function ModalPerfilUsuario() {
                   : require("../../assets/images/user-conversas-image.png")
               }
             />
-            <Text style={styles.nomeHeader}>{dadosUsuario.name}</Text>
-          </View>
-          <View style={styles.containerButtons}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigate("meus-dados")}
-            >
-              <Text style={styles.textButton}>Acessar meus dados</Text>
-              <IconArrowRigth />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigate("meus-posts")}
-            >
-              <Text style={styles.textButton}>Meus Posts</Text>
-              <IconArrowRigth />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => onLogout!()}>
-              <Text style={styles.textButton}>Sair</Text>
-              <IconArrowRigth />
-            </TouchableOpacity>
-          </View>
+          ) : (
+            <View style={styles.imagemLoading}>
+              <ActivityIndicator color={"black"} size={30} />
+            </View>
+          )}
+          <Text style={styles.nomeHeader}>{dadosUsuario.name}</Text>
         </View>
-      )}
+        <View style={styles.containerButtons}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate("meus-dados")}
+          >
+            <Text style={styles.textButton}>Acessar meus dados</Text>
+            <IconArrowRigth />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate("meus-posts")}
+          >
+            <Text style={styles.textButton}>Meus Posts</Text>
+            <IconArrowRigth />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => onLogout!()}>
+            <Text style={styles.textButton}>Sair</Text>
+            <IconArrowRigth />
+          </TouchableOpacity>
+        </View>
+      </View>
+      {/* )} */}
     </>
   );
 }

@@ -11,7 +11,7 @@ interface SubCommentsProps {
 }
 
 interface ExibirComentariosProps {
-  handleResposta: (id: string) => void;
+  handleResposta: (id: string, name: string) => void;
   abrirRespontas?: boolean;
   id: string;
   description: string;

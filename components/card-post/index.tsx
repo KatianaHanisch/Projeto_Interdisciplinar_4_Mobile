@@ -23,39 +23,47 @@ export function CardPost({
 }: CardPostProps) {
   return (
     <TouchableOpacity
-      style={styles.containerPost}
       onPress={() => handleNavigate(id)}
+      style={styles.containerPrincipal}
     >
-      <View style={styles.containerImage}>
-        <Image
-          source={{
-            uri: `${api_url}/uploads/posts/${images[0]?.url}`,
-          }}
-          style={styles.image}
-        />
-      </View>
-      <View style={styles.containerTextos}>
-        <View style={styles.containerTitulo}>
-          <Text style={styles.tituloNome}>{name}</Text>
-          {sex.toLocaleLowerCase() === "macho" ? (
-            <IconGeneroMasculino />
-          ) : (
-            <IconGeneroFeminino />
+      <View style={styles.containerPost}>
+        <View style={styles.containerImage}>
+          <Image
+            source={{
+              uri: `${api_url}/uploads/posts/${images[0]?.url}`,
+            }}
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.containerTextos}>
+          <View style={styles.containerTitulo}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.tituloNome}
+            >
+              {name}
+            </Text>
+            {sex.toLocaleLowerCase() === "macho" ? (
+              <IconGeneroMasculino />
+            ) : (
+              <IconGeneroFeminino />
+            )}
+          </View>
+          <Text style={styles.textoIdade}>{age} anos</Text>
+          <View style={styles.containerLocalidade}>
+            <IconLocalidade />
+            <Text style={styles.textoCidade}>{`${city} - ${uf}`}</Text>
+          </View>
+          {tipoPost === "meusPosts" && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleDelete!(id)}
+            >
+              <Text style={styles.buttonText}>Remover post</Text>
+            </TouchableOpacity>
           )}
         </View>
-        <Text style={styles.textoIdade}>{age} anos</Text>
-        <View style={styles.containerLocalidade}>
-          <IconLocalidade />
-          <Text style={styles.textoCidade}>{`${city} - ${uf}`}</Text>
-        </View>
-        {tipoPost === "meusPosts" && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleDelete!(id)}
-          >
-            <Text style={styles.buttonText}>Remover post</Text>
-          </TouchableOpacity>
-        )}
       </View>
     </TouchableOpacity>
   );

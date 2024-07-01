@@ -27,6 +27,7 @@ interface Props {
   senderId: string;
   recipientId: string;
   status: boolean;
+  read: boolean;
   sender: {
     name?: string;
     imageUrl?: string | undefined;
@@ -61,6 +62,7 @@ export function ModalChat() {
 
       if (response.status === 200) {
         setConversas(response.data.reverse());
+
         setCarregando(false);
       }
     } catch (error) {
@@ -215,6 +217,7 @@ export function ModalChat() {
                 renderItem={({ item }) => (
                   <CardConversa
                     {...item}
+                    read={item.read}
                     setBloqueado={setBloqueado}
                     idBloquear={setIdBloquear}
                     abrirModal={setAbrirModal}

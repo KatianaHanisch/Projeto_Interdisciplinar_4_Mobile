@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 
 import { IconEnviar } from "@/assets/icons/icon-enviar";
@@ -39,8 +40,10 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
     },
     ref
   ) => {
+    const [nameResposta, setNameResposta] = useState<string>("");
     const [keyboardSpace, setKeyboardSpace] = useState(0);
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
     const handleRequisicao = async (tipoRequisicao: string) => {
       if (tipoRequisicao === "novoComentario") {
         handleSubmit();
@@ -48,7 +51,14 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
         handleSubmitResposta(idComentario);
       }
     };
+    const handleNameResposta = (id: string, name: string) => {
+      handleResposta!(id);
 
+      setNameResposta(name);
+    };
+    const clearNameResposta = () => {
+      setNameResposta("");
+    };
     useEffect(() => {
       const keyboardDidShowListener = Keyboard.addListener(
         "keyboardDidShow",
@@ -83,73 +93,85 @@ export const ComentariosTodos = forwardRef<BottomSheet, ButtomSheetProps>(
           behavior={"height"}
           style={isKeyboardOpen ? { height: "95%" } : { height: "95%" }}
         >
-          <View
-            style={[
-              styles.container,
-              isKeyboardOpen ? { paddingBottom: 25 } : { height: 5 },
-            ]}
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            activeOpacity={1}
+            onPress={clearNameResposta}
           >
-            <View style={styles.containerInterno}>
-              <View style={styles.containerHeader}>
-                <Text style={styles.titulo}>Comentários</Text>
-                <TouchableOpacity style={styles.titulo} onPress={onClose}>
-                  <IconClose />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.containerComentarios}>
-                <BottomSheetFlatList
-                  ref={flatListRef}
-                  data={data}
-                  renderItem={({ item }) => (
-                    <Comentario
-                      {...item}
-                      abrirRespontas={abrirRespontas}
-                      handleResposta={handleResposta}
-                    />
-                  )}
-                  keyExtractor={(item) => item.id}
-                />
-              </View>
-            </View>
-            <View style={styles.containerInputComentar}>
-              <View
-                style={[
-                  styles.containerComentar,
-                  { marginBottom: keyboardSpace },
-                ]}
-              >
-                <View style={styles.containerInput}>
-                  <View style={styles.containerImagem}>
-                    <Image
-                      source={
-                        userImagem && userImagem !== "null"
-                          ? { uri: `${api_url}/uploads/users/${userImagem}` }
-                          : require("../../assets/images/user-conversas-image.png")
-                      }
-                      style={styles.imagem}
-                    />
-                  </View>
-                  <TextInput
-                    style={styles.input}
-                    ref={inputRef}
-                    placeholder="Adicione um comentário"
-                    value={inputValue}
-                    onChange={(text) => handleInputValue(text.nativeEvent.text)}
+            <View
+              style={[
+                styles.container,
+                isKeyboardOpen ? { paddingBottom: 25 } : { height: 5 },
+              ]}
+            >
+              <View style={styles.containerInterno}>
+                <View style={styles.containerHeader}>
+                  <Text style={styles.titulo}>Comentários</Text>
+                  <TouchableOpacity style={styles.titulo} onPress={onClose}>
+                    <IconClose />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.containerComentarios}>
+                  <BottomSheetFlatList
+                    ref={flatListRef}
+                    data={data}
+                    renderItem={({ item }) => (
+                      <Comentario
+                        {...item}
+                        abrirRespontas={abrirRespontas}
+                        handleResposta={handleNameResposta}
+                      />
+                    )}
+                    keyExtractor={(item) => item.id}
                   />
                 </View>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleRequisicao(tipoRequisicao)}
+              </View>
+              <View style={styles.containerInputComentar}>
+                <View
+                  style={[
+                    styles.containerComentar,
+                    { marginBottom: keyboardSpace },
+                  ]}
                 >
-                  {carregando ? (
-                    <ActivityIndicator color={"#fff"} size={25} />
-                  ) : (
-                    <IconEnviar />
-                  )}
-                </TouchableOpacity>
+                  <View style={styles.containerInput}>
+                    <View style={styles.containerImagem}>
+                      <Image
+                        source={
+                          userImagem && userImagem !== "null"
+                            ? { uri: `${api_url}/uploads/users/${userImagem}` }
+                            : require("../../assets/images/user-conversas-image.png")
+                        }
+                        style={styles.imagem}
+                      />
+                    </View>
+                    <TextInput
+                      style={styles.input}
+                      ref={inputRef}
+                      placeholder={
+                        nameResposta
+                          ? `Responda ${nameResposta} `
+                          : "Adicione um comentário"
+                      }
+                      value={inputValue}
+                      onChange={(text) =>
+                        handleInputValue(text.nativeEvent.text)
+                      }
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleRequisicao(tipoRequisicao)}
+                  >
+                    {carregando ? (
+                      <ActivityIndicator color={"#fff"} size={25} />
+                    ) : (
+                      <IconEnviar />
+                    )}
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </BottomSheet>
     );

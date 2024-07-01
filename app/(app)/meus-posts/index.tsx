@@ -89,7 +89,7 @@ export default function MeusPosts() {
       });
 
       if (response.status === 200) {
-        const newPosts = response.data;
+        const newPosts = response.data.posts;
         if (newPosts.length === 0) {
           setHasMore(false);
         } else {
