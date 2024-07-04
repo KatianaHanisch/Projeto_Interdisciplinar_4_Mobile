@@ -1,15 +1,13 @@
-# Projeto Interdisciplinar Ⅲ
+# Projeto Interdisciplinar Ⅳ
 
 <div align="center">
-  <img src="https://img.shields.io/static/v1?label=&message=Next.js&color=black&style=for-the-badge&logo=next.js"/>
-  <img src="https://img.shields.io/static/v1?label=&message=Prisma&color=blue&style=for-the-badge&logo=prisma"/>
   <img src="http://img.shields.io/static/v1?label=STATUS&message=CONCLUIDO&color=GREEN&style=for-the-badge"/>
 </div>
 
 ## :books: Descrição do projeto 
 
 <p align="justify">
-A aplicação consiste em um sistema de gerenciamento de biblioteca consiste em desenvolver uma solução inovadora e intuitiva para o administração de livros em uma biblioteca. Este sistema permite ao bibliotecário efetuar operações de gestão, incluindo a adição e remoção de novos exemplares, além de possibilitar a realização de reservas e empréstimos para os usuários.
+O presente aplicativo para adoção de pets tem como objetivo facilitar o processo de adoção, visando torná-lo mais simplificado e acessível. Através do aplicativo, o usuário poderá visualizar os animais disponíveis para adoção, juntamente com suas fotos e localização. Além disso, o usuário terá a possibilidade de criar publicações com informações básicas e fotos dos animais que foram abandonados. Cada publicação ficará disponível para todos os usuários visualizarem.
 </p>
 
 
