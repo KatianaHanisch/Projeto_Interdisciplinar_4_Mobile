@@ -55,7 +55,7 @@ export default function MeusPosts() {
         setTipoSnackBar("sucesso");
         setAbrirSnackBar(true);
 
-        fecthPostUsuario(0);
+        fecthPostAtualizado(0);
 
         setTimeout(() => {
           setAbrirSnackBar(false);
@@ -72,6 +72,28 @@ export default function MeusPosts() {
       setTimeout(() => {
         setAbrirSnackBar(false);
       }, 4000);
+    }
+  };
+
+  const fecthPostAtualizado = async (pageNumber: number = 0) => {
+    setLoading(true);
+
+    const id = await AsyncStorage.getItem("id");
+
+    try {
+      const response = await api.get(`/posts/user/${id}?page=${pageNumber}`, {
+        headers: {
+          Authorization: `Bearer ${authState?.token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setPosts(response.data.posts);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -152,7 +174,7 @@ export default function MeusPosts() {
             loading ? (
               <ActivityIndicator
                 color={theme.colors.orangePrimaryDark}
-                size={"small"}
+                size={25}
               />
             ) : null
           }

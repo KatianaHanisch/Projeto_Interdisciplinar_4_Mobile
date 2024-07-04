@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   containerModal: {
     width: "95%",
-    height: "75%",
+    height: "65%",
     backgroundColor: theme.colors.white,
     borderRadius: 30,
     alignItems: "center",

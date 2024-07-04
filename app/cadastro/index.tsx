@@ -6,8 +6,8 @@ import {
   View,
   Image,
   TextInput,
-  TouchableOpacity,
   Keyboard,
+  KeyboardEvent,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -23,6 +23,7 @@ import { useForm } from "@/hooks/useForm";
 
 import { styles } from "./styles";
 import { Logo } from "@/assets/images/logo";
+import { validarEmail } from "@/utils/validarEmail";
 
 export default function Cadastro() {
   const [carregando, setCarregando] = useState<boolean>(false);
@@ -54,6 +55,18 @@ export default function Cadastro() {
       formData.confirmPassword == ""
     )
       return;
+
+    if (!validarEmail(formData.email)) {
+      setTipoAlerta("erro");
+      setMensagemAlerta("Digite um email válido");
+      setAbrirAlerta(true);
+
+      setTimeout(() => {
+        setAbrirAlerta(false);
+      }, 4000);
+
+      return;
+    }
 
     if (formData.password !== formData.confirmPassword) {
       setTipoAlerta("erro");
@@ -110,23 +123,27 @@ export default function Cadastro() {
     }
   };
 
+  const handleKeyboardDidShow = (e: KeyboardEvent) => {
+    setKeyboardVisible(true);
+  };
+
+  const handleKeyboardDidHide = (e: KeyboardEvent) => {
+    setKeyboardVisible(false);
+  };
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
-      () => {
-        setKeyboardVisible(true);
-      }
+      handleKeyboardDidShow
     );
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
-      () => {
-        setKeyboardVisible(false);
-      }
+      handleKeyboardDidHide
     );
 
     return () => {
-      keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
     };
   }, []);
 
@@ -146,7 +163,7 @@ export default function Cadastro() {
           <View
             style={[
               styles.containerLogin,
-              isKeyboardVisible ? styles.containerLoginTecladoVisivel : null,
+              isKeyboardVisible ? { paddingBottom: 25 } : null,
             ]}
           >
             {isKeyboardVisible ? null : <Logo />}

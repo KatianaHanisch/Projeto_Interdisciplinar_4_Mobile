@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
     color: theme.colors.grayMedium,
+    backgroundColor: theme.colors.white,
     fontFamily: theme.fontFamily.montserrat.regular,
     fontSize: 16,
   },

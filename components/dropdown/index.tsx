@@ -48,6 +48,7 @@ export function DropDown<T>({
             </View>
           );
         }}
+        statusBarTranslucent={true}
         showsVerticalScrollIndicator={false}
         dropdownStyle={styles.dropdownMenuStyle}
       />

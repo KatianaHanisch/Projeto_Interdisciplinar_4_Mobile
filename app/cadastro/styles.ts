@@ -13,12 +13,6 @@ export const styles = StyleSheet.create({
     width: "90%",
     gap: 15,
   },
-  containerLoginTecladoVisivel: {
-    height: "90%",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    zIndex: 99,
-  },
   input: {
     width: "100%",
     height: 50,
@@ -26,6 +20,7 @@ export const styles = StyleSheet.create({
     borderColor: "#E3E5E5",
     borderRadius: 10,
     paddingLeft: 10,
+    backgroundColor: theme.colors.white,
     color: theme.colors.grayMedium,
     fontFamily: theme.fontFamily.montserrat.regular,
     fontSize: 16,

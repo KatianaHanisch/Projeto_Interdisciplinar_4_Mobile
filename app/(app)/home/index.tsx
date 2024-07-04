@@ -84,8 +84,35 @@ export default function Home() {
     }
   };
 
+  const fetcherTodosOsPost = async (pageNumber: number = 0) => {
+    try {
+      const response = await api.get(`/posts?page=${pageNumber}`, {
+        headers: {
+          Authorization: authState?.token,
+        },
+      });
+
+      if (response.status === 200) {
+        setFilteredPosts(response.data.posts);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetcherPostsPorRegiao = async (uf: string) => {
     setLoading(true);
+
+    if (uf === "") {
+      fetcherTodosOsPost();
+
+      setFiltroSelecionado("");
+
+      setAbrirModalFiltro(false);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await api.get(`/posts/${uf}?page=0`, {
         headers: {

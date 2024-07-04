@@ -17,6 +17,10 @@ export function ModalFiltro({
   carregando,
   fetcherPostsPorRegiao,
 }: ModalFiltroProps) {
+  const estadosComFiltroNenhum = [
+    { id: 221, sigla: "", nome: "Nenhum" },
+    ...estados,
+  ];
   return (
     <View style={styles.container} key={"modal-filtro"}>
       <View style={styles.containerFiltro}>
@@ -29,7 +33,7 @@ export function ModalFiltro({
           <View style={styles.containerSelectRegiao}>
             <Text style={styles.textoSelectRegiao}>Filtrar por região</Text>
             <DropDown
-              data={estados}
+              data={estadosComFiltroNenhum}
               name="uf"
               textoDropdown="Filtre por estado"
               handleInputChange={handleDropdownChange}

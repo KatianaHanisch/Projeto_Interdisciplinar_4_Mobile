@@ -26,7 +26,6 @@ export function Header({
   const { authState } = useAuth();
 
   const [notificacao, setNotificacao] = useState<boolean>(false);
-  console.log(notificacao);
 
   const notification = async () => {
     try {
