@@ -8,7 +8,7 @@
   
 * [Descrição do Projeto](#pencil-Descrição-do-Projeto)
 * [Como rodar a aplicação](#arrow_forward-Como-rodar-a-aplicação)
-* [Tecnologias utilizadas](#heavy_check_mark-Tecnologias-utilizadas)
+
 
 
 ## :books: Descrição do projeto 
